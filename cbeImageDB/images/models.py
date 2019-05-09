@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.dispatch import receiver
 
 
@@ -11,13 +10,13 @@ class Lab(models.Model):
 
 
 class Image(models.Model):
-    image_name = models.CharField(max_length=500)
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
     brief_description = models.CharField(max_length=1000)
-    date = str(timezone.now())
+    date = models.DateField(("Date"), auto_now_add=True)
     document = models.FileField()
     # TODO: Add path. It worked in the terminal
     # path = document.path
+    # image_name = document.name
 
 
 @receiver(models.signals.post_delete, sender=Image)
