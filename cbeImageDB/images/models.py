@@ -1,4 +1,5 @@
 from django.db import models
+from django.dispatch import receiver
 
 
 class Lab(models.Model):
@@ -12,3 +13,9 @@ class Image(models.Model):
     image_name = models.CharField(max_length=500)
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
     document = models.FileField()
+    path = document.path
+
+
+@receiver(models.signals.post_delete, sender=Image)
+def post_delete_file(sender, instance, *args, **kwargs):
+    instance.document.delete(save=False)
