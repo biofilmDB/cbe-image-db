@@ -15,8 +15,8 @@ class Image(models.Model):
     date = models.DateField(("Date"), auto_now_add=True)
     document = models.FileField()
     # TODO: Add path. It worked in the terminal
-    # path = document.path
-    # image_name = document.name
+    path = models.CharField(max_length=500)
+    image_name = models.CharField(max_length=100)
 
 
 @receiver(models.signals.post_delete, sender=Image)

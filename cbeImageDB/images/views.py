@@ -9,16 +9,18 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            file_model = form.save(commit=False)
+            image = form.save(commit=False)
 
             # automatically get file name
-            file_model.image_name = file_model.document.name
+            image.image_name = str(image.lab) + '_' + image.document.name
+            image.path = image.document.path
+            print('path: ', image.document.path)
 
             # find temporary path to work with
             # temp_path = request.FILES['document'].temporary_file_path()
 
             # Save to model
-            file_model.save()
+            image.save()
 
             # easier when testing file upload
             return HttpResponse("Valid form. File committed.")
