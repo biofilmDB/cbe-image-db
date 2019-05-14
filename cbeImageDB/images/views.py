@@ -13,10 +13,9 @@ def upload_file(request):
 
             # automatically get file name
             image.image_name = str(image.lab) + '_' + image.document.name
+            print(type(image.document))
+            image.document.name = image.image_name
             image.path = image.document.path
-
-            # find temporary path to work with
-            # temp_path = request.FILES['document'].temporary_file_path()
 
             # Save to model
             image.save()
