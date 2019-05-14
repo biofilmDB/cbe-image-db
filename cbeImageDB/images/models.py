@@ -1,4 +1,5 @@
 from django.db import models
+from django.dispatch import receiver
 
 
 class Lab(models.Model):
