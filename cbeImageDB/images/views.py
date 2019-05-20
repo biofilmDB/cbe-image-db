@@ -20,6 +20,7 @@ def upload_file(request):
 
             # automatically get file name
             image.image_name = str(image.lab) + '_' + image.document.name
+            image.image_name = image.image_name.replace(' ', '_')
             print(type(image.document))
             image.document.name = image.image_name
             image.path = image.document.path
