@@ -13,7 +13,7 @@ class Image(models.Model):
     lab = models.ForeignKey(Lab, on_delete=models.CASCADE)
     brief_description = models.CharField(max_length=1000)
     date = models.DateField(("Date"), auto_now_add=True)
-    document = models.FileField()
+    document = models.ImageField()
     path = models.CharField(max_length=500)
     image_name = models.CharField(max_length=100)
 
