@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from .forms import UploadFileForm
-from django.http import HttpResponse  # Redirect
-# from django.urls import reverse
+from django.http import HttpResponseRedirect  # Redirect, HttpResponse
+from django.views.generic import DetailView
+from .models import Image
+from django.urls import reverse
+
+
+class ImageDetailsView(DetailView):
+    model = Image
+    template_name = 'images/image_upload_success.html'
 
 
 # view to upload files, uses UploadFileForm
@@ -21,9 +28,9 @@ def upload_file(request):
             image.save()
 
             # easier when testing file upload
-            return HttpResponse("Valid form. File committed.")
-            # return HttpResponseRedirect(reverse('images:success',
-            #                                     args=(file_model.id,)))
+            # return HttpResponse("Valid form. File committed.")
+            return HttpResponseRedirect(reverse('images:image_details',
+                                                args=(image.id,)))
     else:
         form = UploadFileForm()
     return render(request, 'images/upload_file.html', {'form': form})
