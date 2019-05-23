@@ -17,6 +17,9 @@ class Image(models.Model):
     path = models.CharField(max_length=500)
     image_name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.image_name
+
 
 @receiver(models.signals.post_delete, sender=Image)
 def post_delete_file(sender, instance, *args, **kwargs):
