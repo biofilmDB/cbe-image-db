@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect  # Redirect, HttpResponse
 from django.views.generic import DetailView
 from .models import Image
 from django.urls import reverse
+from django.conf import settings
+import os
 
 
 class ImageDetailsView(DetailView):
@@ -19,11 +21,24 @@ def upload_file(request):
             image = form.save(commit=False)
 
             # automatically get file name
-            image.image_name = str(image.lab) + '_' + image.document.name
+            image.image_name = image.document.name
             image.image_name = image.image_name.replace(' ', '_')
-            print(type(image.document))
             image.document.name = image.image_name
-            image.path = image.document.path
+
+            new_folder = str(image.lab).replace(' ', '_') + '/'
+            lab_dir_path = settings.MEDIA_ROOT + '/' + new_folder
+            # check if the lab path exists
+            print(lab_dir_path)
+            if not os.path.isdir(lab_dir_path):
+                try:
+                    os.mkdir(lab_dir_path)
+                except OSError:
+                    print('making directory failed')
+
+            initial_path = image.document.path
+            new_path = lab_dir_path + '/' + image.image_name
+            os.rename(initial_path, new_path)
+
 
             # Save to model
             image.save()
