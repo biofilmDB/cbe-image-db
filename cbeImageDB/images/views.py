@@ -39,7 +39,6 @@ def upload_file(request):
             new_path = lab_dir_path + '/' + image.image_name
             os.rename(initial_path, new_path)
 
-
             # Save to model
             image.save()
 
