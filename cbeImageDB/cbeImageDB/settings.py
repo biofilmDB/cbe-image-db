@@ -69,6 +69,12 @@ TEMPLATES = [
     },
 ]
 
+THUMBNAIL_ALIASES = {
+    'images': {
+        'list': {'size': (200, 200),}
+    },
+}
+
 WSGI_APPLICATION = 'cbeImageDB.wsgi.application'
 
 

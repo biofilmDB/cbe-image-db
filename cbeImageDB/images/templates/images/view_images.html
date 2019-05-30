@@ -8,6 +8,8 @@
     <ul>
         {% for image in image_list %}
             <li> {{ image.image_name }} </li>
+            <img src="{{ image.document|thumbnail_url:'list' }}" alt="">
+            </br>
         {% endfor %}
     </u>
     {% else %}

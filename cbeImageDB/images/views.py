@@ -15,10 +15,10 @@ class ImageThumbnailsView(ListView):
     model = Image
     context_object_name = 'image_list'
     template_name = 'images/view_images.html'
-    paginate_by = 20
+    # paginate_by = 20
 
     def get_querylist():
-        return Image.objects.all()
+        return Image.objects.filter(lab=1)
 
 
 # view to upload files, uses UploadFileForm
