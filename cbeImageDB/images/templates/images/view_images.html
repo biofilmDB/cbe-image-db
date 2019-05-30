@@ -1,1 +1,18 @@
 <h1> {{ lab.name }} images </h1>
+
+{% load thumbnail %}
+
+{% block content %}
+
+    {% if image_list %}
+    <ul>
+        {% for image in image_list %}
+            <li> {{ image.image_name }} </li>
+        {% endfor %}
+    </u>
+    {% else %}
+            <p> There are no images for this lab </p>
+    {% endif %}
+
+{% endblock %}
+
