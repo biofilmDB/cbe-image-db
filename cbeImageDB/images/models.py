@@ -13,7 +13,7 @@ class Image(models.Model):
     lab = models.ForeignKey(Lab, on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
     date = models.DateField(("Date"), auto_now_add=True)
-    document = models.ImageField()
+    document = models.ImageField(upload_to=str(lab.name).replace(' ', '_'))
     path = models.CharField(max_length=500)
     image_name = models.CharField(max_length=100)
 
