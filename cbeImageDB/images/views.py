@@ -25,10 +25,11 @@ def upload_file(request):
             image.image_name = image.image_name.replace(' ', '_')
             image.document.name = image.image_name
 
-            new_folder = str(image.lab).replace(' ', '_') + '/'
+            new_folder = str(image.lab).replace(' ', '_')
+            print('new_folder ', new_folder)
             lab_dir_path = settings.MEDIA_ROOT + '/' + new_folder
             # check if the lab path exists
-            print(lab_dir_path)
+            print('lab_dir_path ', lab_dir_path)
             if not os.path.isdir(lab_dir_path):
                 try:
                     os.mkdir(lab_dir_path)
