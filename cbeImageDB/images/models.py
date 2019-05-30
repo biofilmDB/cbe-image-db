@@ -12,6 +12,7 @@ class Lab(models.Model):
 def lab_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     formated_lab = str(instance.lab).replace(' ', '_')
+    filename = filename.replace(' ', '_')
     return '{0}/{1}'.format(formated_lab, filename)
 
 
