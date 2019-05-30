@@ -2,13 +2,20 @@ from django.shortcuts import render
 from .forms import UploadFileForm
 from django.http import HttpResponseRedirect  # Redirect, HttpResponse
 from django.views.generic import DetailView
-from .models import Image
+from .models import Image, Lab
 from django.urls import reverse
 
 
 class ImageDetailsView(DetailView):
     model = Image
     template_name = 'images/image_upload_success.html'
+
+
+class ImageThumbnailsView(DetailView):
+    model = Lab
+    template_name = 'images/view_images.html'
+    # queryset = Image.objects.filter(lab=1)
+    # print(queryset)
 
 
 # view to upload files, uses UploadFileForm
@@ -25,8 +32,6 @@ def upload_file(request):
             image.path = image.document.path
 
             # Save to model
-            image.save()
-            image.document = image.document
             image.save()
             # easier when testing file upload
             # return HttpResponse("Valid form. File committed.")
