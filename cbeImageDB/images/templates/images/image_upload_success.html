@@ -6,5 +6,11 @@
     <li><b>Date added: </b> {{ image.date }} </li>
 
 </ul>
-
+{% load thumbnail %}
+{% thumbnail image.document 400X400 upscale as thumb %}
+<img src="{{ thumb.url }}"
+    width="{{ thumb.width }}"
+    height="{{ thumb.height }}" />
+</br>
+</br>
 <a href="/images/upload-image">Upload another image</a>
