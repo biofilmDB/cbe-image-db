@@ -11,20 +11,24 @@ class ImageDetailsView(DetailView):
     template_name = 'images/image_upload_success.html'
 
 
-class ImageThumbnailsView(FormView):
+class ImageThumbnailsView(ListView):
     model = Image
     context_object_name = 'image_list'
     template_name = 'images/view_images.html'
-    form_class = SearchImageForm
     # paginate_by = 20
+
+    def get_querylist():
+        return Image.objects.filter(lab=1)
+
+
+class SearchImageView(FormView):
+    template_name = 'images/search_images.html'
+    form_class = SearchImageForm
 
     def form_valid(self, form):
         selected_labs = form.cleaned_data.get('selected_labs')
         return_string = 'Labs selected were: ' + str(selected_labs)
         return HttpResponse(return_string)
-
-    def get_querylist():
-        return Image.objects.filter(lab=1)
 
 
 # view to upload files, uses UploadFileForm

@@ -4,11 +4,6 @@
 
 {% block content %}
 
- <form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Continue" />
-</form>
     {% if image_list %}
     <ul>
         {% for image in image_list %}
