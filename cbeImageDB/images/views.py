@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from .forms import UploadFileForm
-from django.http import HttpResponseRedirect  # Redirect, HttpResponse
-from django.views.generic import DetailView, ListView
-from .models import Image, Lab
+from .forms import UploadFileForm, SearchImageForm
+from django.http import HttpResponseRedirect, HttpResponse  # Redirect
+from django.views.generic import DetailView, ListView, FormView
+from .models import Image
 from django.urls import reverse
 
 
@@ -11,11 +11,17 @@ class ImageDetailsView(DetailView):
     template_name = 'images/image_upload_success.html'
 
 
-class ImageThumbnailsView(ListView):
+class ImageThumbnailsView(FormView):
     model = Image
     context_object_name = 'image_list'
     template_name = 'images/view_images.html'
+    form_class = SearchImageForm
     # paginate_by = 20
+
+    def form_valid(self, form):
+        selected_labs = form.cleaned_data.get('selected_labs')
+        return_string = 'Labs selected were: ' + str(selected_labs)
+        return HttpResponse(return_string)
 
     def get_querylist():
         return Image.objects.filter(lab=1)

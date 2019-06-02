@@ -1,14 +1,21 @@
-<h1> {{ lab.name }} images </h1>
+<h1>images </h1>
 
 {% load thumbnail %}
 
 {% block content %}
 
+ <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Continue" />
+</form>
     {% if image_list %}
     <ul>
         {% for image in image_list %}
             <li> {{ image.image_name }} </li>
+            <li> Lab: {{ image.lab }} </li>
             <img src="{{ image.document|thumbnail_url:'list' }}" alt="">
+            </br>
             </br>
         {% endfor %}
     </u>
