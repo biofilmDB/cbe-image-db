@@ -13,7 +13,5 @@ class SearchImageForm(forms.Form):
     opts = ()
     for lab in Lab.objects.all():
         opts = opts + ((lab, lab), )
-    selected_labs = forms.MultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple, choices=opts)
     selected_labs = forms.ModelChoiceField(queryset=Lab.objects,
-        empty_label="(-----")
+        empty_label="-----------")
