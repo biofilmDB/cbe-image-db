@@ -71,7 +71,8 @@ TEMPLATES = [
 
 THUMBNAIL_ALIASES = {
     'images': {
-        'list': {'size': (200, 200),}
+        'list': {'size': (200, 200),},
+        'details': {'size': (500, 500),}
     },
 }
 
