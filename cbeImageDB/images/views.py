@@ -1,26 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .forms import UploadFileForm, SearchImageForm
-from django.http import HttpResponseRedirect, HttpResponse  # Redirect
+from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 from django.views.generic import DetailView, ListView, FormView
-from .models import Image, Lab
+from .models import Image
 from django.urls import reverse
 
 
 class ImageDetailsView(DetailView):
     model = Image
     template_name = 'images/image_upload_success.html'
-
-"""
-def ImageThumbnails(request, pk):
-    image_list = Image.objects.filter(lab=pk)
-    lab_list = Lab.objects.filter(id=pk)
-    if len(lab_list) > 0:
-        lab_list = 'Images: {}'.format(lab_list[0].name)
-    else:
-        lab_list = 'Lab id {} does not exist'.format(pk)
-    context = {'image_list': image_list, 'lab_list': lab_list}
-    return render(request, 'images/view_images.html', context)
-"""
 
 
 class ImageThumbnailsView(ListView):
@@ -30,12 +18,9 @@ class ImageThumbnailsView(ListView):
     # paginate_by = 20
 
     def get_queryset(self):
-        import pdb; pdb.set_trace()
-        # lab = self.request.GET.get('selected_labs', 'default')
-        lab = self.kwargs['selected_labs']
-        print(lab)
-        return Image.objects.filter(lab=1)
-
+        # import pdb; pdb.set_trace()
+        selected_labs = self.request.GET.get('selected_labs', 'default')
+        return Image.objects.filter(lab=selected_labs)
 
 
 class SearchImageView(FormView):
@@ -43,16 +28,6 @@ class SearchImageView(FormView):
     form_class = SearchImageForm
     success_url = 'images/view_images.html'
 
-    def form_valid(self, form):
-        selected_labs = form.cleaned_data.get('selected_labs')
-        return_string = 'Labs selected were: ' + str(selected_labs)
-        import pdb; pdb.set_trace()
-        return HttpResponseRedirect('images/view_by_lab/')
-
-    def get(self, request):
-        import pdb; pdb.set_trace()
-        lab = self.request.GET['selected_labs']
-        return redirect('view_by_lab/', selected_labs=lab)
 
 # view to upload files, uses UploadFileForm
 def upload_file(request):

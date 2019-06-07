@@ -8,6 +8,6 @@ urlpatterns = [
     path('<int:pk>/success/', views.ImageDetailsView.as_view(),
          name='image_details'),
     path('search_labs', views.SearchImageView.as_view(), name='search_by_lab'),
-    path('<int:pk>/view_by_lab/', views.ImageThumbnails,
+    path('view_by_lab/', views.ImageThumbnailsView.as_view(),
          name='view_by_lab'),
 ]
