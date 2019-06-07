@@ -1,5 +1,6 @@
 {% block content %}
-
+<h1> Search for images by lab </h1>
+<p> Please select a lab to view images from that lab. </p>
  <form action="/images/view_by_lab/" method="GET" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}

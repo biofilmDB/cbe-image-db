@@ -10,8 +10,5 @@ class UploadFileForm(forms.ModelForm):
 
 
 class SearchImageForm(forms.Form):
-    opts = ()
-    for lab in Lab.objects.all():
-        opts = opts + ((lab, lab), )
-    selected_labs = forms.ModelChoiceField(queryset=Lab.objects,
-        empty_label="-----------")
+    select_a_lab = forms.ModelChoiceField(queryset=Lab.objects,
+                                          empty_label="-----------")

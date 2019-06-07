@@ -19,14 +19,15 @@ class ImageThumbnailsView(ListView):
 
     def get_queryset(self):
         # import pdb; pdb.set_trace()
-        selected_labs = self.request.GET.get('selected_labs', 'default')
-        return Image.objects.filter(lab=selected_labs)
+        select_a_lab = self.request.GET.get('select_a_lab', 'default')
+        return Image.objects.filter(lab=select_a_lab)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        selected_labs = self.request.GET.get('selected_labs', 'default')
-        context['lab_name'] = Lab.objects.get(id=selected_labs).name
+        # TODO: Figure out what to put for defualt, becuase it gives an error
+        select_a_lab = self.request.GET.get('select_a_lab', 'default')
+        context['lab_name'] = Lab.objects.get(id=select_a_lab).name
         return context
 
 
