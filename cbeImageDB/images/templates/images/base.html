@@ -1,0 +1,61 @@
+{# HTML5 declaration #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+              margin: 0;
+              font-family: Arial, Helvetica, sans-serif;
+            }
+        
+            .topnav {
+              overflow: hidden;
+              background-color: #FA1300; {# 009B98; #}
+            }
+        
+            .topnav a {
+              float: left;
+              color: #000000;
+              text-align: center;
+              padding: 14px 16px;
+              text-decoration: none;
+              font-size: 17px;
+            }
+        
+            .topnav a:hover {
+              background-color: #A2FFF4;
+              color: black;
+              font-weight: bold;
+            }
+        
+            .topnav a.active {
+              background-color: #4CAF50;
+              color: white;
+              font-weight: bold;
+            }
+        </style>
+        <title></title>
+       
+    </head>
+    
+    <body>
+    {# Navigation Menu #}
+    <header>
+       
+        <div class="topnav">
+            <a class="navbar-brand" href="{% url 'images:upload' %}">Upload</a>
+            <a class="navbar-brand" href="{% url 'images:search_by_lab' %}">Search</a>
+        </div>
+    </header>
+    {# The Document Body #}
+    <div id="template-content">
+        {% block content %}
+            if you see this, something is wrong!
+        {% endblock content %}
+    </div>
+    {# The Footer #}
+    <div class="footer">
+        
+    </div>
+</body>
+</html>
