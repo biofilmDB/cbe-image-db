@@ -15,7 +15,7 @@ class ImageThumbnailsView(ListView):
     model = Image
     context_object_name = 'image_list'
     template_name = 'images/view_images.html'
-    # paginate_by = 20
+    paginate_by = 5
 
     def get_queryset(self):
         # import pdb; pdb.set_trace()
