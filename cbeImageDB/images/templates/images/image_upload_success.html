@@ -7,11 +7,8 @@
 
 </ul>
 {% load thumbnail %}
-{% thumbnail image.document 400X400 upscale as thumb %}
-<img src="{{ thumb.url }}"
-    width="{{ thumb.width }}"
-    height="{{ thumb.height }}"
-    alt="An error occured while loading the image" />
+<img src="{{ image.document|thumbnail_url:'details' }}"
+     alt="An error occured while loading the image" />
 </br>
 </br>
 <a href="{% url 'images:upload' %}">Upload another image</a>
