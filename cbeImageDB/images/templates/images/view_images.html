@@ -1,14 +1,16 @@
-<h1> Images for lab: {{ lab_name }} </h1>
+{% extends 'images/base.html' %}
 
 {% load thumbnail %}
 
 {% block content %}
+<h1> Images for lab: {{ lab_name }} </h1>
 
     {% if image_list %}
     <ul>
         {% for image in image_list %}
             <li> {{ image.image_name }} </li>
-            <img src="{{ image.document|thumbnail_url:'list' }}" alt="">
+            <a href="{% url 'images:image_details' pk=image.pk %}">
+            <img src="{{ image.document|thumbnail_url:'list' }}" alt="" ></a>
             </br>
             </br>
         {% endfor %}
