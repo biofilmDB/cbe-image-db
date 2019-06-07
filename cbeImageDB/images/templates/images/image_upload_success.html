@@ -1,3 +1,5 @@
+{% extends 'images/base.html' %}
+{% block content %}
 <h1> Image was successfully uploaded. </h1>
 <ul>
     <li><b>Name: </b>{{ image.image_name }} </li>
@@ -12,3 +14,4 @@
 </br>
 </br>
 <a href="{% url 'images:upload' %}">Upload another image</a>
+{% endblock %}
