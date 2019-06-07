@@ -1,4 +1,4 @@
-<h1> {{ lab_list }} </h1>
+<h1> Images for lab: {{ lab_name }} </h1>
 
 {% load thumbnail %}
 
@@ -8,7 +8,6 @@
     <ul>
         {% for image in image_list %}
             <li> {{ image.image_name }} </li>
-            <li> Lab: {{ image.lab }} </li>
             <img src="{{ image.document|thumbnail_url:'list' }}" alt="">
             </br>
             </br>

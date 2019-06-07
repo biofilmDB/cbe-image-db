@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .forms import UploadFileForm, SearchImageForm
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 from django.views.generic import DetailView, ListView, FormView
-from .models import Image
+from .models import Image, Lab
 from django.urls import reverse
 
 
@@ -21,6 +21,13 @@ class ImageThumbnailsView(ListView):
         # import pdb; pdb.set_trace()
         selected_labs = self.request.GET.get('selected_labs', 'default')
         return Image.objects.filter(lab=selected_labs)
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        selected_labs = self.request.GET.get('selected_labs', 'default')
+        context['lab_name'] = Lab.objects.get(id=selected_labs).name
+        return context
 
 
 class SearchImageView(FormView):
