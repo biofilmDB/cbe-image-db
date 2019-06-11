@@ -1,6 +1,6 @@
 {% extends 'images/base.html' %}
 {% block content %}
-<h1> Image was successfully uploaded. </h1>
+<h1> Image information: </h1>
 <ul>
     <li><b>Name: </b>{{ image.document.name }} </li>
     <li><b>Lab: </b> {{ image.lab }} </li>
@@ -13,5 +13,4 @@
      alt="An error occured while loading the image" />
 </br>
 </br>
-<a href="{% url 'images:upload' %}">Upload another image</a>
 {% endblock %}
