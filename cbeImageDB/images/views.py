@@ -45,17 +45,7 @@ def upload_file(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.save(commit=False)
-
-            # automatically get file name
-            image.image_name = image.document.name
-            # image.image_name = image.image_name.replace(' ', '_')
-            image.document.name = image.image_name
-            image.path = image.document.path
-
-            # Save to model
             image.save()
-            # easier when testing file upload
-            # return HttpResponse("Valid form. File committed.")
             return HttpResponseRedirect(reverse('images:image_details',
                                                 args=(image.id,)))
     else:
