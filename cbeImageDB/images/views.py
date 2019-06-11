@@ -18,8 +18,10 @@ class ImageThumbnailsView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        # import pdb; pdb.set_trace()
-        select_a_lab = self.request.GET.get('select_a_lab', 'default')
+        # import ipdb; ipdb.set_trace()
+        select_a_lab = self.request.GET['select_a_lab']
+        self.kwargs['select_a_lab'] = select_a_lab
+        # import ipdb; ipdb.set_trace()
         return Image.objects.filter(lab=select_a_lab)
 
     def get_context_data(self, **kwargs):
