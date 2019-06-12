@@ -23,7 +23,7 @@ class Image(models.Model):
     document = models.ImageField(upload_to=lab_directory_path)
 
     def __str__(self):
-        return self.image_name
+        return self.document.name
 
 
 @receiver(models.signals.post_delete, sender=Image)
