@@ -15,6 +15,8 @@ class AddImagerView(genViews.CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['heading1'] = "Add a new Imager"
+        context['intro_p'] = "Type your name into the box to add yourself as "
+        context['intro_p'] += "an imager."
         context['button_text'] = "Add"
         return context
 
