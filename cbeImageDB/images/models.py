@@ -3,10 +3,17 @@ from django.dispatch import receiver
 
 
 class Lab(models.Model):
-    name = models.CharField(max_length=100)
+    pi_name = models.CharField(max_length=100)
 
     def __str__(self):
-            return self.name
+            return self.pi_name
+
+
+class Imager(models.Model):
+    imager_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.imager_name
 
 
 def lab_directory_path(instance, filename):
@@ -18,12 +25,13 @@ def lab_directory_path(instance, filename):
 
 class Image(models.Model):
     lab = models.ForeignKey(Lab, on_delete=models.PROTECT)
+    imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
     date = models.DateField(("Date"), auto_now_add=True)
     document = models.ImageField(upload_to=lab_directory_path)
 
     def __str__(self):
-        return self.document.name
+        return str(self.document.name)
 
 
 @receiver(models.signals.post_delete, sender=Image)
