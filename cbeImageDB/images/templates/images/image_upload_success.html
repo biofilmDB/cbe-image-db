@@ -1,10 +1,16 @@
-<h1> Image was successfully uploaded. </h1>
+{% extends 'images/base.html' %}
+{% block content %}
+<h1> Image information: </h1>
 <ul>
-    <li><b>Name: </b>{{ image.image_name }} </li>
+    <li><b>Name: </b>{{ image.document.name }} </li>
     <li><b>Lab: </b> {{ image.lab }} </li>
     <li><b>Description: </b> {{ image.brief_description }} </li>
     <li><b>Date added: </b> {{ image.date }} </li>
 
 </ul>
-
-<a href="/images/upload-image">Upload another image</a>
+{% load thumbnail %}
+<img src="{{ image.document|thumbnail_url:'details' }}"
+     alt="An error occured while loading the image" />
+</br>
+</br>
+{% endblock %}

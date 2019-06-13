@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,13 @@ TEMPLATES = [
         },
     },
 ]
+
+THUMBNAIL_ALIASES = {
+    'images': {
+        'list': {'size': (200, 200),},
+        'details': {'size': (350, 350),}
+    },
+}
 
 WSGI_APPLICATION = 'cbeImageDB.wsgi.application'
 

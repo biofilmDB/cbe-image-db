@@ -1,0 +1,45 @@
+{% extends 'images/base.html' %}
+
+{% load thumbnail %}
+{% load images_extra %}
+<div id='template-content>
+{% block content %}
+<h1> Images for lab: {{ lab_name }} </h1>
+
+    {% if image_list %}
+    <ul>
+        {% for image in image_list %}
+            <li> {{ image.document.name }} </li>
+            <a href="{% url 'images:image_details' pk=image.pk %}">
+            <img src="{{ image.document|thumbnail_url:'list' }}" alt="" ></a>
+            </br>
+            </br>
+        {% endfor %}
+    </u>
+    {% else %}
+            <p> There are no images for this lab </p>
+    {% endif %}
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?{% url_replace page=page_obj.previous_page_number %}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?{% url_replace page=i %}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?{% url_replace page=page_obj.next_page_number %}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+{% endblock %}
+
+</div>
