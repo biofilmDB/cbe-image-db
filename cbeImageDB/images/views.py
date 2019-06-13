@@ -1,17 +1,32 @@
 from django.shortcuts import render
-from .forms import UploadFileForm, SearchImageForm
+from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
-from django.views.generic import DetailView, ListView, FormView
-from .models import Image, Lab
+import django.views.generic as genViews
+from .models import Image, Lab, Imager
 from django.urls import reverse
 
 
-class ImageDetailsView(DetailView):
+class AddImagerView(genViews.CreateView):
+    template_name = 'images/create_model.html'
+    form_class = forms.AddImagerForm
+    model = Imager
+    success_url = '/images/upload_image'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['heading1'] = "Add a new Imager"
+        context['intro_p'] = "Type your name into the box to add yourself as "
+        context['intro_p'] += "an imager."
+        context['button_text'] = "Add"
+        return context
+
+
+class ImageDetailsView(genViews.DetailView):
     model = Image
     template_name = 'images/image_upload_success.html'
 
 
-class ImageThumbnailsView(ListView):
+class ImageThumbnailsView(genViews.ListView):
     model = Image
     context_object_name = 'image_list'
     template_name = 'images/view_images.html'
@@ -29,25 +44,25 @@ class ImageThumbnailsView(ListView):
         context = super().get_context_data(**kwargs)
         # TODO: Figure out what to put for defualt, becuase it gives an error
         select_a_lab = self.request.GET.get('select_a_lab', 'default')
-        context['lab_name'] = Lab.objects.get(id=select_a_lab).name
+        context['lab_name'] = Lab.objects.get(id=select_a_lab).pi_name
         return context
 
 
-class SearchImageView(FormView):
+class SearchImageView(genViews.FormView):
     template_name = 'images/search_images.html'
-    form_class = SearchImageForm
+    form_class = forms.SearchImageForm
     success_url = 'images/view_images.html'
 
 
 # view to upload files, uses UploadFileForm
 def upload_file(request):
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
+        form = forms.UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.save(commit=False)
             image.save()
             return HttpResponseRedirect(reverse('images:image_details',
                                                 args=(image.id,)))
     else:
-        form = UploadFileForm()
+        form = forms.UploadFileForm()
     return render(request, 'images/upload_file.html', {'form': form})
