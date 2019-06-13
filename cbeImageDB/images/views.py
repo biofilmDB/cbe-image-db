@@ -10,7 +10,6 @@ class AddImagerView(genViews.CreateView):
     template_name = 'images/create_model.html'
     form_class = forms.AddImagerForm
     model = Imager
-    success_url = '/images/upload_image'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -19,6 +18,11 @@ class AddImagerView(genViews.CreateView):
         context['intro_p'] += "an imager."
         context['button_text'] = "Add"
         return context
+
+    def form_valid(self, form):
+        new_imager = form.save()
+        new_imager.save()
+        return HttpResponseRedirect(reverse('images:upload'))
 
 
 class ImageDetailsView(genViews.DetailView):
