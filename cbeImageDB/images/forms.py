@@ -6,7 +6,7 @@ class UploadFileForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['document', 'lab', 'brief_description', ]
+        fields = ['document', 'imager', 'lab', 'brief_description', ]
 
 
 class SearchImageForm(forms.Form):
