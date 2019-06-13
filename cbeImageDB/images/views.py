@@ -29,7 +29,7 @@ class ImageThumbnailsView(ListView):
         context = super().get_context_data(**kwargs)
         # TODO: Figure out what to put for defualt, becuase it gives an error
         select_a_lab = self.request.GET.get('select_a_lab', 'default')
-        context['lab_name'] = Lab.objects.get(id=select_a_lab).name
+        context['lab_name'] = Lab.objects.get(id=select_a_lab).pi_name
         return context
 
 
