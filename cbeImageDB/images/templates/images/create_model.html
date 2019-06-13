@@ -1,0 +1,14 @@
+{% extends 'images/base.html' %}
+{% block content %}
+	<h1> {{ heading1 }} </h1>
+        <p> {{ intro_p }} </p>
+	<form action = "" method="POST" enctype="multipart/form-data">
+		<div>
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="{{ button_text }}" />
+		</div>
+	</form>
+{% endblock %}
+
+
