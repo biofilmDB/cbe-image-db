@@ -1,11 +1,22 @@
 from django.shortcuts import render
-import forms
+from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
-from .models import Image, Lab
+from .models import Image, Lab, Imager
 from django.urls import reverse
 
 
+class AddImagerView(genViews.CreateView):
+    template_name = 'images/create_model.html'
+    form_class = forms.AddImagerForm
+    model = Imager
+    success_url = '/images/upload_image'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['heading1'] = "Add a new Imager"
+        context['button_text'] = "Add"
+        return context
 
 
 class ImageDetailsView(genViews.DetailView):
