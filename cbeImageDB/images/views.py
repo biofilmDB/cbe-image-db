@@ -4,6 +4,25 @@ from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
 from .models import Image, Lab, Imager
 from django.urls import reverse
+from dal import autocomplete
+
+
+class ImagerAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Imager.objects.all()
+        if self.q:
+            qs = qs.filter(imager_name__istartswith=self.q)
+        return qs
+
+
+class LabAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Lab.objects.all()
+        if self.q:
+            qs = qs.filter(pi_name__istartswith=self.q)
+        return qs
 
 
 class AddImagerView(genViews.CreateView):
