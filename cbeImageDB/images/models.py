@@ -24,7 +24,8 @@ def lab_directory_path(instance, filename):
 
 
 class Image(models.Model):
-    lab = models.ForeignKey(Lab, on_delete=models.PROTECT)
+    # With ForeighnKey on_delete was PROTECT
+    lab = models.ManyToManyField(Lab)
     imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
     date = models.DateField(("Date"), auto_now_add=True)
