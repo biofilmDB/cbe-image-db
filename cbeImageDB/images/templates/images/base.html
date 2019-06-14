@@ -1,7 +1,9 @@
 {# HTML5 declaration #}
 <!DOCTYPE html>
+{% load static %}
 <html>
     <head>
+        <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
         <style>
             body {
               margin: 0;
@@ -64,7 +66,8 @@
     </div>
     {# The Footer #}
     <div class="footer">
-        
+                
+        {% block footer %}{% endblock %}
     </div>
 </body>
 </html>
