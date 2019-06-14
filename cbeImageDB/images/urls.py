@@ -11,6 +11,8 @@ urlpatterns = [
     path('search_labs', views.SearchImageView.as_view(), name='search_by_lab'),
     path('imager_autocomplete/', views.ImagerAutocomplete.as_view(),
          name='imager_autocomplete'),
+    path('lab_autocomplete/', views.LabAutocomplete.as_view(),
+         name='lab_autocomplete'),
     path('view_by_lab/', views.ImageThumbnailsView.as_view(),
          name='view_by_lab'),
 ]
