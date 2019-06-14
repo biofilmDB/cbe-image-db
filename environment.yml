@@ -1,15 +1,15 @@
 name: cbe-image
 channels:
   - anaconda
-  - conda-forge/label/cf201901
   - avishapiro
+  - conda-forge/label/cf201901
   - conda-forge/label/gcc7
   - defaults
 dependencies:
   - backcall=0.1.0=py35_0
   - bzip2=1.0.6=h14c3975_1002
-  - ca-certificates=2019.5.15=0
-  - certifi=2018.8.24=py35_1
+  - ca-certificates=2018.11.29=ha4d7672_0
+  - certifi=2018.8.24=py35_1001
   - decorator=4.4.0=py_0
   - django=2.1.1=py35_0
   - django-autocomplete-light=3.1.6=py35_0
@@ -20,6 +20,7 @@ dependencies:
   - ipython_genutils=0.2.0=py35hc9e07d0_0
   - jedi=0.12.1=py35_0
   - jpeg=9b=habf39ab_1
+  - jquery=3.2.1=0
   - libedit=3.1.20181209=hc058e9b_0
   - libffi=3.2.1=hd88cf55_4
   - libgcc-ng=8.2.0=hdf63c60_1
@@ -28,7 +29,7 @@ dependencies:
   - libtiff=4.0.10=h2733197_2
   - ncurses=6.1=he6710b0_1
   - olefile=0.46=py35_0
-  - openssl=1.0.2s=h7b6447c_0
+  - openssl=1.0.2p=h470a237_2
   - parso=0.4.0=py_0
   - pexpect=4.6.0=py35_0
   - pickleshare=0.7.4=py35hd57304d_0
