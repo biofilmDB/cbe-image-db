@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
@@ -77,15 +76,12 @@ class SearchImageView(genViews.FormView):
     success_url = 'images/view_images.html'
 
 
-# view to upload files, uses UploadFileForm
-def upload_file(request):
-    if request.method == 'POST':
-        form = forms.UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = form.save(commit=False)
-            image.save()
-            return HttpResponseRedirect(reverse('images:image_details',
-                                                args=(image.id,)))
-    else:
-        form = forms.UploadFileForm()
-    return render(request, 'images/upload_file.html', {'form': form})
+class UploadImageView(genViews.CreateView):
+    form_class = forms.UploadFileForm
+    template_name = 'images/upload_file.html'
+
+    def form_valid(self, form):
+        image = form.save()
+        image.save()
+        return HttpResponseRedirect(reverse('images:image_details',
+                                            args=(image.id,)))
