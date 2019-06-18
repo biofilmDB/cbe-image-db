@@ -80,8 +80,14 @@ class UploadImageView(genViews.CreateView):
     form_class = forms.UploadFileForm
     template_name = 'images/upload_file.html'
 
+
     def form_valid(self, form):
-        image = form.save()
+        # import ipdb; ipdb.set_trace()
+        info = form.save(commit=False)
+        image = Image(imager=info.imager)
         image.save()
+        import ipdb; ipdb.set_trace()
+        # still gives a value error
+        image.lab = info.lab
         return HttpResponseRedirect(reverse('images:image_details',
                                             args=(image.id,)))
