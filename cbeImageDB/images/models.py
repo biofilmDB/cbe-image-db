@@ -16,11 +16,11 @@ class Imager(models.Model):
         return self.imager_name
 
 
-def lab_directory_path(instance, filename):
+def imager_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    formated_lab = str(instance.lab).replace(' ', '_')
+    formated_imager = str(instance.imager).replace(' ', '_')
     filename = filename.replace(' ', '_')
-    return '{0}/{1}'.format(formated_lab, filename)
+    return '{0}/{1}'.format(formated_imager, filename)
 
 
 class Image(models.Model):
@@ -29,7 +29,7 @@ class Image(models.Model):
     imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
     date = models.DateField(("Date"), auto_now_add=True)
-    document = models.ImageField(upload_to=lab_directory_path)
+    document = models.ImageField(upload_to=imager_directory_path)
 
     def __str__(self):
         return str(self.document.name)
