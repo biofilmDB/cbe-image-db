@@ -4,6 +4,7 @@ import django.views.generic as genViews
 from .models import Image, Lab, Imager
 from django.urls import reverse
 from dal import autocomplete
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 class ImagerAutocomplete(autocomplete.Select2QuerySetView):
@@ -47,6 +48,21 @@ class ImageDetailsView(genViews.DetailView):
     model = Image
     template_name = 'images/image_upload_success.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab_list = kwargs['object'].lab.all()
+        # import ipdb; ipdb.set_trace()
+        lab_list_str = ''
+        if len(lab_list) > 0:
+            lab_list = [str(x) for x in lab_list]
+            lab_list_str = ', '.join(lab_list)
+        context['image_lab'] = lab_list_str
+
+        context['image_name'] = kwargs['object'].document.name
+        context['image_name'] = context['image_name'].split('/')[-1]
+
+
+        return context
 
 class ImageThumbnailsView(genViews.ListView):
     model = Image
@@ -55,18 +71,21 @@ class ImageThumbnailsView(genViews.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        # import ipdb; ipdb.set_trace()
-        select_a_lab = self.request.GET['select_a_lab']
-        self.kwargs['select_a_lab'] = select_a_lab
-        # import ipdb; ipdb.set_trace()
-        return Image.objects.filter(lab=select_a_lab)
+
+        try:
+            select_a_lab = self.request.GET['select_a_lab']
+            return Image.objects.filter(lab__in=select_a_lab)
+        except MultiValueDictKeyError:
+            return []
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # TODO: Figure out what to put for defualt, becuase it gives an error
-        select_a_lab = self.request.GET.get('select_a_lab', 'default')
-        context['lab_name'] = Lab.objects.get(id=select_a_lab).pi_name
+        try:
+            select_a_lab = self.request.GET['select_a_lab']
+            context['lab_name'] = Lab.objects.get(id=select_a_lab).pi_name
+        except MultiValueDictKeyError:
+            context['lab_name'] = 'Error in lab selection'
         return context
 
 
@@ -80,8 +99,11 @@ class UploadImageView(genViews.CreateView):
     form_class = forms.UploadFileForm
     template_name = 'images/upload_file.html'
 
+
     def form_valid(self, form):
+        # import ipdb; ipdb.set_trace()
         image = form.save()
         image.save()
+        # import ipdb; ipdb.set_trace()
         return HttpResponseRedirect(reverse('images:image_details',
                                             args=(image.id,)))
