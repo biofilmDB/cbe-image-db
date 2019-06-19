@@ -47,6 +47,21 @@ class ImageDetailsView(genViews.DetailView):
     model = Image
     template_name = 'images/image_upload_success.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lab_list = kwargs['object'].lab.all()
+        # import ipdb; ipdb.set_trace()
+        lab_list_str = ''
+        if len(lab_list) > 0:
+            lab_list = [str(x) for x in lab_list]
+            lab_list_str = ', '.join(lab_list)
+        context['image_lab'] = lab_list_str
+
+        context['image_name'] = kwargs['object'].document.name
+        context['image_name'] = context['image_name'].split('/')[-1]
+
+
+        return context
 
 class ImageThumbnailsView(genViews.ListView):
     model = Image
@@ -57,9 +72,9 @@ class ImageThumbnailsView(genViews.ListView):
     def get_queryset(self):
         # import ipdb; ipdb.set_trace()
         select_a_lab = self.request.GET['select_a_lab']
-        self.kwargs['select_a_lab'] = select_a_lab
+        # self.kwargs['select_a_lab'] = select_a_lab
         # import ipdb; ipdb.set_trace()
-        return Image.objects.filter(lab=select_a_lab)
+        return Image.objects.filter(lab__in=select_a_lab)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
