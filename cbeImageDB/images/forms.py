@@ -9,6 +9,14 @@ class AddImagerForm(forms.ModelForm):
         model = Imager
         fields = ['imager_name', ]
 
+    def clean_imager_name(self):
+        data = self.cleaned_data['imager_name']
+        query = Imager.objects.filter(imager_name__iexact=data)
+        if len(query) > 0:
+            raise forms.ValidationError("{} already exists, try again".format(data))
+        else:
+            return data
+
 
 class UploadFileForm(forms.ModelForm):
 
