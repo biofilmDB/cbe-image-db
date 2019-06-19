@@ -4,6 +4,7 @@ import django.views.generic as genViews
 from .models import Image, Lab, Imager
 from django.urls import reverse
 from dal import autocomplete
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 class ImagerAutocomplete(autocomplete.Select2QuerySetView):
@@ -70,18 +71,21 @@ class ImageThumbnailsView(genViews.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        # import ipdb; ipdb.set_trace()
-        select_a_lab = self.request.GET['select_a_lab']
-        # self.kwargs['select_a_lab'] = select_a_lab
-        # import ipdb; ipdb.set_trace()
-        return Image.objects.filter(lab__in=select_a_lab)
+
+        try:
+            select_a_lab = self.request.GET['select_a_lab']
+            return Image.objects.filter(lab__in=select_a_lab)
+        except MultiValueDictKeyError:
+            return []
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # TODO: Figure out what to put for defualt, becuase it gives an error
-        select_a_lab = self.request.GET.get('select_a_lab', 'default')
-        context['lab_name'] = Lab.objects.get(id=select_a_lab).pi_name
+        try:
+            select_a_lab = self.request.GET['select_a_lab']
+            context['lab_name'] = Lab.objects.get(id=select_a_lab).pi_name
+        except MultiValueDictKeyError:
+            context['lab_name'] = 'Error in lab selection'
         return context
 
 
