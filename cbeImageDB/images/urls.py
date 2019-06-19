@@ -6,7 +6,7 @@ app_name = 'images'
 urlpatterns = [
     path('upload-image/', views.UploadImageView.as_view(), name='upload'),
     path('add_imager/', views.AddImagerView.as_view(), name='add_imager'),
-    path('<int:pk>/success/', views.ImageDetailsView.as_view(),
+    path('details/<int:pk>/', views.ImageDetailsView.as_view(),
          name='image_details'),
     path('search-labs', views.SearchImageView.as_view(), name='search_by_lab'),
     path('imager-autocomplete/', views.ImagerAutocomplete.as_view(),
