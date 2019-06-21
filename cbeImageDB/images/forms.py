@@ -28,7 +28,9 @@ class UploadFileForm(forms.ModelForm):
             'imager':
             autocomplete.ModelSelect2(url='/images/imager-autocomplete/'),
             'lab':
-            autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/')
+            autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
+            'microscope':
+            autocomplete.ModelSelect2(url='/images/microscope-autocomplete/')
         }
 
 
