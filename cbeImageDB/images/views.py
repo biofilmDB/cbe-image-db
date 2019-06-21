@@ -74,8 +74,10 @@ class ImageThumbnailsView(genViews.ListView):
 class SearchImageView(genViews.FormView):
     template_name = 'images/search_images.html'
     form_class = forms.SearchImageForm
-    success_url = 'images/view_images.html'
+    # success_url = 'images/view_images.html'
 
+    def get_success_url(self):
+        return reverse('images:view_by_lab')
 
 class UploadImageView(genViews.CreateView):
     form_class = forms.UploadFileForm
