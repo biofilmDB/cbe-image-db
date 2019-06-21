@@ -22,7 +22,8 @@ class UploadFileForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['document', 'imager', 'lab', 'brief_description', ]
+        fields = ['document', 'imager', 'lab', 'microscope',
+                  'brief_description', ]
         widgets = {
             'imager':
             autocomplete.ModelSelect2(url='/images/imager-autocomplete/'),
