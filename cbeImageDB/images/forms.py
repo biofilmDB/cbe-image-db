@@ -36,4 +36,4 @@ class UploadFileForm(forms.ModelForm):
 
 class SearchImageForm(forms.Form):
     select_a_lab = forms.ModelChoiceField(queryset=Lab.objects.all(),
-        widget=autocomplete.ModelSelect2(url='/images/lab_autocomplete'))
+        widget=autocomplete.ModelSelect2(url='/images/lab-autocomplete'))
