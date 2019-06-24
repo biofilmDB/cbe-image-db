@@ -1,5 +1,22 @@
 from django.db import models
 from django.dispatch import receiver
+from datetime import date
+
+
+class Objective(models.Model):
+    objective = models.CharField(max_length=10)
+    medium = models.CharField(max_length=20)
+
+    def __str__(self):
+        return '{} {}'.format(self.objective, self.medium)
+
+
+class Microscope(models.Model):
+    microscope_name = models.CharField(max_length=500)
+    objective = models.ForeignKey(Objective, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return '{} {}'.format(self.microscope_name, str(self.objective))
 
 
 class Objective(models.Model):
@@ -45,7 +62,7 @@ class Image(models.Model):
     imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
     microscope = models.ForeignKey(Microscope, on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
-    date = models.DateField(("Date"), auto_now_add=True)
+    date = models.DateField(("Date"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
 
     def __str__(self):
