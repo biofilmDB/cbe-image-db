@@ -22,7 +22,7 @@ class UploadFileForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['document', 'imager', 'lab', 'microscope',
+        fields = ['document', 'date', 'imager', 'lab', 'microscope',
                   'brief_description', ]
         widgets = {
             'imager':
@@ -30,7 +30,9 @@ class UploadFileForm(forms.ModelForm):
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'microscope':
-            autocomplete.ModelSelect2(url='/images/microscope-autocomplete/')
+            autocomplete.ModelSelect2(url='/images/microscope-autocomplete/'),
+            'date':
+            forms.SelectDateWidget()
         }
 
 
