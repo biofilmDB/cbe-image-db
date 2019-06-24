@@ -30,7 +30,9 @@ class UploadFileForm(forms.ModelForm):
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'microscope':
-            autocomplete.ModelSelect2(url='/images/microscope-autocomplete/')
+            autocomplete.ModelSelect2(url='/images/microscope-autocomplete/'),
+            'date':
+            forms.SelectDateWidget()
         }
 
 
