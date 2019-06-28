@@ -51,7 +51,8 @@ class Image(models.Model):
     # With ForeignKey on_delete was PROTECT
     lab = models.ManyToManyField(Lab)
     imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
-    microscope = models.ForeignKey(Microscope, on_delete=models.PROTECT)
+    microscope_setting = models.ForeignKey(Microscope_settings,
+                                   on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
     date = models.DateField(("Date"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
