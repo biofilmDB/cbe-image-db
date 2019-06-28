@@ -1,28 +1,10 @@
 from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
-from .models import Image, Lab, Imager
+from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium
 from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
-
-
-class ImagerAutocomplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        qs = Imager.objects.all()
-        if self.q:
-            qs = qs.filter(imager_name__istartswith=self.q)
-        return qs
-
-
-class LabAutocomplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        qs = Lab.objects.all()
-        if self.q:
-            qs = qs.filter(pi_name__istartswith=self.q)
-        return qs
 
 
 class AddImagerView(genViews.CreateView):
@@ -61,8 +43,8 @@ class ImageDetailsView(genViews.DetailView):
         context['image_name'] = kwargs['object'].document.name
         context['image_name'] = context['image_name'].split('/')[-1]
 
-
         return context
+
 
 class ImageThumbnailsView(genViews.ListView):
     model = Image
@@ -92,18 +74,61 @@ class ImageThumbnailsView(genViews.ListView):
 class SearchImageView(genViews.FormView):
     template_name = 'images/search_images.html'
     form_class = forms.SearchImageForm
-    success_url = 'images/view_images.html'
+    # success_url = 'images/view_images.html'
 
+    def get_success_url(self):
+        return reverse('images:view_by_lab')
 
 class UploadImageView(genViews.CreateView):
     form_class = forms.UploadFileForm
     template_name = 'images/upload_file.html'
 
-
     def form_valid(self, form):
-        # import ipdb; ipdb.set_trace()
         image = form.save()
         image.save()
-        # import ipdb; ipdb.set_trace()
         return HttpResponseRedirect(reverse('images:image_details',
                                             args=(image.id,)))
+
+
+class MicroscopeSettingAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        settings = Microscope_settings.objects.all()
+        scopes = Microscope.objects.all()
+        mediums = Medium.objects.all()
+
+        if self.q:
+            # filter by objective
+            qs = settings.filter(objective__istartswith=self.q)
+
+            # Filter by scope
+            scopes_filter = scopes.filter(microscope_name__icontains=self.q)
+            for mic in scopes_filter:
+                qs = qs | settings.filter(microscope=mic)
+
+            # filter by medium
+            mediums_filter = mediums.filter(medium_type__istartswith=self.q)
+            for med in mediums_filter:
+                qs = qs | settings.filter(medium=med)
+
+        else:
+            qs = settings
+        return qs
+
+
+class ImagerAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Imager.objects.all()
+        if self.q:
+            qs = qs.filter(imager_name__icontains=self.q)
+        return qs
+
+
+class LabAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Lab.objects.all()
+        if self.q:
+            qs = qs.filter(pi_name__icontains=self.q)
+        return qs
