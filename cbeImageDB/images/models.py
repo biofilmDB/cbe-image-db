@@ -23,7 +23,11 @@ class Microscope_settings(models.Model):
     medium = models.ForeignKey(Medium, on_delete=models.PROTECT)
 
     def __str__(self):
-        return '{} {}x {}'.format(self.microscope, self.objective, self.medium)
+        if self.objective.is_integer():
+            obj = int(self.objective)
+        else:
+            obj = self.objective
+        return '{} {}x {}'.format(self.microscope, obj, self.medium)
 
 
 class Lab(models.Model):
