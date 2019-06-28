@@ -1,53 +1,42 @@
 from django.core.management.base import BaseCommand
-from images.models import Objective, Microscope
+from images.models import Medium, Microscope, Microscope_settings
 
 
 class Command(BaseCommand):
+    # hold values to keep in order
+    medium_list = []
+    microscope_list = []
 
-    def _create_objectives(self):
-        # Make sure the ordering is correct
-        Objective.objects.all().delete()
-        # add new objectives
-        Objective(objective='2.5X', medium='air').save()
-        Objective(objective='5X', medium='air').save()
-        Objective(objective='10X', medium='air').save()
-        Objective(objective='40X', medium='air').save()
-        Objective(objective='63X', medium='air').save()
-        Objective(objective='1.25X', medium='air').save()
-        Objective(objective='20X', medium='water').save()
-        Objective(objective='63X', medium='water').save()
-        Objective(objective='63X', medium='oil').save()
-        Objective(objective='63X', medium='glycerin').save()
+    def _create_medium(self):
+        mediums = ['air', 'water', 'oil', 'glycerin']
+        for med in mediums:
+            m = Medium(medium_type=med)
+            m.save()
+            self.medium_list.append(m)
 
     def _create_microscopes(self):
-        # create list of objectives in above order
-        obj = Objective.objects.all()
+        scopes = ['Laser Microdisection Scope', 'Inverted Confocal Microscope',
+                  'Upright Confocal Microscope', 'Leica Steroscope',
+                  'Epifluorescent Microscope', 'Nikon Steroscope', 'Bio-Raman']
+        for scope in scopes:
+            m = Microscope(microscope_name=scope)
+            m.save()
+            self.microscope_list.append(m)
 
-        # delete all microscopes so existing objectives don't get messed up
-        Microscope.objects.all().delete()
-        Microscope(microscope_name='Laser Microdisection Scope',
-                   objective=obj[0]).save()
-        Microscope(microscope_name='Laser Microdisection Scope',
-                   objective=obj[1]).save()
-        Microscope(microscope_name='Laser Microdisection Scope',
-                   objective=obj[2]).save()
-        Microscope(microscope_name='Laser Microdisection Scope',
-                   objective=obj[3]).save()
-        Microscope(microscope_name='Laser Microdisection Scope',
-                   objective=obj[4]).save()
-        Microscope(microscope_name='Inverted Confocal Microscope ',
-                   objective=obj[5]).save()
-        Microscope(microscope_name='Inverted Confocal Microscope ',
-                   objective=obj[2]).save()
-        Microscope(microscope_name='Inverted Confocal Microscope ',
-                   objective=obj[6]).save()
-        Microscope(microscope_name='Inverted Confocal Microscope ',
-                   objective=obj[7]).save()
-        Microscope(microscope_name='Inverted Confocal Microscope ',
-                   objective=obj[8]).save()
-        Microscope(microscope_name='Inverted Confocal Microscope ',
-                   objective=obj[9]).save()
+    def _create_microscope_settings(self):
+        # make alist of combos (microscope, objective, medium)
+        # Assume same order as previously listed
+        combos = [(0, 2.5, 0), (0, 5, 0), (0, 10, 0), (0, 20, 0), (0, 63, 0),
+                  (1, 1.25, 0), (1, 10, 0), (1, 20, 1), (1, 63, 1), (1, 63, 2),
+                  (1, 63, 3)]
+        for combo in combos:
+            ms = Microscope_settings(microscope=self.microscope_list[combo[0]],
+                                     objective=float(combo[1]),
+                                     medium=self.medium_list[combo[2]])
+            ms.save()
+            print('Added: {}'.format(ms))
 
     def handle(self, *args, **options):
-        self._create_objectives()
+        self._create_medium()
         self._create_microscopes()
+        self._create_microscope_settings()
