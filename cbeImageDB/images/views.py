@@ -121,7 +121,7 @@ class ImagerAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Imager.objects.all()
         if self.q:
-            qs = qs.filter(imager_name__istartswith=self.q)
+            qs = qs.filter(imager_name__icontains=self.q)
         return qs
 
 
@@ -130,5 +130,5 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Lab.objects.all()
         if self.q:
-            qs = qs.filter(pi_name__istartswith=self.q)
+            qs = qs.filter(pi_name__icontains=self.q)
         return qs
