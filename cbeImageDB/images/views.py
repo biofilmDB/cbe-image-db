@@ -1,7 +1,7 @@
 from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
-from .models import Image, Lab, Imager, Microscope
+from .models import Image, Lab, Imager, Microscope_settings
 from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
@@ -84,21 +84,19 @@ class UploadImageView(genViews.CreateView):
     template_name = 'images/upload_file.html'
 
     def form_valid(self, form):
-        # import ipdb; ipdb.set_trace()
         image = form.save()
         image.save()
-        # import ipdb; ipdb.set_trace()
         return HttpResponseRedirect(reverse('images:image_details',
                                             args=(image.id,)))
 
 
-class MicroscopeAutocomplete(autocomplete.Select2QuerySetView):
+class MicroscopeSettingAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        qs = Microscope.objects.all()
+        qs = Microscope_settings.objects.all()
 
         if self.q:
-            qs = qs.filter(imager_name__istartswith=self.q)
+            qs = qs.filter(microscope__istartswith=self.q)
         return qs
 
 

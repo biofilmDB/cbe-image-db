@@ -9,12 +9,14 @@ urlpatterns = [
     path('details/<int:pk>/', views.ImageDetailsView.as_view(),
          name='image_details'),
     path('search-labs', views.SearchImageView.as_view(), name='search_by_lab'),
-    path('microscope-autocomplete/', views.MicroscopeAutocomplete.as_view(),
+    path('view-by-lab/', views.ImageThumbnailsView.as_view(),
+         name='view_by_lab'),
+    # Autocomplete urls
+    path('microscope-autocomplete/',
+         views.MicroscopeSettingAutocomplete.as_view(),
          name='microscope_autocomplete'),
     path('imager-autocomplete/', views.ImagerAutocomplete.as_view(),
          name='imager_autocomplete'),
     path('lab-autocomplete/', views.LabAutocomplete.as_view(),
          name='lab_autocomplete'),
-    path('view-by-lab/', views.ImageThumbnailsView.as_view(),
-         name='view_by_lab'),
 ]
