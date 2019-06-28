@@ -3,20 +3,27 @@ from django.dispatch import receiver
 from datetime import date
 
 
-class Objective(models.Model):
-    objective = models.CharField(max_length=10)
-    medium = models.CharField(max_length=20)
-
-    def __str__(self):
-        return '{} {}'.format(self.objective, self.medium)
-
-
 class Microscope(models.Model):
     microscope_name = models.CharField(max_length=500)
-    objective = models.ForeignKey(Objective, on_delete=models.PROTECT)
 
     def __str__(self):
-        return '{} {}'.format(self.microscope_name, str(self.objective))
+        return self.microscope_name
+
+
+class Medium(models.Model):
+    medium_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.medium_type
+
+
+class Microscope_settings(models.Model):
+    microscope = models.ForeignKey(Microscope, on_delete=models.PROTECT)
+    objective = models.FloatField()
+    medium = models.ForeignKey(Medium, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return '{} {}x {}'.format(self.microscope, self.objective, self.medium)
 
 
 class Lab(models.Model):
