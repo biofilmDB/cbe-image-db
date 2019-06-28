@@ -1,7 +1,7 @@
 from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
-from .models import Image, Lab, Imager, Microscope_settings, Microscope
+from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium
 from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
@@ -95,13 +95,22 @@ class MicroscopeSettingAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         settings = Microscope_settings.objects.all()
         scopes = Microscope.objects.all()
+        mediums = Medium.objects.all()
 
         if self.q:
-            scopes_filter = scopes.filter(microscope_name__istartswith=self.q)
-            print(scopes_filter)
-            qs = Microscope_settings.objects.none()
+            # filter by objective
+            qs = settings.filter(objective__istartswith=self.q)
+
+            # Filter by scope
+            scopes_filter = scopes.filter(microscope_name__icontains=self.q)
             for mic in scopes_filter:
                 qs = qs | settings.filter(microscope=mic)
+
+            # filter by medium
+            mediums_filter = mediums.filter(medium_type__istartswith=self.q)
+            for med in mediums_filter:
+                qs = qs | settings.filter(medium=med)
+
         else:
             qs = settings
         return qs
