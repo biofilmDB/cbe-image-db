@@ -5,6 +5,7 @@ from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium
 from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
+from template_names import TemplateNames
 
 
 class AddImagerView(genViews.CreateView):
@@ -26,9 +27,9 @@ class AddImagerView(genViews.CreateView):
         return HttpResponseRedirect(reverse('images:upload'))
 
 
-class ImageDetailsView(genViews.DetailView):
+class ImageDetailsView(TemplateNames, genViews.DetailView):
     model = Image
-    template_name = 'images/image_upload_success.html'
+    # template_name = 'images/image_upload_success.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,10 +47,10 @@ class ImageDetailsView(genViews.DetailView):
         return context
 
 
-class ImageThumbnailsView(genViews.ListView):
+class ImageThumbnailsView(TemplateNames, genViews.ListView):
     model = Image
     context_object_name = 'image_list'
-    template_name = 'images/view_images.html'
+    # template_name = 'images/view_images.html'
     paginate_by = 5
 
     def get_queryset(self):
@@ -71,17 +72,18 @@ class ImageThumbnailsView(genViews.ListView):
         return context
 
 
-class SearchImageView(genViews.FormView):
-    template_name = 'images/search_images.html'
+class SearchImageView(TemplateNames, genViews.FormView):
+    # template_name = 'images/search_images.html'
     form_class = forms.SearchImageForm
     # success_url = 'images/view_images.html'
 
     def get_success_url(self):
         return reverse('images:view_by_lab')
 
-class UploadImageView(genViews.CreateView):
+
+class UploadImageView(TemplateNames, genViews.CreateView):
     form_class = forms.UploadFileForm
-    template_name = 'images/upload_file.html'
+    # template_name = 'images/upload_file.html'
 
     def form_valid(self, form):
         image = form.save()
