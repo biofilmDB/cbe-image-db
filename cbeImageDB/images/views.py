@@ -44,9 +44,6 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
             lab_list_str = ', '.join(lab_list)
         context['image_lab'] = lab_list_str
 
-        context['image_name'] = kwargs['object'].document.name
-        context['image_name'] = context['image_name'].split('/')[-1]
-
         return context
 
 

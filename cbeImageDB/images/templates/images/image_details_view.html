@@ -1,8 +1,9 @@
 {% extends 'images/base.html' %}
+{% load images_extra %}
 {% block content %}
 <h1> Image information: </h1>
 <ul>
-    <li><b>Name: </b>{{ image_name }} </li>
+    <li><b>Name: </b>{% get_detail_image_name %} </li>
     <li><b>Lab: </b> {{ image_lab }} </li>
     <li><b>Microscope: </b> {{ image.microscope_setting }} </li>
     <li><b>Description: </b> {{ image.brief_description }} </li>
