@@ -1,6 +1,9 @@
 from django.db import models
 from django.dispatch import receiver
 from datetime import date
+from easy_thumbnails.files import get_thumbnailer
+import os
+from django.conf import settings
 
 
 class Microscope(models.Model):
@@ -67,4 +70,24 @@ class Image(models.Model):
 
 @receiver(models.signals.post_delete, sender=Image)
 def post_delete_file(sender, instance, *args, **kwargs):
+    # thumbmanager = get_thumbnailer(instance.document)
+    # thumbmanager.delete(save=False)
+    name = instance.document.name
+    name_split = name.split('/')[-1]
+    loc = '/' + name.split('/')[0]
+    matching_files = []
     instance.document.delete(save=False)
+    for root, dirs, files in os.walk(settings.MEDIA_ROOT + loc):
+        for f in files:
+            if name_split in f:
+                f = '/'.join([root, f])
+                matching_files.append(f)
+        break
+    for f in matching_files:
+        try:
+            os.remove(f)
+        except FileNotFoundError:
+            pass
+
+    # import ipdb; ipdb.set_trace()
+
