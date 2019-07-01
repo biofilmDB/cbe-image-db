@@ -1,7 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
 from datetime import date
-from easy_thumbnails.files import get_thumbnailer
 import os
 from django.conf import settings
 
@@ -59,7 +58,7 @@ class Image(models.Model):
     lab = models.ManyToManyField(Lab)
     imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
     microscope_setting = models.ForeignKey(Microscope_settings,
-                                   on_delete=models.PROTECT)
+                                           on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
     date = models.DateField(("Date"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
@@ -70,16 +69,13 @@ class Image(models.Model):
 
 @receiver(models.signals.post_delete, sender=Image)
 def post_delete_file(sender, instance, *args, **kwargs):
-    # thumbmanager = get_thumbnailer(instance.document)
-    # thumbmanager.delete(save=False)
-    name = instance.document.name
-    name_split = name.split('/')[-1]
-    loc = '/' + name.split('/')[0]
+    name = instance.document.name.split('/')[-1]
+    loc = '/' + instance.document.name.split('/')[0]
     matching_files = []
     instance.document.delete(save=False)
     for root, dirs, files in os.walk(settings.MEDIA_ROOT + loc):
         for f in files:
-            if name_split in f:
+            if name in f:
                 f = '/'.join([root, f])
                 matching_files.append(f)
         break
@@ -87,7 +83,4 @@ def post_delete_file(sender, instance, *args, **kwargs):
         try:
             os.remove(f)
         except FileNotFoundError:
-            pass
-
-    # import ipdb; ipdb.set_trace()
-
+            print('File not found while tyring to delete a thumbnail: {}'.format(f))
