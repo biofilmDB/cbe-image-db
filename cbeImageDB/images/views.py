@@ -9,6 +9,8 @@ from template_names import TemplateNames
 
 
 class AddImagerView(genViews.CreateView):
+    """ Allows a user to ad an imager using a webpage. It uses a genaric create
+    model template."""
     template_name = 'images/create_model.html'
     form_class = forms.AddImagerForm
     model = Imager
@@ -28,6 +30,8 @@ class AddImagerView(genViews.CreateView):
 
 
 class ImageDetailsView(TemplateNames, genViews.DetailView):
+    """ Shows the details of an image. It is where a sucessfull image upload is
+    redirected to."""
     model = Image
     # template_name = 'images/image_upload_success.html'
 
@@ -48,6 +52,8 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
 
 
 class ImageThumbnailsView(TemplateNames, genViews.ListView):
+    """ Shows all of the images that match a search criteria. At the moment,
+    the only way to search is by lab."""
     model = Image
     context_object_name = 'image_list'
     # template_name = 'images/view_images.html'
@@ -73,6 +79,7 @@ class ImageThumbnailsView(TemplateNames, genViews.ListView):
 
 
 class SearchImageView(TemplateNames, genViews.FormView):
+    """ Allows the users to search images by lab."""
     # template_name = 'images/search_images.html'
     form_class = forms.SearchImageForm
     # success_url = 'images/view_images.html'
@@ -82,6 +89,8 @@ class SearchImageView(TemplateNames, genViews.FormView):
 
 
 class UploadImageView(TemplateNames, genViews.CreateView):
+    """ Allows the user to upload an image file and requests they fill in the
+    model fields."""
     form_class = forms.UploadFileForm
     # template_name = 'images/upload_file.html'
 
@@ -92,6 +101,7 @@ class UploadImageView(TemplateNames, genViews.CreateView):
                                             args=(image.id,)))
 
 
+# ######################### Autocomplete classes #############################
 class MicroscopeSettingAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
