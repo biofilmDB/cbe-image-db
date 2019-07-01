@@ -33,7 +33,6 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
     """ Shows the details of an image. It is where a sucessfull image upload is
     redirected to."""
     model = Image
-    # template_name = 'images/image_upload_success.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,7 +55,6 @@ class ImageThumbnailsView(TemplateNames, genViews.ListView):
     the only way to search is by lab."""
     model = Image
     context_object_name = 'image_list'
-    # template_name = 'images/view_images.html'
     paginate_by = 5
 
     def get_queryset(self):
@@ -80,9 +78,7 @@ class ImageThumbnailsView(TemplateNames, genViews.ListView):
 
 class SearchImageView(TemplateNames, genViews.FormView):
     """ Allows the users to search images by lab."""
-    # template_name = 'images/search_images.html'
     form_class = forms.SearchImageForm
-    # success_url = 'images/view_images.html'
 
     def get_success_url(self):
         return reverse('images:view_by_lab')
@@ -92,7 +88,6 @@ class UploadImageView(TemplateNames, genViews.CreateView):
     """ Allows the user to upload an image file and requests they fill in the
     model fields."""
     form_class = forms.UploadFileForm
-    # template_name = 'images/upload_file.html'
 
     def form_valid(self, form):
         image = form.save()
