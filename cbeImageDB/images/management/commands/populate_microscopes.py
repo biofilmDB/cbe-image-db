@@ -8,7 +8,7 @@ class Command(BaseCommand):
     microscope_list = []
 
     def _create_medium(self):
-        mediums = ['air', 'water', 'oil', 'glycerin']
+        mediums = ['air', 'water', 'oil', 'glycerin', 'dry']
         for med in mediums:
             m = Medium(medium_type=med)
             m.save()
@@ -26,9 +26,14 @@ class Command(BaseCommand):
     def _create_microscope_settings(self):
         # make alist of combos (microscope, objective, medium)
         # Assume same order as previously listed
-        combos = [(0, 2.5, 0), (0, 5, 0), (0, 10, 0), (0, 20, 0), (0, 63, 0),
+        combos = [(0, 2.5, 0), (0, 5, 0), (0, 10, 0), (0, 40, 0), (0, 63, 0),
                   (1, 1.25, 0), (1, 10, 0), (1, 20, 1), (1, 63, 1), (1, 63, 2),
-                  (1, 63, 3)]
+                  (1, 63, 3), (2, 1.25, 0), (2, 10, 0), (2, 10, 1), (2, 20, 0),
+                  (2, 25, 1), (2, 40, 1), (2, 63, 1), (4, 1, 0), (4, 4, 0),
+                  (4, 10, 0), (4, 20, 0), (4, 20, 1), (4, 40, 1), (4, 40, 2),
+                  (4, 50, 4), (4, 60, 1), (4, 100, 2), (6, 10, 0), (6, 50, 0),
+                  (6, 60, 1), (6, 100, 0)]
+
         for combo in combos:
             ms = Microscope_settings(microscope=self.microscope_list[combo[0]],
                                      objective=float(combo[1]),
