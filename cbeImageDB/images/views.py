@@ -47,12 +47,12 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
         return context
 
 
-class CompleteSearchView(genViews.FormView):
-    form_class = forms.CompleteSearchImageForm
+class GeneralSearchView(genViews.FormView):
+    form_class = forms.GeneralSearchImageForm
     template_name = 'images/search_images.html'
 
 
-class CompleteSearchResultsView(genViews.ListView):
+class GeneralSearchResultsView(genViews.ListView):
     model = Image
     context_object_name = 'image_list'
     template_name = 'images/image_search_results.html'

@@ -1,0 +1,16 @@
+{% extends 'images/base.html' %}
+{% load static %}
+{% block content %}
+<h1> Search for images by lab </h1>
+<p> TODO: Get description from view </p>
+ <form action="{% url 'images:general_search_results' %}" method="GET" enctype="multipart/form-data">
+    {{ form.as_p }}
+    <input type="submit" value="Search" />
+</form>
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+{% endblock %}
