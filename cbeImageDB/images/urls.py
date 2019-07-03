@@ -5,10 +5,16 @@ from . import views
 app_name = 'images'
 urlpatterns = [
     path('upload-image/', views.UploadImageView.as_view(), name='upload'),
-    path('add_imager/', views.AddImagerView.as_view(), name='add_imager'),
+    path('add-imager/', views.AddImagerView.as_view(), name='add_imager'),
     path('details/<int:pk>/', views.ImageDetailsView.as_view(),
          name='image_details'),
-    path('search-labs', views.SearchImageView.as_view(), name='search_by_lab'),
+    # Searching and results urls
+    path('complete-search/', views.CompleteSearchView.as_view(),
+         name='complete_search'),
+    path('search-results/', views.CompleteSearchResultsView.as_view(),
+         name='complete_search_results'),
+    path('search-labs/', views.SearchImageView.as_view(),
+         name='search_by_lab'),
     path('view-by-lab/', views.ImageThumbnailsView.as_view(),
          name='view_by_lab'),
     # Autocomplete urls
@@ -19,4 +25,6 @@ urlpatterns = [
          name='imager_autocomplete'),
     path('lab-autocomplete/', views.LabAutocomplete.as_view(),
          name='lab_autocomplete'),
+    path('search-autocomplete/', views.SearchAutocomplete.as_view(),
+         name='search_autocomplete'),
 ]

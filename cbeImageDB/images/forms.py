@@ -36,6 +36,14 @@ class UploadFileForm(forms.ModelForm):
         }
 
 
-class SearchImageForm(forms.Form):
-    select_a_lab = forms.ModelChoiceField(queryset=Lab.objects.all(),
+class CompleteSearchImageForm(forms.Form):
+    search = forms.MultipleChoiceField(
+        widget=autocomplete.Select2Multiple('/images/search-autocomplete'))
+
+
+class AttributeSearchImageForm(forms.Form):
+    search_lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/lab-autocomplete'))
+    search_imager = forms.ModelChoiceField(queryset=Imager.objects.all(), required=False,
+        widget=autocomplete.ModelSelect2(url='/images/imager-autocomplete'))
+    search_objective = forms.FloatField(required=False)

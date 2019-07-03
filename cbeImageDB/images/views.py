@@ -47,39 +47,79 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
         return context
 
 
-class ImageThumbnailsView(TemplateNames, genViews.ListView):
+class CompleteSearchView(genViews.FormView):
+    form_class = forms.CompleteSearchImageForm
+    template_name = 'images/search_images.html'
+
+
+class CompleteSearchResultsView(genViews.ListView):
+    model = Image
+    context_object_name = 'image_list'
+    template_name = 'images/image_search_results.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        qs = Image.objects.none()
+        try:
+            # TODO: It's only returning the last one in the list, figure out
+            # how to get them all
+            print('get')
+            print(self.request.GET)
+            print(self.request.GET['search'])
+            search_list = self.request.GET['search']
+            print('search_list', search_list)
+        except MultiValueDictKeyError:
+            pass
+        return qs
+
+class ImageThumbnailsView(genViews.ListView):
     """ Shows all of the images that match a search criteria. At the moment,
     the only way to search is by lab."""
     model = Image
     context_object_name = 'image_list'
+    template_name = 'images/image_search_results.html'
     paginate_by = 5
 
     def get_queryset(self):
+        qs = Image.objects.all()
+        try:
+            search_lab = self.request.GET['search_lab']
+            if search_lab != '':
+                qs = qs.filter(lab__in=search_lab)
+        except MultiValueDictKeyError:
+            pass
 
         try:
-            select_a_lab = self.request.GET['select_a_lab']
-            return Image.objects.filter(lab__in=select_a_lab)
+            search_imager = self.request.GET['search_imager']
+            if search_imager != '':
+                qs = qs.filter(imager__in=search_imager)
         except MultiValueDictKeyError:
-            return []
+            pass
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
         try:
-            select_a_lab = self.request.GET['select_a_lab']
-            context['lab_name'] = Lab.objects.get(id=select_a_lab).pi_name
+            search_objective = self.request.GET['search_objective']
+            if search_objective != '':
+                ms = Microscope_settings.objects.all()
+                ms = ms.filter(objective=search_objective)
+                new_qs = Image.objects.none()
+                for m in ms:
+                    new_qs = new_qs | qs.filter(microscope_setting=m)
+                qs = new_qs
         except MultiValueDictKeyError:
-            context['lab_name'] = 'Error in lab selection'
-        return context
+            pass
+
+        return qs
 
 
 class SearchImageView(TemplateNames, genViews.FormView):
-    """ Allows the users to search images by lab."""
-    form_class = forms.SearchImageForm
+    """ Allows the users to search images by selecting criteria for attributes
+    of the image"""
+    form_class = forms.AttributeSearchImageForm
 
+    """
     def get_success_url(self):
         return reverse('images:view_by_lab')
-
+    """
 
 class UploadImageView(TemplateNames, genViews.CreateView):
     """ Allows the user to upload an image file and requests they fill in the
@@ -136,3 +176,11 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
         if self.q:
             qs = qs.filter(pi_name__icontains=self.q)
         return qs
+
+
+class SearchAutocomplete(autocomplete.Select2ListView):
+
+    def get_list(self):
+        # TODO: Get list of all possible search keys and find a way to link
+        # them back to the objects they came from
+        return ['a', 'b', 'c', 'd', 'e']
