@@ -6,6 +6,7 @@ from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
+from . import search_utils as su
 
 
 class AddImagerView(genViews.CreateView):
@@ -60,15 +61,44 @@ class GeneralSearchResultsView(genViews.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        qs = Image.objects.none()
+        qs = Image.objects.all()
+        # import pdb; pdb.set_trace()
         try:
             # TODO: It's only returning the last one in the list, figure out
             # how to get them all
-            print('get')
-            print(self.request.GET)
-            print(self.request.GET['search'])
-            search_list = self.request.GET['search']
-            print('search_list', search_list)
+            search_list = self.request.GET.getlist('search')
+            for search in search_list:
+                split = search.split(': ')
+                if split[0].lower() == 'imager':
+                    imager = Imager.objects.filter(imager_name=split[-1])
+                    new_qs = Image.objects.none()
+                    for i in imager:
+                        new_qs = new_qs | qs.filter(imager=i)
+                    qs = new_qs
+
+                elif split[0].lower() == 'lab':
+                    lab = Lab.objects.filter(pi_name=split[-1])
+                    new_qs = Image.objects.none()
+                    for l in lab:
+                        new_qs = new_qs | qs.filter(lab=l)
+                    qs = new_qs
+
+                elif split[0].lower() == 'medium':
+                    ms = Microscope_settings.objects.all()
+                    ms = ms.filter(medium=split[-1])
+                    new_qs = Image.ojects.none()
+                    for m in ms:
+                        new_qs = new_qs | qs.filter(microscope_setting=m)
+                    qs = new_qs
+
+                elif split[0].lower() == 'objective':
+                    ms = Microscope_settings.objects.all()
+                    ms = ms.filter(objective=split[-1])
+                    new_qs = Image.objects.none()
+                    for m in ms:
+                        new_qs = new_qs | qs.filter(microscope_setting=m)
+                    qs = new_qs
+
         except MultiValueDictKeyError:
             pass
         return qs
@@ -188,4 +218,5 @@ class SearchAutocomplete(autocomplete.Select2ListView):
                             list(Microscope.objects.all())])
         search_terms.extend(['Medium: ' + str(x) for x in
                              list(Medium.objects.all())])
+        search_terms.extend(['Objective: ' + str(x) for x in su.get_objectives()])
         return search_terms
