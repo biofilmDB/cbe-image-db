@@ -47,6 +47,7 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
         return context
 
 
+# Search all searchable terms at the same time
 class GeneralSearchView(genViews.FormView):
     form_class = forms.GeneralSearchImageForm
     template_name = 'images/search_images.html'
@@ -72,9 +73,16 @@ class GeneralSearchResultsView(genViews.ListView):
             pass
         return qs
 
-class ImageThumbnailsView(genViews.ListView):
-    """ Shows all of the images that match a search criteria. At the moment,
-    the only way to search is by lab."""
+
+# Search by attributes
+class AttributeSearchImageView(TemplateNames, genViews.FormView):
+    """ Allows the users to search images by selecting criteria for attributes
+    of the image"""
+    form_class = forms.AttributeSearchImageForm
+
+
+class AttributeSearchResultsView(genViews.ListView):
+    """ Shows all of the images that match a search criteria."""
     model = Image
     context_object_name = 'image_list'
     template_name = 'images/image_search_results.html'
@@ -110,16 +118,6 @@ class ImageThumbnailsView(genViews.ListView):
 
         return qs
 
-
-class SearchImageView(TemplateNames, genViews.FormView):
-    """ Allows the users to search images by selecting criteria for attributes
-    of the image"""
-    form_class = forms.AttributeSearchImageForm
-
-    """
-    def get_success_url(self):
-        return reverse('images:view_by_lab')
-    """
 
 class UploadImageView(TemplateNames, genViews.CreateView):
     """ Allows the user to upload an image file and requests they fill in the
@@ -181,6 +179,4 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
 class SearchAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):
-        # TODO: Get list of all possible search keys and find a way to link
-        # them back to the objects they came from
-        return ['a', 'b', 'c', 'd', 'e']
+        return ['a', 'b']
