@@ -1,5 +1,5 @@
 from django import forms
-from .models import Image, Lab, Imager
+from .models import Image, Lab, Imager, Microscope, Medium
 from dal import autocomplete
 
 
@@ -30,7 +30,7 @@ class UploadFileForm(forms.ModelForm):
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'microscope_setting':
-            autocomplete.ModelSelect2(url='/images/microscope-autocomplete/'),
+            autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
             'date':
             forms.SelectDateWidget()
         }
@@ -46,4 +46,9 @@ class AttributeSearchImageForm(forms.Form):
         widget=autocomplete.ModelSelect2(url='/images/lab-autocomplete'))
     search_imager = forms.ModelChoiceField(queryset=Imager.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/imager-autocomplete'))
+    search_microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
+        required=False, widget=autocomplete.ModelSelect2(url='/images/microscope-autocomplete'))
     search_objective = forms.FloatField(required=False)
+    search_medium = forms.ModelChoiceField(queryset=Medium.objects.all(), required=False,
+        widget=autocomplete.ModelSelect2(url='/images/medium-autocomplete'))
+

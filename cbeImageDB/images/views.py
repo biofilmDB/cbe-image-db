@@ -126,6 +126,13 @@ class AttributeSearchResultsView(genViews.ListView):
         except MultiValueDictKeyError:
             pass
 
+        try:
+            microscope = self.request.GET['search_microscope']
+            if microscope != '':
+                qs = qs.filter(microscope_setting__microscope=microscope)
+        except MultiValueDictKeyError:
+            pass
+
         return qs
 
 
@@ -165,6 +172,26 @@ class MicroscopeSettingAutocomplete(autocomplete.Select2QuerySetView):
 
         else:
             qs = settings
+        return qs
+
+
+class MicroscopeAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Microscope.objects.all()
+
+        if self.q:
+            qs = qs.filter(microscope_name__icontains=self.q)
+
+        return qs
+
+
+class MediumAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Medium.objects.all()
+        if self.q:
+            qs = qs.filter(medium_type__icontains=self.q)
         return qs
 
 
