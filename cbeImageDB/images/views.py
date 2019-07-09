@@ -62,43 +62,26 @@ class GeneralSearchResultsView(genViews.ListView):
 
     def get_queryset(self):
         qs = Image.objects.all()
-        # import pdb; pdb.set_trace()
         try:
-            # TODO: It's only returning the last one in the list, figure out
-            # how to get them all
             search_list = self.request.GET.getlist('search')
             for search in search_list:
-                split = search.split(': ')
-                if split[0].lower() == 'imager':
-                    imager = Imager.objects.filter(imager_name=split[-1])
-                    new_qs = Image.objects.none()
-                    for i in imager:
-                        new_qs = new_qs | qs.filter(imager=i)
-                    qs = new_qs
+                q = search.split(': ')
+                if q[0].lower() == 'imager':
+                    qs = qs.filter(imager__imager_name=q[-1])
 
-                elif split[0].lower() == 'lab':
-                    lab = Lab.objects.filter(pi_name=split[-1])
-                    new_qs = Image.objects.none()
-                    for l in lab:
-                        new_qs = new_qs | qs.filter(lab=l)
-                    qs = new_qs
+                elif q[0].lower() == 'lab':
+                    qs = qs.filter(lab__pi_name=q[-1])
 
-                elif split[0].lower() == 'medium':
-                    ms = Microscope_settings.objects.all()
-                    ms = ms.filter(medium=split[-1])
-                    new_qs = Image.ojects.none()
-                    for m in ms:
-                        new_qs = new_qs | qs.filter(microscope_setting=m)
-                    qs = new_qs
+                elif q[0].lower() == 'medium':
+                    qs = qs.filter(microscope_setting__medium__medium_type=q[-1])
 
-                elif split[0].lower() == 'objective':
-                    ms = Microscope_settings.objects.all()
-                    # Get the objective: #x and remove the x, convert to float
-                    ms = ms.filter(objective=float(split[-1][:-1]))
-                    new_qs = Image.objects.none()
-                    for m in ms:
-                        new_qs = new_qs | qs.filter(microscope_setting=m)
-                    qs = new_qs
+                elif q[0].lower() == 'objective':
+                    # remove x from objective
+                    obj = float(q[-1][:-1])
+                    qs = qs.filter(microscope_setting__objective=obj)
+
+                elif q[0].lower() == 'microscope':
+                    qs = qs.filter(microscope_setting__microscope__microscope_name=q[-1])
 
         except MultiValueDictKeyError:
             pass
