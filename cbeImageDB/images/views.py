@@ -121,12 +121,8 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             search_objective = self.request.GET['search_objective']
             if search_objective != '':
-                ms = Microscope_settings.objects.all()
-                ms = ms.filter(objective=search_objective)
-                new_qs = Image.objects.none()
-                for m in ms:
-                    new_qs = new_qs | qs.filter(microscope_setting=m)
-                qs = new_qs
+                qs = qs.filter(microscope_setting__objective=search_objective)
+
         except MultiValueDictKeyError:
             pass
 
