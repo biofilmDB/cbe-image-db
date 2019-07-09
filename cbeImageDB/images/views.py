@@ -93,7 +93,8 @@ class GeneralSearchResultsView(genViews.ListView):
 
                 elif split[0].lower() == 'objective':
                     ms = Microscope_settings.objects.all()
-                    ms = ms.filter(objective=split[-1])
+                    # Get the objective: #x and remove the x, convert to float
+                    ms = ms.filter(objective=float(split[-1][:-1]))
                     new_qs = Image.objects.none()
                     for m in ms:
                         new_qs = new_qs | qs.filter(microscope_setting=m)
@@ -218,5 +219,5 @@ class SearchAutocomplete(autocomplete.Select2ListView):
                             list(Microscope.objects.all())])
         search_terms.extend(['Medium: ' + str(x) for x in
                              list(Medium.objects.all())])
-        search_terms.extend(['Objective: ' + str(x) for x in su.get_objectives()])
+        search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
         return search_terms
