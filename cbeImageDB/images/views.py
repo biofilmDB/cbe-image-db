@@ -179,4 +179,13 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
 class SearchAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):
-        return ['a', 'b']
+        # TODO: Get list of all possible search keys and find a way to link
+        # them back to the objects they came from
+        search_terms = ['Lab: ' + str(x) for x in list(Lab.objects.all())]
+        search_terms.extend(['Imager: ' + str(x) for x in
+                            list(Imager.objects.all())])
+        search_terms.extend(['Microscope: ' + str(x) for x in
+                            list(Microscope.objects.all())])
+        search_terms.extend(['Medium: ' + str(x) for x in
+                             list(Medium.objects.all())])
+        return search_terms
