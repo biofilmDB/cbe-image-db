@@ -42,13 +42,13 @@ class GeneralSearchImageForm(forms.Form):
 
 
 class AttributeSearchImageForm(forms.Form):
-    search_lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
+    lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/lab-autocomplete'))
-    search_imager = forms.ModelChoiceField(queryset=Imager.objects.all(), required=False,
+    imager = forms.ModelChoiceField(queryset=Imager.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/imager-autocomplete'))
-    search_microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
+    microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
         required=False, widget=autocomplete.ModelSelect2(url='/images/microscope-autocomplete'))
-    search_objective = forms.FloatField(required=False)
-    search_medium = forms.ModelChoiceField(queryset=Medium.objects.all(), required=False,
+    objective = forms.FloatField(required=False)
+    objective_medium = forms.ModelChoiceField(queryset=Medium.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/medium-autocomplete'))
 

@@ -105,21 +105,21 @@ class AttributeSearchResultsView(genViews.ListView):
     def get_queryset(self):
         qs = Image.objects.all()
         try:
-            search_lab = self.request.GET['search_lab']
+            search_lab = self.request.GET['lab']
             if search_lab != '':
                 qs = qs.filter(lab__in=search_lab)
         except MultiValueDictKeyError:
             pass
 
         try:
-            search_imager = self.request.GET['search_imager']
+            search_imager = self.request.GET['imager']
             if search_imager != '':
                 qs = qs.filter(imager__in=search_imager)
         except MultiValueDictKeyError:
             pass
 
         try:
-            search_objective = self.request.GET['search_objective']
+            search_objective = self.request.GET['objective']
             if search_objective != '':
                 qs = qs.filter(microscope_setting__objective=search_objective)
 
@@ -127,9 +127,16 @@ class AttributeSearchResultsView(genViews.ListView):
             pass
 
         try:
-            microscope = self.request.GET['search_microscope']
+            microscope = self.request.GET['microscope']
             if microscope != '':
                 qs = qs.filter(microscope_setting__microscope=microscope)
+        except MultiValueDictKeyError:
+            pass
+
+        try:
+            obj_medium = self.request.GET['objective_medium']
+            if obj_medium != '':
+                qs = qs.filter(microscope_setting__medium=obj_medium)
         except MultiValueDictKeyError:
             pass
 
@@ -226,4 +233,5 @@ class SearchAutocomplete(autocomplete.Select2ListView):
         search_terms.extend(['Medium: ' + str(x) for x in
                              list(Medium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
+        search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
         return search_terms
