@@ -54,6 +54,26 @@ def imager_directory_path(instance, filename):
     return '{0}/{1}'.format(formated_imager, filename)
 
 
+def medium_thumb_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    formated_imager = str(instance.imager).replace(' ', '_')
+    print('filename: ', filename)
+    short = filename.split('/')
+    split = short[-1].split('.')
+    filename = '.'.join(split[:-1]) + '_medium.' + split[-1]
+    return '{}/thumbs/{}'.format(formated_imager, filename)
+
+
+def large_thumb_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    formated_imager = str(instance.imager).replace(' ', '_')
+    print('filename: ', filename)
+    short = filename.split('/')
+    split = short[-1].split('.')
+    filename = '.'.join(split[:-1]) + '_large.' + split[-1]
+    return '{}/thumbs/{}'.format(formated_imager, filename)
+
+
 class Image(models.Model):
     # With ForeignKey on_delete was PROTECT
     lab = models.ManyToManyField(Lab)
@@ -64,10 +84,12 @@ class Image(models.Model):
     date_taken = models.DateField(("Date taken"), default=date.today)
     date_uploaded = models.DateField(("Date uploaded"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
-    medium_thumb = ThumbnailerImageField(resize_source=dict(size=(200, 200),
+    medium_thumb = ThumbnailerImageField(upload_to=medium_thumb_directory_path,
+                                         resize_source=dict(size=(100, 200),
                                          sharpen=True))
-    large_thumb = ThumbnailerImageField(resize_source=dict(size=(350, 350),
-                                         sharpen=True))
+    large_thumb = ThumbnailerImageField(upload_to=large_thumb_directory_path,
+                                        resize_source=dict(size=(350, 350),
+                                        sharpen=True))
 
     def __str__(self):
         return str(self.document.name)
@@ -75,18 +97,4 @@ class Image(models.Model):
 
 @receiver(models.signals.post_delete, sender=Image)
 def post_delete_file(sender, instance, *args, **kwargs):
-    name = instance.document.name.split('/')[-1]
-    loc = '/' + instance.document.name.split('/')[0]
-    matching_files = []
     instance.document.delete(save=False)
-    for root, dirs, files in os.walk(settings.MEDIA_ROOT + loc):
-        for f in files:
-            if name in f:
-                f = '/'.join([root, f])
-                matching_files.append(f)
-        break
-    for f in matching_files:
-        try:
-            os.remove(f)
-        except FileNotFoundError:
-            print('File not found while tyring to delete a thumbnail: {}'.format(f))
