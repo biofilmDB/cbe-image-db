@@ -264,9 +264,6 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
 
 class MonthAutocomplete(autocomplete.Select2ListView):
 
-    def create(self, text):
-        return text
-
     def get_list(self):
         months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November',
@@ -293,5 +290,6 @@ class SearchAutocomplete(autocomplete.Select2ListView):
                   'December']
         search_terms.extend(['Month: ' + x for x in months])
         # TODO: Pick min and max years from database information
-        search_terms.extend(['Year: ' + str(x) for x in range(1900, 2050)])
+        search_terms.extend(['Year: ' + str(x) for x in range(
+            su.get_min_image_year(), su.get_max_image_year()+1)])
         return search_terms
