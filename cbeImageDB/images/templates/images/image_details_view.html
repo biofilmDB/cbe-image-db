@@ -7,11 +7,11 @@
     <li><b>Lab: </b> {{ image_lab }} </li>
     <li><b>Microscope: </b> {{ image.microscope_setting }} </li>
     <li><b>Description: </b> {{ image.brief_description }} </li>
-    <li><b>Date added: </b> {{ image.date }} </li>
+    <li><b>Date added: </b> {{ image.date_taken }} </li>
 
 </ul>
 {% load thumbnail %}
-<img src="{{ image.document|thumbnail_url:'details' }}"
+<img src="{{ image.large_thumb.url }}"
      alt="An error occured while loading the image" />
 </br>
 </br>

@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from datetime import date
 import os
 from django.conf import settings
+from easy_thumbnails.fields import ThumbnailerImageField
 
 
 class Microscope(models.Model):
@@ -63,6 +64,10 @@ class Image(models.Model):
     date_taken = models.DateField(("Date taken"), default=date.today)
     date_uploaded = models.DateField(("Date uploaded"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
+    medium_thumb = ThumbnailerImageField(resize_source=dict(size=(200, 200),
+                                         sharpen=True))
+    large_thumb = ThumbnailerImageField(resize_source=dict(size=(350, 350),
+                                         sharpen=True))
 
     def __str__(self):
         return str(self.document.name)
