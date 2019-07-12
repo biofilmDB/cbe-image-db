@@ -192,6 +192,10 @@ class UploadImageView(TemplateNames, genViews.CreateView):
 
     def form_valid(self, form):
         image = form.save()
+        image.medium_thumb.save(name=image.document.name,
+                                content=image.document)
+        image.large_thumb.save(name=image.document.name,
+                               content=image.document)
         image.save()
         return HttpResponseRedirect(reverse('images:image_details',
                                             args=(image.id,)))
