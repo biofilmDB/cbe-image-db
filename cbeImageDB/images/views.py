@@ -280,7 +280,7 @@ class MonthAutocomplete(autocomplete.Select2ListView):
 class YearAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):
-        return range(su.get_min_image_year(), su.get_max_image_year() + 1)
+        return su.get_year_list()
 
 
 class SearchAutocomplete(autocomplete.Select2ListView):
@@ -302,6 +302,5 @@ class SearchAutocomplete(autocomplete.Select2ListView):
                   'December']
         search_terms.extend(['Month: ' + x for x in months])
         # TODO: Pick min and max years from database information
-        search_terms.extend(['Year: ' + str(x) for x in range(
-            su.get_min_image_year(), su.get_max_image_year()+1)])
+        search_terms.extend(['Year: ' + str(x) for x in su.get_year_list()])
         return search_terms
