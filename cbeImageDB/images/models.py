@@ -57,21 +57,15 @@ def imager_directory_path(instance, filename):
 def medium_thumb_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     formated_imager = str(instance.imager).replace(' ', '_')
-    print('filename: ', filename)
-    short = filename.split('/')
-    split = short[-1].split('.')
-    filename = '.'.join(split[:-1]) + '_medium.' + split[-1]
-    return '{}/thumbs/{}'.format(formated_imager, filename)
+    filename = filename.split('/')[-1]
+    return '{}/thumbs/medium/{}'.format(formated_imager, filename)
 
 
 def large_thumb_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     formated_imager = str(instance.imager).replace(' ', '_')
-    print('filename: ', filename)
-    short = filename.split('/')
-    split = short[-1].split('.')
-    filename = '.'.join(split[:-1]) + '_large.' + split[-1]
-    return '{}/thumbs/{}'.format(formated_imager, filename)
+    filename = filename.split('/')[-1]
+    return '{}/thumbs/large/{}'.format(formated_imager, filename)
 
 
 class Image(models.Model):
@@ -85,7 +79,7 @@ class Image(models.Model):
     date_uploaded = models.DateField(("Date uploaded"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
     medium_thumb = ThumbnailerImageField(upload_to=medium_thumb_directory_path,
-                                         resize_source=dict(size=(100, 200),
+                                         resize_source=dict(size=(200, 200),
                                          sharpen=True))
     large_thumb = ThumbnailerImageField(upload_to=large_thumb_directory_path,
                                         resize_source=dict(size=(350, 350),
