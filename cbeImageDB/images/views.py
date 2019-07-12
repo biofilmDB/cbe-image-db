@@ -82,6 +82,12 @@ class GeneralSearchResultsView(genViews.ListView):
 
                 elif q[0].lower() == 'microscope':
                     qs = qs.filter(microscope_setting__microscope__microscope_name=q[-1])
+                elif q[0].lower() == 'day':
+                    qs = qs.filter(date__day=q[-1])
+                elif q[0].lower() == 'month':
+                    qs = qs.filter(date__month=q[-1])
+                elif q[0].lower() == 'year':
+                    qs = qs.filter(date__year=q[-1])
 
         except MultiValueDictKeyError:
             pass
@@ -234,4 +240,10 @@ class SearchAutocomplete(autocomplete.Select2ListView):
                              list(Medium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
         search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
+        months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November',
+                  'December']
+        search_terms.extend(['Month: ' + x for x in months])
+        # TODO: Pick min and max years from database information
+        search_terms.extend(['Year: ' + str(x) for x in range(1900, 2050)])
         return search_terms
