@@ -60,7 +60,8 @@ class Image(models.Model):
     microscope_setting = models.ForeignKey(Microscope_settings,
                                            on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
-    date = models.DateField(("Date"), default=date.today)
+    date_taken = models.DateField(("Date taken"), default=date.today)
+    date_uploaded = models.DateField(("Date uploaded"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
 
     def __str__(self):
