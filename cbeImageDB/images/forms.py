@@ -40,15 +40,6 @@ class GeneralSearchImageForm(forms.Form):
     search = forms.MultipleChoiceField(
         widget=autocomplete.Select2Multiple('/images/search-autocomplete'))
 
-def get_months():
-    months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November',
-                'December']
-    months_tuples = []
-    for m in months:
-        months_tuples.append((m, m))
-    return months
-
 
 class AttributeSearchImageForm(forms.Form):
     lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
