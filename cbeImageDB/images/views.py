@@ -110,9 +110,12 @@ class AttributeSearchResultsView(genViews.ListView):
 
     def get_queryset(self):
         qs = Image.objects.all()
+        # Variable to tell if there was something that was searched
+        searched_items = False
         try:
             search_lab = self.request.GET['lab']
             if search_lab != '':
+                searched_items = True
                 qs = qs.filter(lab__in=search_lab)
         except MultiValueDictKeyError:
             pass
@@ -120,6 +123,7 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             search_imager = self.request.GET['imager']
             if search_imager != '':
+                searched_items = True
                 qs = qs.filter(imager__in=search_imager)
         except MultiValueDictKeyError:
             pass
@@ -127,6 +131,7 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             search_objective = self.request.GET['objective']
             if search_objective != '':
+                searched_items = True
                 qs = qs.filter(microscope_setting__objective=search_objective)
 
         except MultiValueDictKeyError:
@@ -135,6 +140,7 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             microscope = self.request.GET['microscope']
             if microscope != '':
+                searched_items = True
                 qs = qs.filter(microscope_setting__microscope=microscope)
         except MultiValueDictKeyError:
             pass
@@ -142,9 +148,37 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             obj_medium = self.request.GET['objective_medium']
             if obj_medium != '':
+                searched_items = True
                 qs = qs.filter(microscope_setting__medium=obj_medium)
         except MultiValueDictKeyError:
             pass
+
+        try:
+            day = self.request.GET['day']
+            if day != '':
+                searched_items = True
+                qs = qs.filter(date__day=day)
+        except MultiValueDictKeyError:
+            pass
+
+        try:
+            month = self.request.GET['month']
+            if month != '':
+                searched_items = True
+                qs = qs.filter(date__month=month)
+        except MultiValueDictKeyError:
+            pass
+
+        try:
+            year = self.request.GET['year']
+            if year != '':
+                qs = qs.filter(date__year=year)
+        except MultiValueDictKeyError:
+            pass
+
+        # return an empty qs if there was nothing searched
+        if not searched_items:
+            qs = Image.objects.none()
 
         return qs
 
