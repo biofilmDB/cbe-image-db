@@ -29,7 +29,7 @@ def month_string_to_int(month):
 def get_min_image_year():
     years = []
     for i in Image.objects.all():
-        years.append(i.date.year)
+        years.append(i.date_taken.year)
 
     return min(years)
 
@@ -37,6 +37,6 @@ def get_min_image_year():
 def get_max_image_year():
     years = []
     for i in Image.objects.all():
-        years.append(i.date.year)
+        years.append(i.date_taken.year)
 
     return max(years)

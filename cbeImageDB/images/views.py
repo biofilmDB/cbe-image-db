@@ -83,12 +83,12 @@ class GeneralSearchResultsView(genViews.ListView):
                 elif q[0].lower() == 'microscope':
                     qs = qs.filter(microscope_setting__microscope__microscope_name=q[-1])
                 elif q[0].lower() == 'day':
-                    qs = qs.filter(date__day=q[-1])
+                    qs = qs.filter(date_taken__day=q[-1])
                 elif q[0].lower() == 'month':
                     month = su.month_string_to_int(q[-1])
-                    qs = qs.filter(date__month=month)
+                    qs = qs.filter(date_taken__month=month)
                 elif q[0].lower() == 'year':
-                    qs = qs.filter(date__year=q[-1])
+                    qs = qs.filter(date_taken__year=q[-1])
 
         except MultiValueDictKeyError:
             pass
@@ -155,26 +155,26 @@ class AttributeSearchResultsView(genViews.ListView):
             pass
 
         try:
-            day = self.request.GET['day']
+            day = self.request.GET['day_taken']
             if day != '':
                 searched_items = True
-                qs = qs.filter(date__day=day)
+                qs = qs.filter(date_taken__day=day)
         except MultiValueDictKeyError:
             pass
 
         try:
-            month = self.request.GET['month']
+            month = self.request.GET['month_taken']
             if month != '':
                 searched_items = True
                 month = su.month_string_to_int(month)
-                qs = qs.filter(date__month=month)
+                qs = qs.filter(date_taken__month=month)
         except MultiValueDictKeyError:
             pass
 
         try:
-            year = self.request.GET['year']
+            year = self.request.GET['year_taken']
             if year != '':
-                qs = qs.filter(date__year=year)
+                qs = qs.filter(date_taken__year=year)
         except MultiValueDictKeyError:
             pass
 

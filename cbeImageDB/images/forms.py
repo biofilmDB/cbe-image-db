@@ -51,9 +51,9 @@ class AttributeSearchImageForm(forms.Form):
     objective = forms.FloatField(required=False)
     objective_medium = forms.ModelChoiceField(queryset=Medium.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/medium-autocomplete'))
-    day = forms.ChoiceField(required=False,
+    day_taken = forms.ChoiceField(required=False,
         widget=autocomplete.ListSelect2('/images/day-autocomplete'))
-    month = forms.ChoiceField(required=False,
+    month_taken = forms.ChoiceField(required=False,
         widget=autocomplete.ListSelect2('/images/month-autocomplete'))
-    year = forms.ChoiceField(required=False,
+    year_taken = forms.ChoiceField(required=False,
         widget=autocomplete.ListSelect2('/images/year-autocomplete'))
