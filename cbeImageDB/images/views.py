@@ -85,7 +85,8 @@ class GeneralSearchResultsView(genViews.ListView):
                 elif q[0].lower() == 'day':
                     qs = qs.filter(date__day=q[-1])
                 elif q[0].lower() == 'month':
-                    qs = qs.filter(date__month=q[-1])
+                    month = su.month_string_to_int(q[-1])
+                    qs = qs.filter(date__month=month)
                 elif q[0].lower() == 'year':
                     qs = qs.filter(date__year=q[-1])
 
@@ -165,6 +166,7 @@ class AttributeSearchResultsView(genViews.ListView):
             month = self.request.GET['month']
             if month != '':
                 searched_items = True
+                month = su.month_string_to_int(month)
                 qs = qs.filter(date__month=month)
         except MultiValueDictKeyError:
             pass
@@ -269,7 +271,7 @@ class MonthAutocomplete(autocomplete.Select2ListView):
         months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November',
                   'December']
-        return forms.get_months()
+        return months
 
 
 class SearchAutocomplete(autocomplete.Select2ListView):
