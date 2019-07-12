@@ -226,6 +226,18 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
+class MonthAutocomplete(autocomplete.Select2ListView):
+
+    def create(self, text):
+        return text
+
+    def get_list(self):
+        months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November',
+                  'December']
+        return forms.get_months()
+
+
 class SearchAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):

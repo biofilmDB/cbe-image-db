@@ -32,4 +32,6 @@ urlpatterns = [
          name='lab_autocomplete'),
     path('search-autocomplete/', views.SearchAutocomplete.as_view(),
          name='search_autocomplete'),
+    path('month-autocomplete/', views.MonthAutocomplete.as_view(),
+         name='month_autocomplete'),
 ]

@@ -40,6 +40,15 @@ class GeneralSearchImageForm(forms.Form):
     search = forms.MultipleChoiceField(
         widget=autocomplete.Select2Multiple('/images/search-autocomplete'))
 
+def get_months():
+    months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November',
+                'December']
+    months_tuples = []
+    for m in months:
+        months_tuples.append((m, m))
+    return months
+
 
 class AttributeSearchImageForm(forms.Form):
     lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
@@ -51,4 +60,18 @@ class AttributeSearchImageForm(forms.Form):
     objective = forms.FloatField(required=False)
     objective_medium = forms.ModelChoiceField(queryset=Medium.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/medium-autocomplete'))
+    day = forms.IntegerField(required=False)
+    month = forms.ChoiceField(required=False,
+        widget=autocomplete.ListSelect2('/images/month-autocomplete'))
+    year = forms.IntegerField(required=False)
+
+    # TODO: Not being called, becuase using a GET request, figure out a way to
+    # validate day and year fields
+    def clean_day(self):
+        data = self.cleaned_data['day']
+        import pdb; pdb.set_trace()
+        if data < 1 or data > 31:
+            raise forms.ValidationError("Invalid day")
+        else:
+            return data
 
