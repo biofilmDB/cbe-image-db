@@ -98,3 +98,5 @@ class Image(models.Model):
 @receiver(models.signals.post_delete, sender=Image)
 def post_delete_file(sender, instance, *args, **kwargs):
     instance.document.delete(save=False)
+    instance.medium_thumb.delete(save=False)
+    instance.large_thumb.delete(save=False)
