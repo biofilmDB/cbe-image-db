@@ -262,6 +262,12 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
+class DayAutocomplete(autocomplete.Select2ListView):
+
+    def get_list(self):
+        return range(1, 32)
+
+
 class MonthAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):
@@ -269,6 +275,12 @@ class MonthAutocomplete(autocomplete.Select2ListView):
                   'July', 'August', 'September', 'October', 'November',
                   'December']
         return months
+
+
+class YearAutocomplete(autocomplete.Select2ListView):
+
+    def get_list(self):
+        return range(su.get_min_image_year(), su.get_max_image_year() + 1)
 
 
 class SearchAutocomplete(autocomplete.Select2ListView):

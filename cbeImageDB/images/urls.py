@@ -8,6 +8,7 @@ urlpatterns = [
     path('add-imager/', views.AddImagerView.as_view(), name='add_imager'),
     path('details/<int:pk>/', views.ImageDetailsView.as_view(),
          name='image_details'),
+
     # Searching and results urls
     path('general-search/', views.GeneralSearchView.as_view(),
          name='general_search'),
@@ -17,6 +18,7 @@ urlpatterns = [
          name='attribute_search'),
     path('attribute-results/', views.AttributeSearchResultsView.as_view(),
          name='attribute_search_results'),
+
     # Autocomplete urls
     path('microscope-setting-autocomplete/',
          views.MicroscopeSettingAutocomplete.as_view(),
@@ -34,4 +36,8 @@ urlpatterns = [
          name='search_autocomplete'),
     path('month-autocomplete/', views.MonthAutocomplete.as_view(),
          name='month_autocomplete'),
+    path('day-autocomplete/', views.DayAutocomplete.as_view(),
+         name='day_autocomplete'),
+    path('year-autocomplete/', views.YearAutocomplete.as_view(),
+         name='year_autocomplete'),
 ]

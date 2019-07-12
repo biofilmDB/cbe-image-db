@@ -51,18 +51,9 @@ class AttributeSearchImageForm(forms.Form):
     objective = forms.FloatField(required=False)
     objective_medium = forms.ModelChoiceField(queryset=Medium.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/medium-autocomplete'))
-    day = forms.IntegerField(required=False)
+    day = forms.ChoiceField(required=False,
+        widget=autocomplete.ListSelect2('/images/day-autocomplete'))
     month = forms.ChoiceField(required=False,
         widget=autocomplete.ListSelect2('/images/month-autocomplete'))
-    year = forms.IntegerField(required=False)
-
-    # TODO: Not being called, becuase using a GET request, figure out a way to
-    # validate day and year fields
-    def clean_day(self):
-        data = self.cleaned_data['day']
-        import pdb; pdb.set_trace()
-        if data < 1 or data > 31:
-            raise forms.ValidationError("Invalid day")
-        else:
-            return data
-
+    year = forms.ChoiceField(required=False,
+        widget=autocomplete.ListSelect2('/images/year-autocomplete'))
