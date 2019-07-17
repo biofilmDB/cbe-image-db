@@ -7,6 +7,7 @@ from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
 from . import search_utils as su
+from django import http
 
 
 class AddImagerView(genViews.CreateView):
@@ -249,6 +250,32 @@ class MediumAutocomplete(autocomplete.Select2QuerySetView):
 
 
 class ImagerAutocomplete(autocomplete.Select2QuerySetView):
+
+    # Overwrite method from autocomplete
+    # Only give the option of creating a new imager if the value does not exist
+    # somewhere in the imager names
+    def get_create_option(self, context, q):
+        display_create_option = False
+        create_object = []
+
+        possibles = Imager.objects.filter(imager_name__icontains=q)
+        if len(possibles) == 0:
+            display_create_option = True
+            create_object = [{'id': q,
+                              'text': 'Add imager: {}'.format(q),
+                             'create_id': True}]
+        return create_object
+
+    # post method is only called when creating a new object
+    def post(self, request):
+        text = request.POST.get('text', None)
+        if text is None:
+            return http.HttpResponseBadRequest()
+        result = Imager.objects.create(imager_name=text)
+        return http.JsonResponse({
+            'id': result.pk,
+            'text': self.get_result_label(result),
+        })
 
     def get_queryset(self):
         qs = Imager.objects.all()
