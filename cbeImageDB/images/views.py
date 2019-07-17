@@ -259,6 +259,16 @@ class ImagerAutocomplete(autocomplete.Select2QuerySetView):
         create_object = [{'id': text, 'text': 'create new: {}'.format(text), 'create_id': True}]
         return create_object
 
+    def post(self, request):
+        text = request.POST.get('text', None)
+        if text is None:
+            return http.HttpResponseBadRequest()
+        result = Imager.objects.create(imager_name=text)
+        return http.JsonResponse({
+            'id': result.pk,
+            'text': self.get_result_label(result),
+        })
+
     def get_queryset(self):
         qs = Imager.objects.all()
         if self.q:
