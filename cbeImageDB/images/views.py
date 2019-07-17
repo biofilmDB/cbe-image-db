@@ -6,6 +6,7 @@ from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
+from . import search_utils as su
 
 
 class AddImagerView(genViews.CreateView):
@@ -47,38 +48,141 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
         return context
 
 
-class ImageThumbnailsView(TemplateNames, genViews.ListView):
-    """ Shows all of the images that match a search criteria. At the moment,
-    the only way to search is by lab."""
+# Search all searchable terms at the same time
+class GeneralSearchView(genViews.FormView):
+    form_class = forms.GeneralSearchImageForm
+    template_name = 'images/search_images.html'
+
+
+class GeneralSearchResultsView(genViews.ListView):
     model = Image
     context_object_name = 'image_list'
+    template_name = 'images/image_search_results.html'
     paginate_by = 5
 
     def get_queryset(self):
+        qs = Image.objects.all()
+        try:
+            search_list = self.request.GET.getlist('search')
+            for search in search_list:
+                q = search.split(': ')
+                if q[0].lower() == 'imager':
+                    qs = qs.filter(imager__imager_name=q[-1])
+
+                elif q[0].lower() == 'lab':
+                    qs = qs.filter(lab__pi_name=q[-1])
+
+                elif q[0].lower() == 'medium':
+                    qs = qs.filter(microscope_setting__medium__medium_type=q[-1])
+
+                elif q[0].lower() == 'objective':
+                    # remove x from objective
+                    obj = float(q[-1][:-1])
+                    qs = qs.filter(microscope_setting__objective=obj)
+
+                elif q[0].lower() == 'microscope':
+                    qs = qs.filter(microscope_setting__microscope__microscope_name=q[-1])
+                elif q[0].lower() == 'day':
+                    qs = qs.filter(date_taken__day=q[-1])
+                elif q[0].lower() == 'month':
+                    month = su.month_string_to_int(q[-1])
+                    qs = qs.filter(date_taken__month=month)
+                elif q[0].lower() == 'year':
+                    qs = qs.filter(date_taken__year=q[-1])
+
+        except MultiValueDictKeyError:
+            pass
+        return qs
+
+
+# Search by attributes
+class AttributeSearchImageView(TemplateNames, genViews.FormView):
+    """ Allows the users to search images by selecting criteria for attributes
+    of the image"""
+    form_class = forms.AttributeSearchImageForm
+
+
+class AttributeSearchResultsView(genViews.ListView):
+    """ Shows all of the images that match a search criteria."""
+    model = Image
+    context_object_name = 'image_list'
+    template_name = 'images/image_search_results.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        qs = Image.objects.all()
+        # Variable to tell if there was something that was searched
+        searched_items = False
+        try:
+            search_lab = self.request.GET['lab']
+            if search_lab != '':
+                searched_items = True
+                qs = qs.filter(lab__in=search_lab)
+        except MultiValueDictKeyError:
+            pass
 
         try:
-            select_a_lab = self.request.GET['select_a_lab']
-            return Image.objects.filter(lab__in=select_a_lab)
+            search_imager = self.request.GET['imager']
+            if search_imager != '':
+                searched_items = True
+                qs = qs.filter(imager__in=search_imager)
         except MultiValueDictKeyError:
-            return []
+            pass
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
         try:
-            select_a_lab = self.request.GET['select_a_lab']
-            context['lab_name'] = Lab.objects.get(id=select_a_lab).pi_name
+            search_objective = self.request.GET['objective']
+            if search_objective != '':
+                searched_items = True
+                qs = qs.filter(microscope_setting__objective=search_objective)
+
         except MultiValueDictKeyError:
-            context['lab_name'] = 'Error in lab selection'
-        return context
+            pass
 
+        try:
+            microscope = self.request.GET['microscope']
+            if microscope != '':
+                searched_items = True
+                qs = qs.filter(microscope_setting__microscope=microscope)
+        except MultiValueDictKeyError:
+            pass
 
-class SearchImageView(TemplateNames, genViews.FormView):
-    """ Allows the users to search images by lab."""
-    form_class = forms.SearchImageForm
+        try:
+            obj_medium = self.request.GET['objective_medium']
+            if obj_medium != '':
+                searched_items = True
+                qs = qs.filter(microscope_setting__medium=obj_medium)
+        except MultiValueDictKeyError:
+            pass
 
-    def get_success_url(self):
-        return reverse('images:view_by_lab')
+        try:
+            day = self.request.GET['day_taken']
+            if day != '':
+                searched_items = True
+                qs = qs.filter(date_taken__day=day)
+        except MultiValueDictKeyError:
+            pass
+
+        try:
+            month = self.request.GET['month_taken']
+            if month != '':
+                searched_items = True
+                month = su.month_string_to_int(month)
+                qs = qs.filter(date_taken__month=month)
+        except MultiValueDictKeyError:
+            pass
+
+        try:
+            year = self.request.GET['year_taken']
+            if year != '':
+                qs = qs.filter(date_taken__year=year)
+        except MultiValueDictKeyError:
+            pass
+
+        # return an empty qs if there was nothing searched
+        if not searched_items:
+            qs = Image.objects.none()
+
+        return qs
 
 
 class UploadImageView(TemplateNames, genViews.CreateView):
@@ -124,6 +228,26 @@ class MicroscopeSettingAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
+class MicroscopeAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Microscope.objects.all()
+
+        if self.q:
+            qs = qs.filter(microscope_name__icontains=self.q)
+
+        return qs
+
+
+class MediumAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Medium.objects.all()
+        if self.q:
+            qs = qs.filter(medium_type__icontains=self.q)
+        return qs
+
+
 class ImagerAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
@@ -140,3 +264,47 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
         if self.q:
             qs = qs.filter(pi_name__icontains=self.q)
         return qs
+
+
+class DayAutocomplete(autocomplete.Select2ListView):
+
+    def get_list(self):
+        return range(1, 32)
+
+
+class MonthAutocomplete(autocomplete.Select2ListView):
+
+    def get_list(self):
+        months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November',
+                  'December']
+        return months
+
+
+class YearAutocomplete(autocomplete.Select2ListView):
+
+    def get_list(self):
+        return su.get_year_list()
+
+
+class SearchAutocomplete(autocomplete.Select2ListView):
+
+    def get_list(self):
+        # TODO: Get list of all possible search keys and find a way to link
+        # them back to the objects they came from
+        search_terms = ['Lab: ' + str(x) for x in list(Lab.objects.all())]
+        search_terms.extend(['Imager: ' + str(x) for x in
+                            list(Imager.objects.all())])
+        search_terms.extend(['Microscope: ' + str(x) for x in
+                            list(Microscope.objects.all())])
+        search_terms.extend(['Medium: ' + str(x) for x in
+                             list(Medium.objects.all())])
+        search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
+        search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
+        months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November',
+                  'December']
+        search_terms.extend(['Month: ' + x for x in months])
+        # TODO: Pick min and max years from database information
+        search_terms.extend(['Year: ' + str(x) for x in su.get_year_list()])
+        return search_terms

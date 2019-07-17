@@ -1,5 +1,5 @@
 from django import forms
-from .models import Image, Lab, Imager
+from .models import Image, Lab, Imager, Microscope, Medium
 from dal import autocomplete
 
 
@@ -30,12 +30,30 @@ class UploadFileForm(forms.ModelForm):
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'microscope_setting':
-            autocomplete.ModelSelect2(url='/images/microscope-autocomplete/'),
+            autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
             'date_taken':
             forms.SelectDateWidget()
         }
 
 
-class SearchImageForm(forms.Form):
-    select_a_lab = forms.ModelChoiceField(queryset=Lab.objects.all(),
+class GeneralSearchImageForm(forms.Form):
+    search = forms.MultipleChoiceField(
+        widget=autocomplete.Select2Multiple('/images/search-autocomplete'))
+
+
+class AttributeSearchImageForm(forms.Form):
+    lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/lab-autocomplete'))
+    imager = forms.ModelChoiceField(queryset=Imager.objects.all(), required=False,
+        widget=autocomplete.ModelSelect2(url='/images/imager-autocomplete'))
+    microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
+        required=False, widget=autocomplete.ModelSelect2(url='/images/microscope-autocomplete'))
+    objective = forms.FloatField(required=False)
+    objective_medium = forms.ModelChoiceField(queryset=Medium.objects.all(), required=False,
+        widget=autocomplete.ModelSelect2(url='/images/medium-autocomplete'))
+    day_taken = forms.ChoiceField(required=False,
+        widget=autocomplete.ListSelect2('/images/day-autocomplete'))
+    month_taken = forms.ChoiceField(required=False,
+        widget=autocomplete.ListSelect2('/images/month-autocomplete'))
+    year_taken = forms.ChoiceField(required=False,
+        widget=autocomplete.ListSelect2('/images/year-autocomplete'))
