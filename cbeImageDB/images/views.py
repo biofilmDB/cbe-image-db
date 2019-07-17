@@ -237,7 +237,6 @@ class MicroscopeAutocomplete(autocomplete.Select2QuerySetView):
         if self.q:
             qs = qs.filter(microscope_name__icontains=self.q)
 
-
         return qs
 
 
@@ -251,14 +250,23 @@ class MediumAutocomplete(autocomplete.Select2QuerySetView):
 
 
 class ImagerAutocomplete(autocomplete.Select2QuerySetView):
-    create_field = 'imager_name'
-    def get_create_option(self, context, text):
-        display_create_option = True
+
+    # Overwrite method from autocomplete
+    # Only give the option of creating a new imager if the value does not exist
+    # somewhere in the imager names
+    def get_create_option(self, context, q):
+        display_create_option = False
         create_object = []
 
-        create_object = [{'id': text, 'text': 'create new: {}'.format(text), 'create_id': True}]
+        possibles = Imager.objects.filter(imager_name__icontains=q)
+        if len(possibles) == 0:
+            display_create_option = True
+            create_object = [{'id': q,
+                              'text': 'Add imager: {}'.format(q),
+                             'create_id': True}]
         return create_object
 
+    # post method is only called when creating a new object
     def post(self, request):
         text = request.POST.get('text', None)
         if text is None:
