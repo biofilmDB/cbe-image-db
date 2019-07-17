@@ -7,6 +7,7 @@ from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
 from . import search_utils as su
+from django import http
 
 
 class AddImagerView(genViews.CreateView):
@@ -236,6 +237,7 @@ class MicroscopeAutocomplete(autocomplete.Select2QuerySetView):
         if self.q:
             qs = qs.filter(microscope_name__icontains=self.q)
 
+
         return qs
 
 
@@ -249,6 +251,13 @@ class MediumAutocomplete(autocomplete.Select2QuerySetView):
 
 
 class ImagerAutocomplete(autocomplete.Select2QuerySetView):
+    create_field = 'imager_name'
+    def get_create_option(self, context, text):
+        display_create_option = True
+        create_object = []
+
+        create_object = [{'id': text, 'text': 'create new: {}'.format(text), 'create_id': True}]
+        return create_object
 
     def get_queryset(self):
         qs = Imager.objects.all()
