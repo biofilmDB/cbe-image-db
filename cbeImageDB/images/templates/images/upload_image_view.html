@@ -4,7 +4,6 @@
 	<h2 style="text-decoration: underline;"> Upload an image:</h2>
 	<form action = "" method="POST" enctype="multipart/form-data">
 		<div>
-			<a href="{% url 'images:add_imager' %}"> Not listed as imager? Click here to add. </a>
                         {% csrf_token %}
 			{{ form.as_p }}
 			<input type="submit" value="Submit" />
