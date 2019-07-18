@@ -73,7 +73,7 @@ class GeneralSearchResultsView(genViews.ListView):
                 elif q[0].lower() == 'lab':
                     qs = qs.filter(lab__pi_name=q[-1])
 
-                elif q[0].lower() == 'medium':
+                elif q[0].lower() == 'objective medium':
                     qs = qs.filter(microscope_setting__medium__medium_type=q[-1])
 
                 elif q[0].lower() == 'objective':
@@ -324,7 +324,7 @@ class SearchAutocomplete(autocomplete.Select2ListView):
                             list(Imager.objects.all())])
         search_terms.extend(['Microscope: ' + str(x) for x in
                             list(Microscope.objects.all())])
-        search_terms.extend(['Medium: ' + str(x) for x in
+        search_terms.extend(['Objective Medium: ' + str(x) for x in
                              list(Medium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
         search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
