@@ -116,7 +116,7 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             search_lab = self.request.GET['lab']
             if search_lab != '':
-                qs = qs.filter(lab__in=search_lab)
+                qs = qs.filter(lab__pi_name=search_lab)
         except MultiValueDictKeyError:
             pass
 
