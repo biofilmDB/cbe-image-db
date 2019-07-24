@@ -116,14 +116,14 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             search_lab = self.request.GET['lab']
             if search_lab != '':
-                qs = qs.filter(lab__pi_name=search_lab)
+                qs = qs.filter(lab=search_lab)
         except MultiValueDictKeyError:
             pass
 
         try:
             search_imager = self.request.GET['imager']
             if search_imager != '':
-                qs = qs.filter(imager__in=search_imager)
+                qs = qs.filter(imager=search_imager)
         except MultiValueDictKeyError:
             pass
 
