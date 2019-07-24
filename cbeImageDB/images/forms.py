@@ -19,6 +19,57 @@ class AddImagerForm(forms.ModelForm):
 
 
 class UploadFileForm(forms.ModelForm):
+    yn = [('y', 'yes'), ('n', 'no')]
+    organs = [('a', 'Organism A'), ('b', 'Organism B')]
+    organism = forms.ChoiceField(choices=organs)
+
+    growth_medium = forms.CharField()
+    things = [('g', 'Glass'), ('b', 'Rope')]
+    substratum = forms.ChoiceField(choices=things)
+    reactors = [('a', 'Reactor A'), ('b', 'Reactor B')]
+    reactor = forms.ChoiceField(choices=reactors)
+
+    batch = forms.ChoiceField(choices=yn, required=False)
+    batch_help_text = 'mL   (Field only required if slected yes for batch)'
+    medium_volume = forms.FloatField(help_text=batch_help_text, required=False)
+    gas_volume = forms.FloatField(help_text=batch_help_text, required=False)
+
+    continuous = forms.ChoiceField(choices=yn)
+    flow_rate = forms.FloatField(help_text='mL/hr (Field required only if yes selected for continuous)',
+                                 required=False)
+    dilution_rate = forms.FloatField(help_text='per hr (Field required only if yes selected for continuous)',
+                                     required=False)
+    aerobic = forms.ChoiceField(choices=yn)
+    microaerophilic = forms.ChoiceField(choices=yn)
+    gas_microaerophilic = forms.CharField(help_text='Field required only if yes to microaerophilic)',
+                                          required=False)
+    anoxic = forms.ChoiceField(choices=yn)
+    gas_anoxic = forms.CharField(help_text='Field required only if yes to anoxic)',
+                                 required=False)
+
+    planktonic_cell_count = forms.FloatField(required=False)
+    planktonic_protein = forms.FloatField(required=False)
+
+    def fields_required(self, fields, selection):
+        for field in fields:
+            if not self.cleaned_data.get(field, ''):
+                string = "{} is required due to {} selection.".format(
+                    field.replace("_", ' '), selection)
+                msg = forms.ValidationError(string)
+                self.add_error(field, msg)
+
+    def clean(self):
+        batch = self.cleaned_data.get('batch')
+        if batch == 'y':
+            self.fields_required(['medium_volume', 'gas_volume'], 'batch')
+        if self.cleaned_data.get('continuous') == 'y':
+            self.fields_required(['flow_rate', 'dilution_rate'], 'continuous')
+        if self.cleaned_data.get('microaerophilic') == 'y':
+            self.fields_required(['gas_microaerophilic'], 'microaerophilic')
+        if self.cleaned_data.get('anoxic') == 'y':
+            self.fields_required(['gas_anoxic'], 'anoxic')
+
+        return self.cleaned_data
 
     class Meta:
         model = Image
