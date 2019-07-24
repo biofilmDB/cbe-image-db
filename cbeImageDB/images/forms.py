@@ -77,7 +77,7 @@ class UploadFileForm(forms.ModelForm):
                   'microscope_setting', 'brief_description', ]
         widgets = {
             'imager':
-            autocomplete.ModelSelect2(url='/images/imager-autocomplete/'),
+            autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'microscope_setting':
