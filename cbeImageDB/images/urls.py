@@ -28,6 +28,8 @@ urlpatterns = [
          name='microscope_autocomplete'),
     path('medium-autocomplete/', views.MediumAutocomplete.as_view(),
          name='medium_autocomplete'),
+    path('add-imager-autocomplete/', views.AddImagerAutocomplete.as_view(),
+         name='add_imager_autocomplete'),
     path('imager-autocomplete/', views.ImagerAutocomplete.as_view(),
          name='imager_autocomplete'),
     path('lab-autocomplete/', views.LabAutocomplete.as_view(),

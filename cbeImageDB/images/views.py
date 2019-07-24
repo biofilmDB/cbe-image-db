@@ -241,6 +241,15 @@ class MediumAutocomplete(autocomplete.Select2QuerySetView):
 
 class ImagerAutocomplete(autocomplete.Select2QuerySetView):
 
+    def get_queryset(self):
+        qs = Imager.objects.all()
+        if self.q:
+            qs = qs.filter(imager_name__icontains=self.q)
+        return qs
+
+
+class AddImagerAutocomplete(autocomplete.Select2QuerySetView):
+
     # Overwrite method from autocomplete
     # Only give the option of creating a new imager if the value does not exist
     # somewhere in the imager names
