@@ -21,13 +21,14 @@ class AddImagerForm(forms.ModelForm):
 class UploadFileForm(forms.ModelForm):
     yn = [('y', 'yes'), ('n', 'no')]
     organs = [('a', 'Organism A'), ('b', 'Organism B')]
-    organism = forms.ChoiceField(choices=organs)
+    organism = forms.ChoiceField(choices=organs, help_text='(Required)')
 
-    growth_medium = forms.CharField()
+    growth_medium = forms.CharField(help_text='(Required)')
     things = [('g', 'Glass'), ('b', 'Rope')]
-    substratum = forms.ChoiceField(choices=things)
+    substratum = forms.ChoiceField(choices=things, help_text='(Required)')
     reactors = [('a', 'Reactor A'), ('b', 'Reactor B')]
-    reactor = forms.ChoiceField(choices=reactors)
+    vessel = forms.ChoiceField(choices=reactors, help_text='(Required)')
+    dissolved_oxygen = forms.FloatField(required=False, help_text='mg/L')
 
     batch = forms.ChoiceField(choices=yn, required=False)
     batch_help_text = 'mL   (Field only required if slected yes for batch)'
@@ -47,8 +48,18 @@ class UploadFileForm(forms.ModelForm):
     gas_anoxic = forms.CharField(help_text='Field required only if yes to anoxic)',
                                  required=False)
 
-    planktonic_cell_count = forms.FloatField(required=False)
-    planktonic_protein = forms.FloatField(required=False)
+    planktonic_cell_count = forms.FloatField(required=False,
+                                             help_text='cells/ml')
+    planktonic_protein = forms.FloatField(required=False,
+                                          help_text='mg/ml')
+    planktonic_carbohydrate = forms.FloatField(required=False,
+                                               help_text='mg/ml')
+
+    biofilm_cell_count = forms.FloatField(required=False,
+                                          help_text='cells/cm^2')
+    biofilm_protein = forms.FloatField(required=False, help_text='mg/cm^2')
+    biofilm_carbohydrate = forms.FloatField(required=False, help_text='mg/ml')
+
 
     def fields_required(self, fields, selection):
         for field in fields:
