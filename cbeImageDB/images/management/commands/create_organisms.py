@@ -8,11 +8,11 @@ class Command(BaseCommand):
 
     def _generate_organisms(self):
         csv = pandas.read_csv('organisms/organisms.csv', sep='|')
-        print(csv.columns.values)
-        print('Total number of organisms to add: {}'.format(csv.count + 1))
+
+        print('Total number of organisms to add: {}'.format(len(csv)))
         for index, row in csv.iterrows():
-            if index % 10000 == 0:
-                print('Added organism number: {}'.format(index+1))
+            if index % 5000 == 0 and index != 0:
+                print('Added organism number: {}'.format(index))
 
             Organism.objects.create(storid=row[0], ncbi_id=row[1],
                                     organism_name=row[2])
