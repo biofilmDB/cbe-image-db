@@ -1,10 +1,16 @@
 from django.db import models
 from django.dispatch import receiver
 from datetime import date
-import os
-from django.conf import settings
 from easy_thumbnails.fields import ThumbnailerImageField
 
+
+class Organism(models.Model):
+    organism_name = models.CharField(db_index=True, max_length=1000)
+    ncbi_id = models.CharField(max_length=100)
+    storid = models.IntegerField()
+
+    def __str__(self):
+        return self.organism_name
 
 class Microscope(models.Model):
     microscope_name = models.CharField(max_length=500)
