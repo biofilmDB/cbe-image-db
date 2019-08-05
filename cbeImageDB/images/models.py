@@ -78,6 +78,7 @@ class Image(models.Model):
     # With ForeignKey on_delete was PROTECT
     lab = models.ManyToManyField(Lab)
     imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
+    organism = models.ForeignKey(Organism, on_delete=models.PROTECT)
     microscope_setting = models.ForeignKey(Microscope_settings,
                                            on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
