@@ -45,6 +45,8 @@ for x in l2:
         bad.append(x)
     elif 'uncultivated' in x.lower():
         bad.append(x)
+    elif 'unidentified' in x.lower():
+        bad.append(x)
     else:
         good.append(x)
 print('Len all: {}'.format(len(l2)))
