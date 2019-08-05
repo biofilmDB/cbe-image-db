@@ -1,7 +1,7 @@
 from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
-from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium
+from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium, Organism
 from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
@@ -245,6 +245,15 @@ class ImagerAutocomplete(autocomplete.Select2QuerySetView):
         qs = Imager.objects.all()
         if self.q:
             qs = qs.filter(imager_name__icontains=self.q)
+        return qs
+
+
+class OrganismAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Organism.objects.all()
+        if self.q:
+            qs = qs.filter(organism_name__icontains=self.q)
         return qs
 
 

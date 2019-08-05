@@ -20,9 +20,6 @@ class AddImagerForm(forms.ModelForm):
 
 class UploadFileForm(forms.ModelForm):
     yn = [('y', 'yes'), ('n', 'no')]
-    organs = [('a', 'Organism A'), ('b', 'Organism B')]
-    organism = forms.ChoiceField(choices=organs, help_text='(Required)')
-
     growth_medium = forms.CharField(help_text='(Required)')
     things = [('g', 'Glass'), ('b', 'Rope')]
     substratum = forms.ChoiceField(choices=things, help_text='(Required)')
@@ -84,13 +81,15 @@ class UploadFileForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['document', 'date_taken', 'imager', 'lab',
+        fields = ['document', 'date_taken', 'imager', 'lab', 'organism',
                   'microscope_setting', 'brief_description', ]
         widgets = {
             'imager':
             autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
+            'organism':
+            autocomplete.ModelSelect2(url='/images/organism-autocomplete/'),
             'microscope_setting':
             autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
             'date_taken':
