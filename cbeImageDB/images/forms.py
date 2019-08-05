@@ -19,7 +19,7 @@ class AddImagerForm(forms.ModelForm):
 
 
 class UploadFileForm(forms.ModelForm):
-    yn = [('y', 'yes'), ('n', 'no')]
+    yn = [('n', 'no'), ('y', 'yes')]
     growth_medium = forms.CharField(help_text='(Required)')
     things = [('g', 'Glass'), ('b', 'Rope')]
     substratum = forms.ChoiceField(choices=things, help_text='(Required)')
