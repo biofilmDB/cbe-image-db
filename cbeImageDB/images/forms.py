@@ -19,65 +19,6 @@ class AddImagerForm(forms.ModelForm):
 
 
 class UploadFileForm(forms.ModelForm):
-    yn = [('n', 'no'), ('y', 'yes')]
-    growth_medium = forms.CharField(help_text='(Required)')
-    things = [('g', 'Glass'), ('b', 'Rope')]
-    substratum = forms.ChoiceField(choices=things, help_text='(Required)')
-    reactors = [('a', 'Reactor A'), ('b', 'Reactor B')]
-    vessel = forms.ChoiceField(choices=reactors, help_text='(Required)')
-    dissolved_oxygen = forms.FloatField(required=False, help_text='mg/L')
-
-    batch = forms.ChoiceField(choices=yn, required=False)
-    batch_help_text = 'mL   (Field only required if slected yes for batch)'
-    medium_volume = forms.FloatField(help_text=batch_help_text, required=False)
-    gas_volume = forms.FloatField(help_text=batch_help_text, required=False)
-
-    continuous = forms.ChoiceField(choices=yn)
-    flow_rate = forms.FloatField(help_text='mL/hr (Field required only if yes selected for continuous)',
-                                 required=False)
-    dilution_rate = forms.FloatField(help_text='per hr (Field required only if yes selected for continuous)',
-                                     required=False)
-    aerobic = forms.ChoiceField(choices=yn)
-    microaerophilic = forms.ChoiceField(choices=yn)
-    gas_microaerophilic = forms.CharField(help_text='Field required only if yes to microaerophilic)',
-                                          required=False)
-    anoxic = forms.ChoiceField(choices=yn)
-    gas_anoxic = forms.CharField(help_text='Field required only if yes to anoxic)',
-                                 required=False)
-
-    planktonic_cell_count = forms.FloatField(required=False,
-                                             help_text='cells/ml')
-    planktonic_protein = forms.FloatField(required=False,
-                                          help_text='mg/ml')
-    planktonic_carbohydrate = forms.FloatField(required=False,
-                                               help_text='mg/ml')
-
-    biofilm_cell_count = forms.FloatField(required=False,
-                                          help_text='cells/cm^2')
-    biofilm_protein = forms.FloatField(required=False, help_text='mg/cm^2')
-    biofilm_carbohydrate = forms.FloatField(required=False, help_text='mg/ml')
-
-
-    def fields_required(self, fields, selection):
-        for field in fields:
-            if not self.cleaned_data.get(field, ''):
-                string = "{} is required due to {} selection.".format(
-                    field.replace("_", ' '), selection)
-                msg = forms.ValidationError(string)
-                self.add_error(field, msg)
-
-    def clean(self):
-        batch = self.cleaned_data.get('batch')
-        if batch == 'y':
-            self.fields_required(['medium_volume', 'gas_volume'], 'batch')
-        if self.cleaned_data.get('continuous') == 'y':
-            self.fields_required(['flow_rate', 'dilution_rate'], 'continuous')
-        if self.cleaned_data.get('microaerophilic') == 'y':
-            self.fields_required(['gas_microaerophilic'], 'microaerophilic')
-        if self.cleaned_data.get('anoxic') == 'y':
-            self.fields_required(['gas_anoxic'], 'anoxic')
-
-        return self.cleaned_data
 
     class Meta:
         model = Image
