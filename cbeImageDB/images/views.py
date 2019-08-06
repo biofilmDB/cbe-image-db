@@ -83,6 +83,8 @@ class GeneralSearchResultsView(genViews.ListView):
 
                 elif q[0].lower() == 'microscope':
                     qs = qs.filter(microscope_setting__microscope__microscope_name=q[-1])
+                elif q[0].lower() == 'organism':
+                    qs = qs.filter(organism__organism_name=q[-1])
                 elif q[0].lower() == 'day':
                     qs = qs.filter(date_taken__day=q[-1])
                 elif q[0].lower() == 'month':
@@ -330,8 +332,6 @@ class YearAutocomplete(autocomplete.Select2ListView):
 class SearchAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):
-        # TODO: Get list of all possible search keys and find a way to link
-        # them back to the objects they came from
         search_terms = ['Lab: ' + str(x) for x in list(Lab.objects.all())]
         search_terms.extend(['Imager: ' + str(x) for x in
                             list(Imager.objects.all())])
@@ -340,11 +340,13 @@ class SearchAutocomplete(autocomplete.Select2ListView):
         search_terms.extend(['Objective Medium: ' + str(x) for x in
                              list(Medium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
+        # TODO: This makes loading the search super super slow, fix it somehow
+        search_terms.extend(['Organism: ' + str(x) for x in
+                             list(Organism.objects.all())])
         search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
         months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November',
                   'December']
         search_terms.extend(['Month: ' + x for x in months])
-        # TODO: Pick min and max years from database information
         search_terms.extend(['Year: ' + str(x) for x in su.get_year_list()])
         return search_terms
