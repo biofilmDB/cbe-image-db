@@ -8,7 +8,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
 from . import search_utils as su
 from django import http
-
+from django.contrib.auth.decorators import login_required
 
 class AddImagerView(genViews.CreateView):
     """ Allows a user to ad an imager using a webpage. It uses a genaric create
@@ -62,7 +62,12 @@ class GeneralSearchResultsView(genViews.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        qs = Image.objects.all()
+        if self.request.user.is_superuser:
+            qs = Image.objects.all()
+        else:
+            # TODO: Filter based on date avaliable
+            qs = Image.objects.all()
+
         try:
             search_list = self.request.GET.getlist('search')
             for search in search_list:
@@ -113,7 +118,12 @@ class AttributeSearchResultsView(genViews.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        qs = Image.objects.all()
+        if self.request.user.is_superuser:
+            qs = Image.objects.all()
+        else:
+            # TODO: Filter based on date avaliable
+            qs = Image.objects.all()
+
         # Variable to tell if there was something that was searched
         try:
             search_lab = self.request.GET['lab']
