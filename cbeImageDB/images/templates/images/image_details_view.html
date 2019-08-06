@@ -10,6 +10,9 @@
     <li><b>Microscope: </b> {{ image.microscope_setting }} </li>
     <li><b>Description: </b> {{ image.brief_description }} </li>
     <li><b>Date added: </b> {{ image.date_taken }} </li>
+    {% if user.is_superuser %}
+        <li><b>Release date: </b>{{ image.release_date }} </li>
+    {% endif %}
 
 </ul>
 {% load thumbnail %}

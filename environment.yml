@@ -23,6 +23,7 @@ dependencies:
     - backcall==0.1.0
     - decorator==4.4.0
     - django==2.2.2
+    - django-admin-views==0.8.0
     - django-autocomplete-light==3.3.5
     - django-template-names==0.2.1
     - easy-thumbnails==2.6

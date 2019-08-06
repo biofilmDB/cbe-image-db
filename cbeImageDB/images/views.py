@@ -8,6 +8,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
 from . import search_utils as su
 from django import http
+from datetime import datetime
 
 
 class AddImagerView(genViews.CreateView):
@@ -62,7 +63,11 @@ class GeneralSearchResultsView(genViews.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        qs = Image.objects.all()
+        if self.request.user.is_superuser:
+            qs = Image.objects.all()
+        else:
+            qs = Image.objects.filter(release_date__gt=datetime.now())
+
         try:
             search_list = self.request.GET.getlist('search')
             for search in search_list:
@@ -113,7 +118,11 @@ class AttributeSearchResultsView(genViews.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        qs = Image.objects.all()
+        if self.request.user.is_superuser:
+            qs = Image.objects.all()
+        else:
+            qs = Image.objects.filter(release_date__lte=datetime.now())
+
         # Variable to tell if there was something that was searched
         try:
             search_lab = self.request.GET['lab']
