@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from images.models import Lab, Imager, Microscope, Microscope_settings, Medium
+from images.models import Organism
 
 
 class Command(BaseCommand):
@@ -22,7 +23,12 @@ class Command(BaseCommand):
         mic.save()
         Microscope_settings(microscope=mic, objective=63, medium=med).save()
 
+    def _create_organism(self):
+        Organism.objects.create(organism_name='Test organism', storid='123',
+                                ncbi_id='ncbi25')
+
     def handle(self, *args, **options):
         self._create_labs()
         self._create_imager()
         self._create_microscope()
+        self._create_organism()

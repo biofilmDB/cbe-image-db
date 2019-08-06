@@ -1,7 +1,7 @@
 from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
-from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium
+from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium, Organism
 from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
@@ -83,6 +83,8 @@ class GeneralSearchResultsView(genViews.ListView):
 
                 elif q[0].lower() == 'microscope':
                     qs = qs.filter(microscope_setting__microscope__microscope_name=q[-1])
+                elif q[0].lower() == 'organism':
+                    qs = qs.filter(organism__organism_name=q[-1])
                 elif q[0].lower() == 'day':
                     qs = qs.filter(date_taken__day=q[-1])
                 elif q[0].lower() == 'month':
@@ -171,7 +173,12 @@ class AttributeSearchResultsView(genViews.ListView):
         except MultiValueDictKeyError:
             pass
 
-        # return an empty qs if there was nothing searched
+        try:
+            organ = self.request.GET['organism']
+            if organ != '':
+                qs = qs.filter(organism=organ)
+        except MultiValueDictKeyError:
+            pass
 
         return qs
 
@@ -248,6 +255,15 @@ class ImagerAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
+class OrganismAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = Organism.objects.all()
+        if self.q:
+            qs = qs.filter(organism_name__icontains=self.q)
+        return qs
+
+
 class AddImagerAutocomplete(autocomplete.Select2QuerySetView):
 
     # Overwrite method from autocomplete
@@ -316,8 +332,6 @@ class YearAutocomplete(autocomplete.Select2ListView):
 class SearchAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):
-        # TODO: Get list of all possible search keys and find a way to link
-        # them back to the objects they came from
         search_terms = ['Lab: ' + str(x) for x in list(Lab.objects.all())]
         search_terms.extend(['Imager: ' + str(x) for x in
                             list(Imager.objects.all())])
@@ -326,11 +340,11 @@ class SearchAutocomplete(autocomplete.Select2ListView):
         search_terms.extend(['Objective Medium: ' + str(x) for x in
                              list(Medium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
+        search_terms.extend(['Organism: ' + x for x in su.get_organism_list()])
         search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
         months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November',
                   'December']
         search_terms.extend(['Month: ' + x for x in months])
-        # TODO: Pick min and max years from database information
         search_terms.extend(['Year: ' + str(x) for x in su.get_year_list()])
         return search_terms

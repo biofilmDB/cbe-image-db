@@ -1,5 +1,5 @@
 from django import forms
-from .models import Image, Lab, Imager, Microscope, Medium
+from .models import Image, Lab, Imager, Microscope, Medium, Organism
 from dal import autocomplete
 
 
@@ -22,13 +22,15 @@ class UploadFileForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['document', 'date_taken', 'imager', 'lab',
+        fields = ['document', 'date_taken', 'imager', 'lab', 'organism',
                   'microscope_setting', 'brief_description', ]
         widgets = {
             'imager':
             autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
+            'organism':
+            autocomplete.ModelSelect2(url='/images/organism-autocomplete/'),
             'microscope_setting':
             autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
             'date_taken':
@@ -46,6 +48,8 @@ class AttributeSearchImageForm(forms.Form):
         widget=autocomplete.ModelSelect2(url='/images/lab-autocomplete'))
     imager = forms.ModelChoiceField(queryset=Imager.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/imager-autocomplete'))
+    organism = forms.ModelChoiceField(queryset=Organism.objects.all(), required=False,
+        widget=autocomplete.ModelSelect2(url='/images/organism-autocomplete'))
     microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
         required=False, widget=autocomplete.ModelSelect2(url='/images/microscope-autocomplete'))
     objective = forms.FloatField(required=False)
