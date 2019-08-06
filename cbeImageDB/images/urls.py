@@ -32,6 +32,8 @@ urlpatterns = [
          name='add_imager_autocomplete'),
     path('imager-autocomplete/', views.ImagerAutocomplete.as_view(),
          name='imager_autocomplete'),
+    path('organism-autocomplete/', views.OrganismAutocomplete.as_view(),
+         name='organism_autocomplete'),
     path('lab-autocomplete/', views.LabAutocomplete.as_view(),
          name='lab_autocomplete'),
     path('search-autocomplete/', views.SearchAutocomplete.as_view(),

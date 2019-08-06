@@ -26,9 +26,13 @@ dependencies:
     - django-autocomplete-light==3.3.5
     - django-template-names==0.2.1
     - easy-thumbnails==2.6
-    - ipython==7.5.0
+    - ipdb==0.12
+    - ipython==7.6.1
     - ipython-genutils==0.2.0
     - jedi==0.14.0
+    - numpy==1.17.0
+    - owlready2==0.19
+    - pandas==0.25.0
     - parso==0.5.0
     - pexpect==4.7.0
     - pickleshare==0.7.5
@@ -36,6 +40,7 @@ dependencies:
     - prompt-toolkit==2.0.9
     - ptyprocess==0.6.0
     - pygments==2.4.2
+    - python-dateutil==2.8.0
     - python-decouple==3.1
     - pytz==2019.1
     - six==1.12.0

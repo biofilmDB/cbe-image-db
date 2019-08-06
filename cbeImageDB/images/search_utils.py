@@ -32,3 +32,11 @@ def get_year_list():
         years.append(i.date_taken.year)
     years = list(set(years))
     return years
+
+
+def get_organism_list():
+    organisms = []
+    for i in Image.objects.all():
+        organisms.append(i.organism.organism_name)
+    organisms = list(set(organisms))
+    return organisms
