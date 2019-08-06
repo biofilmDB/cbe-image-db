@@ -171,7 +171,12 @@ class AttributeSearchResultsView(genViews.ListView):
         except MultiValueDictKeyError:
             pass
 
-        # return an empty qs if there was nothing searched
+        try:
+            organ = self.request.GET['organism']
+            if organ != '':
+                qs = qs.filter(organism=organ)
+        except MultiValueDictKeyError:
+            pass
 
         return qs
 
