@@ -340,9 +340,7 @@ class SearchAutocomplete(autocomplete.Select2ListView):
         search_terms.extend(['Objective Medium: ' + str(x) for x in
                              list(Medium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
-        # TODO: This makes loading the search super super slow, fix it somehow
-        search_terms.extend(['Organism: ' + str(x) for x in
-                             list(Organism.objects.all())])
+        search_terms.extend(['Organism: ' + x for x in su.get_organism_list()])
         search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
         months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November',
