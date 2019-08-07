@@ -83,6 +83,7 @@ class Image(models.Model):
                                            on_delete=models.PROTECT)
     brief_description = models.CharField(max_length=1000)
     date_taken = models.DateField(("Date taken"), default=date.today)
+    release_date = models.DateField(("Can't be used before"), default=date.today)
     date_uploaded = models.DateField(("Date uploaded"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
     medium_thumb = ThumbnailerImageField(upload_to=medium_thumb_directory_path,
