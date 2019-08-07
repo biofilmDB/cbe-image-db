@@ -37,6 +37,7 @@ INSTALLED_APPS = [
      # Enable plugins
     'dal_select2',
     'admin_views',
+    'django_elasticsearch_dsl',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'easy_thumbnails',
 ]
+
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
