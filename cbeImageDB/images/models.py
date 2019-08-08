@@ -81,7 +81,7 @@ class Image(models.Model):
     organism = models.ForeignKey(Organism, on_delete=models.PROTECT)
     microscope_setting = models.ForeignKey(Microscope_settings,
                                            on_delete=models.PROTECT)
-    brief_description = models.CharField(max_length=1000)
+    brief_description = models.TextField()
     date_taken = models.DateField(("Date taken"), default=date.today)
     release_date = models.DateField(("Can't be used before"), default=date.today)
     date_uploaded = models.DateField(("Date uploaded"), default=date.today)
