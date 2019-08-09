@@ -12,6 +12,7 @@ class Organism(models.Model):
     def __str__(self):
         return self.organism_name
 
+
 class Microscope(models.Model):
     microscope_name = models.CharField(max_length=500)
 
@@ -81,17 +82,18 @@ class Image(models.Model):
     organism = models.ForeignKey(Organism, on_delete=models.PROTECT)
     microscope_setting = models.ForeignKey(Microscope_settings,
                                            on_delete=models.PROTECT)
-    brief_description = models.TextField()
+    brief_description = models.CharField(max_length=1000)
     date_taken = models.DateField(("Date taken"), default=date.today)
-    release_date = models.DateField(("Can't be used before"), default=date.today)
+    release_date = models.DateField(("Can't be used before"),
+                                    default=date.today)
     date_uploaded = models.DateField(("Date uploaded"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
     medium_thumb = ThumbnailerImageField(upload_to=medium_thumb_directory_path,
                                          resize_source=dict(size=(200, 200),
-                                         sharpen=True))
+                                                            sharpen=True))
     large_thumb = ThumbnailerImageField(upload_to=large_thumb_directory_path,
                                         resize_source=dict(size=(350, 350),
-                                        sharpen=True))
+                                                           sharpen=True))
 
     def __str__(self):
         return str(self.document.name)
