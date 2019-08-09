@@ -42,8 +42,9 @@ class UploadFileForm(forms.ModelForm):
 
 class GeneralSearchImageForm(forms.Form):
     search = forms.MultipleChoiceField(
-        widget=autocomplete.Select2Multiple('/images/search-autocomplete'))
-
+        widget=autocomplete.Select2Multiple('/images/search-autocomplete'),
+                                            required=False)
+    description_search = forms.CharField(required=False)
 
 class AttributeSearchImageForm(forms.Form):
     lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
