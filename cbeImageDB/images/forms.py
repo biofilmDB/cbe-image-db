@@ -53,6 +53,7 @@ class AttributeSearchImageForm(forms.Form):
         widget=autocomplete.ModelSelect2(url='/images/imager-autocomplete'))
     organism = forms.ModelChoiceField(queryset=Organism.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/organism-autocomplete'))
+    description_search = forms.CharField(required=False)
     microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
         required=False, widget=autocomplete.ModelSelect2(url='/images/microscope-autocomplete'))
     objective = forms.FloatField(required=False)

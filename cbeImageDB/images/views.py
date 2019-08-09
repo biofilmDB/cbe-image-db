@@ -205,6 +205,8 @@ class AttributeSearchResultsView(genViews.ListView):
         except MultiValueDictKeyError:
             pass
 
+        qs = get_description_search_qs(self.request, qs)
+
         return qs
 
 
