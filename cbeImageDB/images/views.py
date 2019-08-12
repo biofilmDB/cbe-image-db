@@ -9,6 +9,7 @@ from template_names import TemplateNames
 from . import search_utils as su
 from django import http
 from datetime import datetime
+from .documents import ImageDocument
 
 
 class AddImagerView(genViews.CreateView):
@@ -56,6 +57,18 @@ class GeneralSearchView(genViews.FormView):
     template_name = 'images/search_images.html'
 
 
+def get_description_search_qs(request, qs):
+
+    try:
+        desct = request.GET.get('description_search')
+        s = ImageDocument.search().query("match", brief_description=desct)
+        qs = qs & s.to_queryset()
+        return qs
+
+    except MultiValueDictKeyError:
+        return qs
+
+
 class GeneralSearchResultsView(genViews.ListView):
     model = Image
     context_object_name = 'image_list'
@@ -66,7 +79,7 @@ class GeneralSearchResultsView(genViews.ListView):
         if self.request.user.is_superuser:
             qs = Image.objects.all()
         else:
-            qs = Image.objects.filter(release_date__gt=datetime.now())
+            qs = Image.objects.filter(release_date__lt=datetime.now())
 
         try:
             search_list = self.request.GET.getlist('search')
@@ -100,6 +113,9 @@ class GeneralSearchResultsView(genViews.ListView):
 
         except MultiValueDictKeyError:
             pass
+
+        qs = get_description_search_qs(self.request, qs)
+
         return qs
 
 
@@ -188,6 +204,8 @@ class AttributeSearchResultsView(genViews.ListView):
                 qs = qs.filter(organism=organ)
         except MultiValueDictKeyError:
             pass
+
+        qs = get_description_search_qs(self.request, qs)
 
         return qs
 

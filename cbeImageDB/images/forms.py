@@ -42,8 +42,9 @@ class UploadFileForm(forms.ModelForm):
 
 class GeneralSearchImageForm(forms.Form):
     search = forms.MultipleChoiceField(
-        widget=autocomplete.Select2Multiple('/images/search-autocomplete'))
-
+        widget=autocomplete.Select2Multiple('/images/search-autocomplete'),
+                                            required=False)
+    description_search = forms.CharField(required=False)
 
 class AttributeSearchImageForm(forms.Form):
     lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
@@ -52,6 +53,7 @@ class AttributeSearchImageForm(forms.Form):
         widget=autocomplete.ModelSelect2(url='/images/imager-autocomplete'))
     organism = forms.ModelChoiceField(queryset=Organism.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/organism-autocomplete'))
+    description_search = forms.CharField(required=False)
     microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
         required=False, widget=autocomplete.ModelSelect2(url='/images/microscope-autocomplete'))
     objective = forms.FloatField(required=False)
