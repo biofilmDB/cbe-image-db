@@ -20,3 +20,8 @@ def get_detail_image_name(context, **kwargs):
 def get_list_image_name(context, **kwargs):
     name = context['image'].document.name.split('/')[-1]
     return name
+
+@register.simple_tag(takes_context=True)
+def get_organism_list(context, **kwargs):
+    organ = [str(x) for x in context['image'].organism.all()]
+    return ', '.join(organ)

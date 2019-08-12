@@ -12,7 +12,7 @@
     {% if image_list %}
     <ul>
         {% for image in image_list %}
-            <li> {{ image.organism }}, {{ image.microscope_setting }} </li>
+            <li> {% get_organism_list %}; {{ image.microscope_setting }} </li>
             <a href="{% url 'images:image_details' pk=image.pk %}">
             <img src="{{ image.medium_thumb.url }}" alt="" ></a>
             </br>
