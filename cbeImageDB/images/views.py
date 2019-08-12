@@ -38,24 +38,6 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
     redirected to."""
     model = Image
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        lab_list = kwargs['object'].lab.all()
-        # import ipdb; ipdb.set_trace()
-        lab_list_str = ''
-        if len(lab_list) > 0:
-            lab_list = [str(x) for x in lab_list]
-            lab_list_str = ', '.join(lab_list)
-        context['image_lab'] = lab_list_str
-
-        organ_list = kwargs['object'].organism.all()
-        organ_list_str = ''
-        if len(organ_list) > 0:
-            organ_list = [str(x) for x in organ_list]
-            organ_list_str = ', '.join(organ_list)
-        context['image_organism'] = organ_list_str
-        return context
-
 
 # Search all searchable terms at the same time
 class GeneralSearchView(genViews.FormView):
