@@ -68,7 +68,7 @@ class GeneralSearchResultsView(genViews.ListView):
         if self.request.user.is_superuser:
             qs = Image.objects.all()
         else:
-            qs = Image.objects.filter(release_date__lt=datetime.now())
+            qs = Image.objects.filter(release_date__lte=datetime.now())
 
         try:
             search_list = self.request.GET.getlist('search')
