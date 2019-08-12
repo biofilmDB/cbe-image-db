@@ -48,6 +48,12 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
             lab_list_str = ', '.join(lab_list)
         context['image_lab'] = lab_list_str
 
+        organ_list = kwargs['object'].organism.all()
+        organ_list_str = ''
+        if len(organ_list) > 0:
+            organ_list = [str(x) for x in organ_list]
+            organ_list_str = ', '.join(organ_list)
+        context['image_organism'] = organ_list_str
         return context
 
 
