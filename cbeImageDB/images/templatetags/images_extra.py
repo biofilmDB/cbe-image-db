@@ -22,6 +22,11 @@ def get_list_image_name(context, **kwargs):
     return name
 
 @register.simple_tag(takes_context=True)
+def get_lab_list(context, **kwargs):
+    labs = [str(x) for x in context['image'].lab.all()]
+    return ', '.join(labs)
+
+@register.simple_tag(takes_context=True)
 def get_organism_list(context, **kwargs):
     organ = [str(x) for x in context['image'].organism.all()]
     return ', '.join(organ)
