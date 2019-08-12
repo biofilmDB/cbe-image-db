@@ -38,18 +38,6 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
     redirected to."""
     model = Image
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        lab_list = kwargs['object'].lab.all()
-        # import ipdb; ipdb.set_trace()
-        lab_list_str = ''
-        if len(lab_list) > 0:
-            lab_list = [str(x) for x in lab_list]
-            lab_list_str = ', '.join(lab_list)
-        context['image_lab'] = lab_list_str
-
-        return context
-
 
 # Search all searchable terms at the same time
 class GeneralSearchView(genViews.FormView):
@@ -61,12 +49,13 @@ def get_description_search_qs(request, qs):
 
     try:
         desct = request.GET.get('description_search')
-        s = ImageDocument.search().query("match", brief_description=desct)
-        qs = qs & s.to_queryset()
-        return qs
+        if desct != '':
+            s = ImageDocument.search().query("match", brief_description=desct)
+            qs = qs & s.to_queryset()
 
     except MultiValueDictKeyError:
-        return qs
+        pass
+    return qs
 
 
 class GeneralSearchResultsView(genViews.ListView):
@@ -79,7 +68,7 @@ class GeneralSearchResultsView(genViews.ListView):
         if self.request.user.is_superuser:
             qs = Image.objects.all()
         else:
-            qs = Image.objects.filter(release_date__lt=datetime.now())
+            qs = Image.objects.filter(release_date__lte=datetime.now())
 
         try:
             search_list = self.request.GET.getlist('search')

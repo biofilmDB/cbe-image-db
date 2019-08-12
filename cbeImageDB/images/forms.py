@@ -30,7 +30,7 @@ class UploadFileForm(forms.ModelForm):
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'organism':
-            autocomplete.ModelSelect2(url='/images/organism-autocomplete/'),
+            autocomplete.ModelSelect2Multiple(url='/images/organism-autocomplete/'),
             'microscope_setting':
             autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
             'date_taken':
