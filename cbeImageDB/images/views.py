@@ -67,12 +67,13 @@ def get_description_search_qs(request, qs):
 
     try:
         desct = request.GET.get('description_search')
-        s = ImageDocument.search().query("match", brief_description=desct)
-        qs = qs & s.to_queryset()
-        return qs
+        if desct != '':
+            s = ImageDocument.search().query("match", brief_description=desct)
+            qs = qs & s.to_queryset()
 
     except MultiValueDictKeyError:
-        return qs
+        pass
+    return qs
 
 
 class GeneralSearchResultsView(genViews.ListView):
