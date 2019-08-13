@@ -15,7 +15,7 @@ class Organism(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=['organism_name',])
+            models.Index(fields=['organism_name', ])
         ]
 
 
@@ -116,5 +116,5 @@ def post_delete_file(sender, instance, *args, **kwargs):
 
 
 class ProtectOrganism(models.Model):
-    image = models.ForeignKey(Image, on_delete=models.PROTECT)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)
     organism = models.ForeignKey(Organism, on_delete=models.PROTECT)
