@@ -5,9 +5,11 @@ from . import views
 app_name = 'images'
 urlpatterns = [
     path('upload-image/', views.UploadImageView.as_view(), name='upload'),
-    path('add-imager/', views.AddImagerView.as_view(), name='add_imager'),
     path('details/<int:pk>/', views.ImageDetailsView.as_view(),
          name='image_details'),
+    path('add-imager/', views.AddImagerView.as_view(), name='add_imager'),
+    path('imager-success/<int:pk>', views.ImagerSuccessView.as_view(),
+         name='imager_success'),
 
     # Searching and results urls
     path('general-search/', views.GeneralSearchView.as_view(),

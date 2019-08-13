@@ -5,11 +5,14 @@
 <div id='template-content>
 {% block content %}
 <h1> Search Results </h1>
+{% if user.is_superuser %}
+    <h2> **Viewing results as admin** </h2>
+{% endif %}
 
     {% if image_list %}
     <ul>
         {% for image in image_list %}
-            <li> {% get_list_image_name %} </li>
+            <li> {% get_organism_list %}; {{ image.microscope_setting }} </li>
             <a href="{% url 'images:image_details' pk=image.pk %}">
             <img src="{{ image.medium_thumb.url }}" alt="" ></a>
             </br>

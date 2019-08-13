@@ -54,6 +54,9 @@
     <header>
        
         <div class="topnav">
+            {% if user.is_superuser %}
+                <a class="navbar-brand" href="/admin/">Admin</a>
+            {% endif %} 
             <a class="navbar-brand" href="{% url 'images:upload' %}">Upload Image</a>
             <a class="navbar-brand" href={% url 'images:add_imager' %}>Add Imager</a>
             <a class="navbar-brand" href="{% url 'images:attribute_search' %}">Search Attributes</a>

@@ -8,6 +8,8 @@ from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
 from . import search_utils as su
 from django import http
+from datetime import datetime
+from .documents import ImageDocument
 
 
 class AddImagerView(genViews.CreateView):
@@ -25,10 +27,9 @@ class AddImagerView(genViews.CreateView):
         context['button_text'] = "Add"
         return context
 
-    def form_valid(self, form):
-        new_imager = form.save()
-        new_imager.save()
-        return HttpResponseRedirect(reverse('images:upload'))
+
+class ImagerSuccessView(TemplateNames, genViews.DetailView):
+    model = Imager
 
 
 class ImageDetailsView(TemplateNames, genViews.DetailView):
@@ -36,23 +37,24 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
     redirected to."""
     model = Image
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        lab_list = kwargs['object'].lab.all()
-        # import ipdb; ipdb.set_trace()
-        lab_list_str = ''
-        if len(lab_list) > 0:
-            lab_list = [str(x) for x in lab_list]
-            lab_list_str = ', '.join(lab_list)
-        context['image_lab'] = lab_list_str
-
-        return context
-
 
 # Search all searchable terms at the same time
 class GeneralSearchView(genViews.FormView):
     form_class = forms.GeneralSearchImageForm
     template_name = 'images/search_images.html'
+
+
+def get_description_search_qs(request, qs):
+
+    try:
+        desct = request.GET.get('description_search')
+        if desct != '':
+            s = ImageDocument.search().query("match", brief_description=desct)
+            qs = qs & s.to_queryset()
+
+    except MultiValueDictKeyError:
+        pass
+    return qs
 
 
 class GeneralSearchResultsView(genViews.ListView):
@@ -62,7 +64,11 @@ class GeneralSearchResultsView(genViews.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        qs = Image.objects.all()
+        if self.request.user.is_superuser:
+            qs = Image.objects.all()
+        else:
+            qs = Image.objects.filter(release_date__lte=datetime.now())
+
         try:
             search_list = self.request.GET.getlist('search')
             for search in search_list:
@@ -95,6 +101,9 @@ class GeneralSearchResultsView(genViews.ListView):
 
         except MultiValueDictKeyError:
             pass
+
+        qs = get_description_search_qs(self.request, qs)
+
         return qs
 
 
@@ -113,7 +122,11 @@ class AttributeSearchResultsView(genViews.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        qs = Image.objects.all()
+        if self.request.user.is_superuser:
+            qs = Image.objects.all()
+        else:
+            qs = Image.objects.filter(release_date__lte=datetime.now())
+
         # Variable to tell if there was something that was searched
         try:
             search_lab = self.request.GET['lab']
@@ -179,6 +192,8 @@ class AttributeSearchResultsView(genViews.ListView):
                 qs = qs.filter(organism=organ)
         except MultiValueDictKeyError:
             pass
+
+        qs = get_description_search_qs(self.request, qs)
 
         return qs
 

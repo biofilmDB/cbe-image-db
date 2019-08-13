@@ -1,0 +1,6 @@
+{% extends 'images/base.html' %}
+{% block content %}
+<h1> Successful Imager Creation </h1>
+<p> Imager {{ imager }} created successfully. </p>
+<a href={% url 'images:add_imager' %}> Add another imager </a>
+{% endblock %}
