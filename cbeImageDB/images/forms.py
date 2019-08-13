@@ -24,6 +24,9 @@ class UploadFileForm(forms.ModelForm):
         model = Image
         fields = ['document', 'date_taken', 'release_date', 'imager', 'lab',
                   'organism', 'microscope_setting', 'brief_description', ]
+        help_texts = {
+            'brief_description': '1000 character max overview of the project',
+        }
         widgets = {
             'imager':
             autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
@@ -45,6 +48,7 @@ class GeneralSearchImageForm(forms.Form):
         widget=autocomplete.Select2Multiple('/images/search-autocomplete'),
                                             required=False)
     description_search = forms.CharField(required=False)
+
 
 class AttributeSearchImageForm(forms.Form):
     lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
