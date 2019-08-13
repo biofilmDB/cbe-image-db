@@ -111,7 +111,7 @@ def post_delete_file(sender, instance, *args, **kwargs):
 
 
 class ProtectLab(models.Model):
-    image = models.ForeignKey(Image, on_delete=models.PROTECT)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)
     lab = models.ForeignKey(Lab, on_delete=models.PROTECT)
 
 
