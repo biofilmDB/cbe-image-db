@@ -81,7 +81,7 @@ def large_thumb_directory_path(instance, filename):
 
 class Image(models.Model):
     # With ForeignKey on_delete was PROTECT
-    lab = models.ManyToManyField(Lab)
+    lab = models.ManyToManyField(Lab, through='ProtectLab')
     imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
     organism = models.ManyToManyField(Organism, through='ProtectOrganism')
     microscope_setting = models.ForeignKey(Microscope_settings,
@@ -108,6 +108,11 @@ def post_delete_file(sender, instance, *args, **kwargs):
     instance.document.delete(save=False)
     instance.medium_thumb.delete(save=False)
     instance.large_thumb.delete(save=False)
+
+
+class ProtectLab(models.Model):
+    image = models.ForeignKey(Image, on_delete=models.PROTECT)
+    lab = models.ForeignKey(Lab, on_delete=models.PROTECT)
 
 
 class ProtectOrganism(models.Model):
