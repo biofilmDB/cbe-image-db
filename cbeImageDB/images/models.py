@@ -2,6 +2,7 @@ from django.db import models
 from django.dispatch import receiver
 from datetime import date
 from easy_thumbnails.fields import ThumbnailerImageField
+from django.urls import reverse
 
 
 class Organism(models.Model):
@@ -52,6 +53,9 @@ class Imager(models.Model):
 
     def __str__(self):
         return self.imager_name
+
+    def get_absolute_url(self):
+        return reverse('images:imager_success', kwargs={'pk': self.pk})
 
 
 def imager_directory_path(instance, filename):
