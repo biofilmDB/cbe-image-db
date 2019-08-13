@@ -13,6 +13,11 @@ class Organism(models.Model):
     def __str__(self):
         return self.organism_name
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['organism_name',])
+        ]
+
 
 class Microscope(models.Model):
     microscope_name = models.CharField(max_length=500)
