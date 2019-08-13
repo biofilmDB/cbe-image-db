@@ -13,6 +13,9 @@
     <ul>
         {% for image in image_list %}
             <li> {% get_organism_list %}; {{ image.microscope_setting }} </li>
+            {% if user.is_superuser %}
+                <li> Release Date: {{ image.release_date }} </li>
+            {% endif %}
             <a href="{% url 'images:image_details' pk=image.pk %}">
             <img src="{{ image.medium_thumb.url }}" alt="" ></a>
             </br>
