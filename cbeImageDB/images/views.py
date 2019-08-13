@@ -27,10 +27,9 @@ class AddImagerView(genViews.CreateView):
         context['button_text'] = "Add"
         return context
 
-    def form_valid(self, form):
-        new_imager = form.save()
-        new_imager.save()
-        return HttpResponseRedirect(reverse('images:upload'))
+
+class ImagerSuccessView(TemplateNames, genViews.DetailView):
+    model = Imager
 
 
 class ImageDetailsView(TemplateNames, genViews.DetailView):
