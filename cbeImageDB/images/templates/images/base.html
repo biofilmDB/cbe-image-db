@@ -12,7 +12,11 @@
         
             .topnav {
               overflow: hidden;
-              background-color: #FA1300; {# 009B98; #}
+              {% if user.is_superuser %}
+                  background-color: #417690;
+              {% else %}
+                  background-color: #FA1300; {# 009B98; #}
+              {% endif %}
             }
         
             .topnav a {
