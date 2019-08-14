@@ -76,8 +76,8 @@ class GeneralSearchResultsView(genViews.ListView):
                 if q[0].lower() == 'imager':
                     qs = qs.filter(imager__imager_name=q[-1])
 
-                elif q[0].lower() == 'lab':
-                    qs = qs.filter(lab__pi_name=q[-1])
+                # elif q[0].lower() == 'lab':
+                #    qs = qs.filter(lab__pi_name=q[-1])
 
                 elif q[0].lower() == 'objective medium':
                     qs = qs.filter(microscope_setting__medium__medium_type=q[-1])
@@ -89,8 +89,8 @@ class GeneralSearchResultsView(genViews.ListView):
 
                 elif q[0].lower() == 'microscope':
                     qs = qs.filter(microscope_setting__microscope__microscope_name=q[-1])
-                elif q[0].lower() == 'organism':
-                    qs = qs.filter(organism__organism_name=q[-1])
+                # elif q[0].lower() == 'organism':
+                #    qs = qs.filter(organism__organism_name=q[-1])
                 elif q[0].lower() == 'day':
                     qs = qs.filter(date_taken__day=q[-1])
                 elif q[0].lower() == 'month':
@@ -128,12 +128,14 @@ class AttributeSearchResultsView(genViews.ListView):
             qs = Image.objects.filter(release_date__lte=datetime.now())
 
         # Variable to tell if there was something that was searched
+        """
         try:
             search_lab = self.request.GET['lab']
             if search_lab != '':
                 qs = qs.filter(lab=search_lab)
         except MultiValueDictKeyError:
             pass
+        """
 
         try:
             search_imager = self.request.GET['imager']
@@ -186,12 +188,14 @@ class AttributeSearchResultsView(genViews.ListView):
         except MultiValueDictKeyError:
             pass
 
+        """
         try:
             organ = self.request.GET['organism']
             if organ != '':
                 qs = qs.filter(organism=organ)
         except MultiValueDictKeyError:
             pass
+        """
 
         qs = get_description_search_qs(self.request, qs)
 
