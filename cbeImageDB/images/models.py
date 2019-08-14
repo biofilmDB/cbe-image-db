@@ -93,6 +93,9 @@ class Image(models.Model):
                                     default=date.today)
     date_uploaded = models.DateField(("Date uploaded"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
+    # TODO: Does this blong here or in image?
+    # Leave in image now for simpler refactoring
+    brief_description = models.CharField(max_length=1000)
     medium_thumb = ThumbnailerImageField(upload_to=medium_thumb_directory_path,
                                          resize_source=dict(size=(200, 200),
                                                             sharpen=True))
@@ -147,5 +150,3 @@ class ProtectLab(models.Model):
 class ProtectOrganism(models.Model):
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     organism = models.ForeignKey(Organism, on_delete=models.PROTECT)
-
-
