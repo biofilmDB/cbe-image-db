@@ -22,18 +22,13 @@ class UploadFileForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['document', 'date_taken', 'release_date', 'imager', 'lab',
-                  'organism', 'microscope_setting', 'brief_description', ]
-        help_texts = {
-            'brief_description': '1000 character max overview of the project',
-        }
+        fields = ['document', 'date_taken', 'release_date', 'imager',
+                  'microscope_setting', ]
         widgets = {
             'imager':
             autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
-            'organism':
-            autocomplete.ModelSelect2Multiple(url='/images/organism-autocomplete/'),
             'microscope_setting':
             autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
             'date_taken':
@@ -51,12 +46,12 @@ class GeneralSearchImageForm(forms.Form):
 
 
 class AttributeSearchImageForm(forms.Form):
-    lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
-        widget=autocomplete.ModelSelect2(url='/images/lab-autocomplete'))
+    #lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
+    #    widget=autocomplete.ModelSelect2(url='/images/lab-autocomplete'))
     imager = forms.ModelChoiceField(queryset=Imager.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/imager-autocomplete'))
-    organism = forms.ModelChoiceField(queryset=Organism.objects.all(), required=False,
-        widget=autocomplete.ModelSelect2(url='/images/organism-autocomplete'))
+    #organism = forms.ModelChoiceField(queryset=Organism.objects.all(), required=False,
+    #    widget=autocomplete.ModelSelect2(url='/images/organism-autocomplete'))
     description_search = forms.CharField(required=False)
     microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
         required=False, widget=autocomplete.ModelSelect2(url='/images/microscope-autocomplete'))
