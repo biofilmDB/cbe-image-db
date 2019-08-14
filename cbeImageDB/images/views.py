@@ -351,7 +351,8 @@ class YearAutocomplete(autocomplete.Select2ListView):
 class SearchAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):
-        search_terms = ['Lab: ' + str(x) for x in list(Lab.objects.all())]
+        search_terms = []
+        # ['Lab: ' + str(x) for x in list(Lab.objects.all())]
         search_terms.extend(['Imager: ' + str(x) for x in
                             list(Imager.objects.all())])
         search_terms.extend(['Microscope: ' + str(x) for x in
@@ -359,7 +360,7 @@ class SearchAutocomplete(autocomplete.Select2ListView):
         search_terms.extend(['Objective Medium: ' + str(x) for x in
                              list(Medium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
-        search_terms.extend(['Organism: ' + x for x in su.get_organism_list()])
+        #search_terms.extend(['Organism: ' + x for x in su.get_organism_list()])
         search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
         months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November',
