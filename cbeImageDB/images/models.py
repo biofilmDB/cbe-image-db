@@ -85,13 +85,9 @@ def large_thumb_directory_path(instance, filename):
 
 
 class Image(models.Model):
-    # With ForeignKey on_delete was PROTECT
-    lab = models.ManyToManyField(Lab, through='ProtectLab')
     imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
-    organism = models.ManyToManyField(Organism, through='ProtectOrganism')
     microscope_setting = models.ForeignKey(Microscope_settings,
                                            on_delete=models.PROTECT)
-    brief_description = models.CharField(max_length=1000)
     date_taken = models.DateField(("Date taken"), default=date.today)
     release_date = models.DateField(("Can't be used before"),
                                     default=date.today)
@@ -115,11 +111,41 @@ def post_delete_file(sender, instance, *args, **kwargs):
     instance.large_thumb.delete(save=False)
 
 
+class GrowthSubstratum(models.Model):
+    substratum = models.CharField(max_length=500)
+
+
+class Vessel(models.Model):
+    name = models.CharField(max_length=500)
+
+
+class GrowthMedium(models.Model):
+    growth_medium = models.CharField(max_length=500)
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=500)
+
+
+class Experiment(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.PROTECT)
+    lab = models.ManyToManyField(Lab, through='ProtectLab')
+    organism = models.ManyToManyField(Organism, through='ProtectOrganism')
+    vessel = models.ForeignKey(Vessel, on_delete=models.PROTECT)
+    growth_medium = models.ForeignKey(GrowthMedium, on_delete=models.PROTECT)
+    substratum = models.ForeignKey(GrowthSubstratum, on_delete=models.PROTECT)
+    # TODO: Does this belong here or in image?
+    # brief_description = models.CharField(max_length=1000)
+
+
+# TODO: Is cascade correct for experiments?
 class ProtectLab(models.Model):
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     lab = models.ForeignKey(Lab, on_delete=models.PROTECT)
 
 
 class ProtectOrganism(models.Model):
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     organism = models.ForeignKey(Organism, on_delete=models.PROTECT)
+
+
