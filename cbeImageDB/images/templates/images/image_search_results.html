@@ -9,7 +9,7 @@
     {% if image_list %}
     <ul>
         {% for image in image_list %}
-            <li> {% get_organism_list %}; {{ image.microscope_setting }} </li>
+            <li> {# {% get_organism_list %};#} {{ image.microscope_setting }} </li>
             {% if user.is_superuser %}
                 <li> Release Date: {{ image.release_date }} </li>
             {% endif %}
