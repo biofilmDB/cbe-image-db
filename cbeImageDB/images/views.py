@@ -2,7 +2,7 @@ from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
 from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium, Organism, Experiment
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
@@ -51,7 +51,7 @@ class UploadImageView(TemplateNames, MultiFormView):
                                content=image.document)
         image.save()
         return HttpResponseRedirect(reverse('images:image_to_experiment',
-                                            args=(image.id,)))
+                                            args=(experiment.id,)))
 
 
 class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
@@ -76,8 +76,30 @@ class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
         return context
 
 
-class UploadImageToExperimentView(TemplateNames, genViews.DetailView):
-    pass
+class UploadImageToExperimentView(TemplateNames, genViews.DetailView, genViews.CreateView):
+    model = Experiment
+    form_class = forms.UploadFileForm
+    # success_url = reverse_lazy('images:upload')
+
+    def form_valid(self, form):
+        image = form.save(commit=False)
+        image.experiment = Experiment.objects.get(id=self.kwargs['pk'])
+        image.medium_thumb.save(name=image.document.name,
+                                content=image.document)
+        image.large_thumb.save(name=image.document.name,
+                               content=image.document)
+        image.save()
+        return HttpResponseRedirect(reverse('images:upload_success',
+                                            args=(image.experiment.id,)))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # get the image
+        e = kwargs['object']
+        images = e.image_set.all()
+        context['get_experiment_details'] = su.get_html_experiment_list(e)
+        return context
+
 
 
 class ImageDetailsView(TemplateNames, genViews.DetailView):
