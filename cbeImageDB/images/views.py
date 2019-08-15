@@ -1,8 +1,7 @@
-from . import forms
+from . import forms, models
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
-from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium, Organism, Experiment
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
@@ -18,7 +17,7 @@ class AddImagerView(genViews.CreateView):
     model template."""
     template_name = 'images/create_model.html'
     form_class = forms.AddImagerForm
-    model = Imager
+    model = models.Imager
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -30,7 +29,7 @@ class AddImagerView(genViews.CreateView):
 
 
 class ImagerSuccessView(TemplateNames, genViews.DetailView):
-    model = Imager
+    model = models.Imager
 
 
 class UploadImageView(TemplateNames, MultiFormView):
@@ -57,7 +56,7 @@ class UploadImageView(TemplateNames, MultiFormView):
 class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
     """ Shows the details of an image. It is where a sucessfull image upload is
     redirected to."""
-    model = Experiment
+    model = models.Experiment
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -77,13 +76,13 @@ class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
 
 
 class UploadImageToExperimentView(TemplateNames, genViews.DetailView, genViews.CreateView):
-    model = Experiment
+    model = models.Experiment
     form_class = forms.UploadFileForm
     # success_url = reverse_lazy('images:upload')
 
     def form_valid(self, form):
         image = form.save(commit=False)
-        image.experiment = Experiment.objects.get(id=self.kwargs['pk'])
+        image.experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
         image.medium_thumb.save(name=image.document.name,
                                 content=image.document)
         image.large_thumb.save(name=image.document.name,
@@ -105,7 +104,7 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView, genViews.C
 class ImageDetailsView(TemplateNames, genViews.DetailView):
     """ Shows the details of an image. It is where a sucessfull image upload is
     redirected to."""
-    model = Image
+    model = models.Image
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -135,16 +134,16 @@ def get_description_search_qs(request, qs):
 
 
 class GeneralSearchResultsView(genViews.ListView):
-    model = Image
+    model = models.Image
     context_object_name = 'image_list'
     template_name = 'images/image_search_results.html'
     paginate_by = 5
 
     def get_queryset(self):
         if self.request.user.is_superuser:
-            qs = Image.objects.all()
+            qs = models.Image.objects.all()
         else:
-            qs = Image.objects.filter(release_date__lte=datetime.now())
+            qs = models.Image.objects.filter(release_date__lte=datetime.now())
 
         try:
             search_list = self.request.GET.getlist('search')
@@ -193,16 +192,16 @@ class AttributeSearchImageView(TemplateNames, genViews.FormView):
 
 class AttributeSearchResultsView(genViews.ListView):
     """ Shows all of the images that match a search criteria."""
-    model = Image
+    model = models.Image
     context_object_name = 'image_list'
     template_name = 'images/image_search_results.html'
     paginate_by = 5
 
     def get_queryset(self):
         if self.request.user.is_superuser:
-            qs = Image.objects.all()
+            qs = models.Image.objects.all()
         else:
-            qs = Image.objects.filter(release_date__lte=datetime.now())
+            qs = models.Image.objects.filter(release_date__lte=datetime.now())
 
         # Variable to tell if there was something that was searched
         """
@@ -283,9 +282,9 @@ class AttributeSearchResultsView(genViews.ListView):
 class MicroscopeSettingAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        settings = Microscope_settings.objects.all()
-        scopes = Microscope.objects.all()
-        mediums = Medium.objects.all()
+        settings = models.Microscope_settings.objects.all()
+        scopes = models.Microscope.objects.all()
+        mediums = models.Medium.objects.all()
 
         if self.q:
             # filter by objective
@@ -309,7 +308,7 @@ class MicroscopeSettingAutocomplete(autocomplete.Select2QuerySetView):
 class MicroscopeAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        qs = Microscope.objects.all()
+        qs = models.Microscope.objects.all()
 
         if self.q:
             qs = qs.filter(microscope_name__icontains=self.q)
@@ -320,7 +319,7 @@ class MicroscopeAutocomplete(autocomplete.Select2QuerySetView):
 class MediumAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        qs = Medium.objects.all()
+        qs = models.Medium.objects.all()
         if self.q:
             qs = qs.filter(medium_type__icontains=self.q)
         return qs
@@ -329,7 +328,7 @@ class MediumAutocomplete(autocomplete.Select2QuerySetView):
 class ImagerAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        qs = Imager.objects.all()
+        qs = models.Imager.objects.all()
         if self.q:
             qs = qs.filter(imager_name__icontains=self.q)
         return qs
@@ -338,7 +337,7 @@ class ImagerAutocomplete(autocomplete.Select2QuerySetView):
 class OrganismAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        qs = Organism.objects.all()
+        qs = models.Organism.objects.all()
         if self.q:
             qs = qs.filter(organism_name__icontains=self.q)
         return qs
@@ -353,7 +352,7 @@ class AddImagerAutocomplete(autocomplete.Select2QuerySetView):
         display_create_option = False
         create_object = []
 
-        possibles = Imager.objects.filter(imager_name__icontains=q)
+        possibles = models.Imager.objects.filter(imager_name__icontains=q)
         if len(possibles) == 0:
             display_create_option = True
             create_object = [{'id': q,
@@ -366,14 +365,14 @@ class AddImagerAutocomplete(autocomplete.Select2QuerySetView):
         text = request.POST.get('text', None)
         if text is None:
             return http.HttpResponseBadRequest()
-        result = Imager.objects.create(imager_name=text)
+        result = models.Imager.objects.create(imager_name=text)
         return http.JsonResponse({
             'id': result.pk,
             'text': self.get_result_label(result),
         })
 
     def get_queryset(self):
-        qs = Imager.objects.all()
+        qs = models.Imager.objects.all()
         if self.q:
             qs = qs.filter(imager_name__icontains=self.q)
         return qs
@@ -382,7 +381,7 @@ class AddImagerAutocomplete(autocomplete.Select2QuerySetView):
 class LabAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        qs = Lab.objects.all()
+        qs = models.Lab.objects.all()
         if self.q:
             qs = qs.filter(pi_name__icontains=self.q)
         return qs
@@ -415,11 +414,11 @@ class SearchAutocomplete(autocomplete.Select2ListView):
         search_terms = []
         # ['Lab: ' + str(x) for x in list(Lab.objects.all())]
         search_terms.extend(['Imager: ' + str(x) for x in
-                            list(Imager.objects.all())])
+                            list(models.Imager.objects.all())])
         search_terms.extend(['Microscope: ' + str(x) for x in
-                            list(Microscope.objects.all())])
+                            list(models.Microscope.objects.all())])
         search_terms.extend(['Objective Medium: ' + str(x) for x in
-                             list(Medium.objects.all())])
+                             list(models.Medium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
         #search_terms.extend(['Organism: ' + x for x in su.get_organism_list()])
         search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
