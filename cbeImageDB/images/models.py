@@ -117,17 +117,29 @@ def post_delete_file(sender, instance, *args, **kwargs):
 class GrowthSubstratum(models.Model):
     substratum = models.CharField(max_length=500)
 
+    def __str__(self):
+        return self.substratum
+
 
 class Vessel(models.Model):
     name = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.name
 
 
 class GrowthMedium(models.Model):
     growth_medium = models.CharField(max_length=500)
 
+    def __str__(self):
+        return self.growth_medium
+
 
 class Project(models.Model):
     name = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.name
 
 
 class Experiment(models.Model):
