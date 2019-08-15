@@ -123,7 +123,8 @@ class Experiment(models.Model):
     # brief_description = models.CharField(max_length=1000)
 
     def __str__(self):
-        return '{}-{}-{}'.format(self.project, self.lab, self.pk)
+        lab = ', '.join([str(x) for x in self.lab.all()])
+        return '{} - {} - {}'.format(self.project, lab, self.pk)
 
 
 # TODO: Is cascade correct for experiments?
