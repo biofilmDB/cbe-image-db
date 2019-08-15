@@ -50,24 +50,34 @@ class UploadImageView(TemplateNames, MultiFormView):
         image.large_thumb.save(name=image.document.name,
                                content=image.document)
         image.save()
-        return HttpResponseRedirect(reverse('images:upload_success',
+        return HttpResponseRedirect(reverse('images:image_to_experiment',
                                             args=(image.id,)))
 
 
 class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
     """ Shows the details of an image. It is where a sucessfull image upload is
     redirected to."""
-    model = Image
+    model = Experiment
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # get the image
-        image = kwargs['object']
-        e = image.experiment
+        e = kwargs['object']
+        images = e.image_set.all()
         context['get_experiment_details'] = su.get_html_experiment_list(e)
-        context['get_image_details'] = su.get_html_image_list(image)
-        # TODO: Put all other images for same experiment
+        context['get_image_details'] = []
+        # Make dictionarys for each image
+        for image in images:
+            t = {'thumb': image.large_thumb.url,
+                 'details': su.get_html_image_list(image),
+                 'release_date': image.release_date,
+                 }
+            context['get_image_details'].append(t)
         return context
+
+
+class UploadImageToExperimentView(TemplateNames, genViews.DetailView):
+    pass
 
 
 class ImageDetailsView(TemplateNames, genViews.DetailView):

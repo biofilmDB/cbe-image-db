@@ -3,7 +3,7 @@
 
 {% block content %}
 <h1> Upload Success </h1>
-<p> Your image has been successfully uploaded. Would you like to upload another with these same features? </p>
+<p> Your image has been successfully uploaded to experiment {{ experiment }}. Would you like to upload another with these same features? </p>
 <ul>
     {% for info in get_experiment_details %}
         <li> {{ info }} </li>
@@ -11,20 +11,23 @@
 </ul>
 <p> TODO: put a button to upload another image here <p>
 
-<h2> Image Information </h2>
+<h2> Associated Images </h2>
 {% load thumbnail %}
-<img src="{{ image.large_thumb.url }}"
+{% for image in get_image_details %}
+<img src="{{ image.thumb }}"
      alt="An error occured while loading the image" />
 <ul>
-     {% for info in get_image_details %}
+     {% for info in image.details %}
         <li> {{ info }} </li>
     {% endfor %}
     {% if user.is_superuser %}
-        <li>Release date: {{ image.release_date }} </li>
+        <li>Release date: {{ release_date }} </li>
     {% endif %}
 
 </ul>
 </br>
+
+{% endfor %}
 </br>
 
 {% endblock %}
