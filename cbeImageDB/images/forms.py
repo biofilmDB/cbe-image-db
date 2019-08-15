@@ -26,12 +26,21 @@ class CreateExperimentForm(forms.ModelForm):
         fields = ['project', 'lab', 'organism', 'growth_medium', 'vessel',
                   'substratum',]
 
-        """
         widgets = {
+            'lab':
+            autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'organism':
             autocomplete.ModelSelect2Multiple(url='/images/organism-autocomplete/'),
+            'project':
+            autocomplete.ModelSelect2(url='/images/project-autocomplete/'),
+            'growth_medium':
+            autocomplete.ModelSelect2(url='/images/growthmedium-autocomplete/'),
+            'vessel':
+            autocomplete.ModelSelect2(url='/images/vessel-autocomplete/'),
+            'substratum':
+            autocomplete.ModelSelect2(url='/images/growthsubstratum-autocomplete/'),
         }
-        """
+
 
 class UploadFileForm(forms.ModelForm):
 
@@ -40,14 +49,10 @@ class UploadFileForm(forms.ModelForm):
         fields = ['document', 'date_taken', 'release_date', 'imager',
                   'microscope_setting', 'brief_description', ]
         widgets = {
-            """
             'imager':
             autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
-            'lab':
-            autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'microscope_setting':
             autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
-            """
             'date_taken':
             forms.SelectDateWidget(),
             'release_date':
