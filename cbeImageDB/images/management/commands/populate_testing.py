@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from . import models as m
+from images import models as m
 
 
 class Command(BaseCommand):
@@ -26,8 +26,14 @@ class Command(BaseCommand):
         m.Organism.objects.create(organism_name='Test organism', storid='123',
                                   ncbi_id='ncbi25')
 
+    def _create_experiment_objects(self):
+        m.Vessel.objects.create(name='Test Reactor A')
+        m.GrowthSubstratum.objects.create(substratum='Test Glass')
+        m.GrowthMedium.objects.create(growth_medium='Test growth medium')
+
     def handle(self, *args, **options):
         self._create_labs()
         self._create_imager()
         self._create_microscope()
         self._create_organism()
+        self._create_experiment_objects()
