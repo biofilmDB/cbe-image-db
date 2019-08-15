@@ -1,7 +1,7 @@
 from . import forms
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
-from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium, Organism
+from .models import Image, Lab, Imager, Microscope_settings, Microscope, Medium, Organism, Experiment
 from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
@@ -50,8 +50,24 @@ class UploadImageView(TemplateNames, MultiFormView):
         image.large_thumb.save(name=image.document.name,
                                content=image.document)
         image.save()
-        return HttpResponseRedirect(reverse('images:image_details',
+        return HttpResponseRedirect(reverse('images:upload_success',
                                             args=(image.id,)))
+
+
+class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
+    """ Shows the details of an image. It is where a sucessfull image upload is
+    redirected to."""
+    model = Image
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # get the image
+        image = kwargs['object']
+        e = image.experiment
+        context['get_experiment_details'] = su.get_html_experiment_list(e)
+        context['get_image_details'] = su.get_html_image_list(image)
+        # TODO: Put all other images for same experiment
+        return context
 
 
 class ImageDetailsView(TemplateNames, genViews.DetailView):

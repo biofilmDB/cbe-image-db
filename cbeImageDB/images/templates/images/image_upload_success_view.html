@@ -3,22 +3,28 @@
 
 {% block content %}
 <h1> Upload Success </h1>
-<p> Your image has been successfully uploaded. Would you like to upload another to the same experiment? </p>
-<p> The features staying the same will be: </p>
+<p> Your image has been successfully uploaded. Would you like to upload another with these same features? </p>
 <ul>
-    <li> Project: {{ experiment.project }} </li>
-    <li> Lab: {% get_lab_list %} </li> 
-    <li> Organism: {% get_organism_list %} </li>
-    <li> Vessel: {{ experiment.vessel }} </li>
-    <li> Growth Medium: {{ experiment.growth_medium }} </li>
-    <li> Growth Substriatum: {{ experiment.substratum }} </li>
+    {% for info in get_experiment_details %}
+        <li> {{ info }} </li>
+    {% endfor %}
 </ul>
 <p> TODO: put a button to upload another image here <p>
 
 <h2> Image Information </h2>
+{% load thumbnail %}
+<img src="{{ image.large_thumb.url }}"
+     alt="An error occured while loading the image" />
 <ul>
-     {% for info in get_details %}
+     {% for info in get_image_details %}
         <li> {{ info }} </li>
     {% endfor %}
+    {% if user.is_superuser %}
+        <li>Release date: {{ image.release_date }} </li>
+    {% endif %}
+
 </ul>
+</br>
+</br>
+
 {% endblock %}
