@@ -1,4 +1,4 @@
-from .models import Microscope_settings, Image
+from .models import Microscope_settings, Image, Experiment
 
 
 def get_objectives():
@@ -36,7 +36,7 @@ def get_year_list():
 
 def get_organism_list():
     organisms = []
-    for i in Image.objects.all():
+    for i in Experiment.objects.all():
         for o in i.organism.all():
             organisms.append(o.organism_name)
     organisms = list(set(organisms))
