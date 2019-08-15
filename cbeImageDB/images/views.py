@@ -398,6 +398,42 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
+class GrowthMediumAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = models.GrowthMedium.objects.all()
+        if self.q:
+            qs = qs.filter(growth_medium__icontains=self.q)
+        return qs
+
+
+class GrowthSubstratumAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = models.GrowthSubstratum.objects.all()
+        if self.q:
+            qs = qs.filter(substratum__icontains=self.q)
+        return qs
+
+
+class VesselAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = models.Vessel.objects.all()
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
+        return qs
+
+
+class ProjectAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = models.Project.objects.all()
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
+        return qs
+
+
 class DayAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):
