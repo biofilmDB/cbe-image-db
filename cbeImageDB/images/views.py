@@ -62,7 +62,7 @@ class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
         context = super().get_context_data(**kwargs)
         # get the image
         e = kwargs['object']
-        images = e.image_set.all()
+        images = e.image_set.order_by('-pk')
         context['get_experiment_details'] = su.get_html_experiment_list(e)
         context['get_image_details'] = []
         # Make dictionarys for each image
