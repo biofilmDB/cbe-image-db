@@ -211,7 +211,9 @@ class UploadImageView(TemplateNames, MultiFormView):
         'experiment_form': forms.CreateExperimentForm,
     }
     def forms_valid(self, forms):
-        image = forms['image_form'].save()
+        experiment = forms['experiment_form'].save()
+        image = forms['image_form'].save(commit=False)
+        image.experiment = experiment
         image.medium_thumb.save(name=image.document.name,
                                 content=image.document)
         image.large_thumb.save(name=image.document.name,

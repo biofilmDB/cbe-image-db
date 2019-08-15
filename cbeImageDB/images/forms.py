@@ -22,7 +22,8 @@ class CreateExperimentForm(forms.ModelForm):
 
     class Meta:
         model = Experiment
-        fields = ['organism', 'growth_medium', 'vessel', 'substratum',]
+        fields = ['project', 'lab', 'organism', 'growth_medium', 'vessel',
+                  'substratum',]
 
         """
         widgets = {
