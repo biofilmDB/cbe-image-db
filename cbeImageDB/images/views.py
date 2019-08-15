@@ -49,7 +49,7 @@ class UploadImageView(TemplateNames, MultiFormView):
         image.large_thumb.save(name=image.document.name,
                                content=image.document)
         image.save()
-        return HttpResponseRedirect(reverse('images:image_to_experiment',
+        return HttpResponseRedirect(reverse('images:upload_success',
                                             args=(experiment.id,)))
 
 
