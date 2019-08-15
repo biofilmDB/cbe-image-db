@@ -27,6 +27,7 @@ class Command(BaseCommand):
                                   ncbi_id='ncbi25')
 
     def _create_experiment_objects(self):
+        m.Project.objects.create(name='Test Project 1')
         m.Vessel.objects.create(name='Test Reactor A')
         m.GrowthSubstratum.objects.create(substratum='Test Glass')
         m.GrowthMedium.objects.create(growth_medium='Test growth medium')
