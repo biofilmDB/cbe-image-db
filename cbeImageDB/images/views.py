@@ -33,6 +33,27 @@ class ImagerSuccessView(TemplateNames, genViews.DetailView):
     model = Imager
 
 
+class UploadImageView(TemplateNames, MultiFormView):
+    """ Allows the user to upload an image file and requests they fill in the
+    model fields."""
+    form_classes = {
+        'image_form': forms.UploadFileForm,
+        'experiment_form': forms.CreateExperimentForm,
+    }
+    def forms_valid(self, forms):
+        experiment = forms['experiment_form'].save()
+        experiment.save()
+        image = forms['image_form'].save(commit=False)
+        image.experiment = experiment
+        image.medium_thumb.save(name=image.document.name,
+                                content=image.document)
+        image.large_thumb.save(name=image.document.name,
+                               content=image.document)
+        image.save()
+        return HttpResponseRedirect(reverse('images:image_details',
+                                            args=(image.id,)))
+
+
 class ImageDetailsView(TemplateNames, genViews.DetailView):
     """ Shows the details of an image. It is where a sucessfull image upload is
     redirected to."""
@@ -201,42 +222,6 @@ class AttributeSearchResultsView(genViews.ListView):
         qs = get_description_search_qs(self.request, qs)
 
         return qs
-
-
-class UploadImageView(TemplateNames, MultiFormView):
-    """ Allows the user to upload an image file and requests they fill in the
-    model fields."""
-    form_classes = {
-        'image_form': forms.UploadFileForm,
-        'experiment_form': forms.CreateExperimentForm,
-    }
-    def forms_valid(self, forms):
-        experiment = forms['experiment_form'].save()
-        image = forms['image_form'].save(commit=False)
-        image.experiment = experiment
-        image.medium_thumb.save(name=image.document.name,
-                                content=image.document)
-        image.large_thumb.save(name=image.document.name,
-                               content=image.document)
-        image.save()
-        return HttpResponseRedirect(reverse('images:image_details',
-                                            args=(image.id,)))
-
-
-class UploadOnlyImageView(TemplateNames, genViews.CreateView):
-    """ Allows the user to upload an image file and requests they fill in the
-    model fields."""
-    form_class = forms.UploadFileForm
-
-    def form_valid(self, form):
-        image = form.save()
-        image.medium_thumb.save(name=image.document.name,
-                                content=image.document)
-        image.large_thumb.save(name=image.document.name,
-                               content=image.document)
-        image.save()
-        return HttpResponseRedirect(reverse('images:image_details',
-                                            args=(image.id,)))
 
 
 # ######################### Autocomplete classes #############################
