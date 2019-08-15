@@ -2,22 +2,21 @@
 {% load images_extra %}
 {% block content %}
 <h1> Image information: </h1>
-<ul>
-    <li><b>Name: </b>{% get_detail_image_name %} </li>
-    <li><b>Imager: </b>{{ image.imager }} </li>
-    {# <li><b>Lab: </b> {% get_lab_list  %} </li> #}
-    {# <li><b>Organism </b> {% get_organism_list  %}</li> #}
-    <li><b>Microscope: </b> {{ image.microscope_setting }} </li>
-    <li><b>Description: </b> {{ image.brief_description }} </li>
-    <li><b>Date added: </b> {{ image.date_taken }} </li>
-    {% if user.is_superuser %}
-        <li><b>Release date: </b>{{ image.release_date }} </li>
-    {% endif %}
-
-</ul>
 {% load thumbnail %}
 <img src="{{ image.large_thumb.url }}"
      alt="An error occured while loading the image" />
 </br>
+<ul>
+    {% for info in get_image_details %}
+        <li> {{ info }} </li>
+    {% endfor %}
+    {% if user.is_superuser %}
+        <li>Release date: {{ image.release_date }} </li>
+    {% endif %}
+
+</ul>
 </br>
+<div id="upload-new-insert">
+</div>
+
 {% endblock %}

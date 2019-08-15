@@ -75,6 +75,13 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
     redirected to."""
     model = Image
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # get the image
+        image = kwargs['object']
+        context['get_image_details'] = su.get_html_image_list(image)
+        return context
+
 
 # Search all searchable terms at the same time
 class GeneralSearchView(genViews.FormView):
