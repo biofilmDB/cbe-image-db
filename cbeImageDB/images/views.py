@@ -149,14 +149,12 @@ class GeneralSearchResultsView(genViews.ListView):
             search_list = self.request.GET.getlist('search')
             for search in search_list:
                 q = search.split(': ')
+                q2 = ': '.join(q[1:])
                 if q[0].lower() == 'imager':
-                    qs = qs.filter(imager__imager_name=q[-1])
-
-                # elif q[0].lower() == 'lab':
-                #    qs = qs.filter(lab__pi_name=q[-1])
+                    qs = qs.filter(imager__imager_name=q2)
 
                 elif q[0].lower() == 'objective medium':
-                    qs = qs.filter(microscope_setting__medium__medium_type=q[-1])
+                    qs = qs.filter(microscope_setting__medium__medium_type=q2)
 
                 elif q[0].lower() == 'objective':
                     # remove x from objective
@@ -164,16 +162,29 @@ class GeneralSearchResultsView(genViews.ListView):
                     qs = qs.filter(microscope_setting__objective=obj)
 
                 elif q[0].lower() == 'microscope':
-                    qs = qs.filter(microscope_setting__microscope__microscope_name=q[-1])
-                # elif q[0].lower() == 'organism':
-                #    qs = qs.filter(organism__organism_name=q[-1])
+                    qs = qs.filter(microscope_setting__microscope__microscope_name=q2)
                 elif q[0].lower() == 'day':
-                    qs = qs.filter(date_taken__day=q[-1])
+                    qs = qs.filter(date_taken__day=q2)
                 elif q[0].lower() == 'month':
-                    month = su.month_string_to_int(q[-1])
+                    month = su.month_string_to_int(q2)
                     qs = qs.filter(date_taken__month=month)
                 elif q[0].lower() == 'year':
-                    qs = qs.filter(date_taken__year=q[-1])
+                    qs = qs.filter(date_taken__year=q2)
+                # Experiment values
+                elif q[0].lower() == 'project':
+                    qs = qs.filter(experiment__project__name=q2)
+                elif q[0].lower() == 'lab':
+                    print('looking kup a lab {}'.format(q2))
+                    qs = qs.filter(experiment__lab__pi_name=q2)
+                elif q[0].lower() == 'organism':
+                    qs = qs.filter(experiment__organism__organism_name=q2)
+                elif q[0].lower() == 'vessel':
+                    qs = qs.filter(experiment__vessel__name=q2)
+                elif q[0].lower() == 'growth medium':
+                    qs = qs.filter(experiment__growth_medium__growth_medium=q2)
+                elif q[0].lower() == 'growth substratum':
+                    qs = qs.filter(experiment__substratum__substratum=q2)
+
 
         except MultiValueDictKeyError:
             pass
@@ -411,8 +422,8 @@ class YearAutocomplete(autocomplete.Select2ListView):
 class SearchAutocomplete(autocomplete.Select2ListView):
 
     def get_list(self):
-        search_terms = []
-        # ['Lab: ' + str(x) for x in list(Lab.objects.all())]
+        search_terms = ['Lab: ' + str(x) for x in list(models.Lab.objects.all())]
+        search_terms.extend(['Project: ' + str(x) for x in models.Project.objects.all()])
         search_terms.extend(['Imager: ' + str(x) for x in
                             list(models.Imager.objects.all())])
         search_terms.extend(['Microscope: ' + str(x) for x in
@@ -420,7 +431,12 @@ class SearchAutocomplete(autocomplete.Select2ListView):
         search_terms.extend(['Objective Medium: ' + str(x) for x in
                              list(models.Medium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
-        #search_terms.extend(['Organism: ' + x for x in su.get_organism_list()])
+        search_terms.extend(['Organism: ' + x for x in su.get_organism_list()])
+        search_terms.extend(['Vessel: ' + str(x) for x in models.Vessel.objects.all()])
+        search_terms.extend(['Growth Medium: ' + str(x) for x in
+                             models.GrowthMedium.objects.all()])
+        search_terms.extend(['Growth Substriatum: ' + str(x) for x in
+                             models.GrowthSubstratum.objects.all()])
         search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])
         months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November',
