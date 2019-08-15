@@ -10,6 +10,7 @@ from . import search_utils as su
 from django import http
 from datetime import datetime
 from .documents import ImageDocument
+from multi_form_view import MultiFormView
 
 
 class AddImagerView(genViews.CreateView):
@@ -202,7 +203,25 @@ class AttributeSearchResultsView(genViews.ListView):
         return qs
 
 
-class UploadImageView(TemplateNames, genViews.CreateView):
+class UploadImageView(TemplateNames, MultiFormView):
+    """ Allows the user to upload an image file and requests they fill in the
+    model fields."""
+    form_classes = {
+        'image_form': forms.UploadFileForm,
+        'experiment_form': forms.CreateExperimentForm,
+    }
+    def forms_valid(self, forms):
+        image = forms['image_form'].save()
+        image.medium_thumb.save(name=image.document.name,
+                                content=image.document)
+        image.large_thumb.save(name=image.document.name,
+                               content=image.document)
+        image.save()
+        return HttpResponseRedirect(reverse('images:image_details',
+                                            args=(image.id,)))
+
+
+class UploadOnlyImageView(TemplateNames, genViews.CreateView):
     """ Allows the user to upload an image file and requests they fill in the
     model fields."""
     form_class = forms.UploadFileForm

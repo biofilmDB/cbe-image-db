@@ -1,14 +1,15 @@
 {% extends 'images/base.html' %}
 {% load static %}
 {% block content %}
-	<h2 style="text-decoration: underline;"> Upload an image:</h2>
-	<form action = "" method="POST" enctype="multipart/form-data">
-		<div>
-                        {% csrf_token %}
-			{{ form.as_p }}
-			<input type="submit" value="Submit" />
-		</div>
-	</form>
+    <h1> Upload an Image </h1>	
+    <form action = "" method="POST" enctype="multipart/form-data">
+        <div>
+            {% csrf_token %}
+            {{ forms.image_form.as_p }}
+            {{ forms.experiment_form.as_p }}
+            <input type="submit" value="Submit" />
+        </div>
+    </form>
 {% endblock %}
 
 {% block footer %}

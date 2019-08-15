@@ -1,5 +1,5 @@
 from django import forms
-from .models import Image, Lab, Imager, Microscope, Medium, Organism
+from .models import Image, Lab, Imager, Microscope, Medium, Organism, Experiment
 from dal import autocomplete
 
 
@@ -18,6 +18,19 @@ class AddImagerForm(forms.ModelForm):
             return data
 
 
+class CreateExperimentForm(forms.ModelForm):
+
+    class Meta:
+        model = Experiment
+        fields = ['organism', 'growth_medium', 'vessel', 'substratum',]
+
+        """
+        widgets = {
+            'organism':
+            autocomplete.ModelSelect2Multiple(url='/images/organism-autocomplete/'),
+        }
+        """
+
 class UploadFileForm(forms.ModelForm):
 
     class Meta:
@@ -25,16 +38,18 @@ class UploadFileForm(forms.ModelForm):
         fields = ['document', 'date_taken', 'release_date', 'imager',
                   'microscope_setting', 'brief_description', ]
         widgets = {
+            """
             'imager':
             autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'microscope_setting':
             autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
+            """
             'date_taken':
             forms.SelectDateWidget(),
             'release_date':
-            forms.SelectDateWidget()
+            forms.SelectDateWidget(),
         }
 
 
