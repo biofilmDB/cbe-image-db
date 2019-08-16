@@ -77,7 +77,8 @@ class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
         context['get_image_details'] = []
         # Make dictionarys for each image
         for image in images:
-            t = su.get_html_image_dict(image, [])
+            t = get_html_image_dict(image, ['microscope setting', 'imager',
+                                            'date taken', 'date uploaded'])
             context['get_image_details'].append(t)
         return context
 
