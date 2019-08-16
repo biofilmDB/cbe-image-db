@@ -53,6 +53,16 @@ class UploadImageView(TemplateNames, MultiFormView):
                                             args=(experiment.id,)))
 
 
+# Method to standardize image templates and printing information out
+def get_html_image_dict(image, features):
+    image_info_dict = {'thumb': image.large_thumb.url,
+                       'details': su.get_html_image_list(image, features),
+                       'pk': image.pk,
+                       'release_date': image.release_date,
+                       }
+    return image_info_dict
+
+
 class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
     """ Shows the details of an image. It is where a sucessfull image upload is
     redirected to."""
@@ -67,11 +77,7 @@ class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
         context['get_image_details'] = []
         # Make dictionarys for each image
         for image in images:
-            t = {'thumb': image.large_thumb.url,
-                 'details': su.get_html_image_list(image),
-                 'pk': image.pk,
-                 'release_date': image.release_date,
-                 }
+            t = su.get_html_image_dict(image, [])
             context['get_image_details'].append(t)
         return context
 
@@ -206,7 +212,10 @@ class GeneralSearchResultsView(genViews.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['features'] = self.features
-        import pdb; pdb.set_trace()
+        context['get_image_details'] = []
+        for image in context['image_list']:
+            t = su.get_html_image_dict(image, self.features)
+            context['get_image_details'].append(t)
         return context
 
 
@@ -223,6 +232,7 @@ class AttributeSearchResultsView(genViews.ListView):
     context_object_name = 'image_list'
     template_name = 'images/image_search_results.html'
     paginate_by = 5
+    features = []
 
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -230,6 +240,7 @@ class AttributeSearchResultsView(genViews.ListView):
         else:
             qs = models.Image.objects.filter(release_date__lte=datetime.now())
 
+        features = ['search', 'lab']
         # Variable to tell if there was something that was searched
         """
         try:
@@ -243,6 +254,7 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             search_imager = self.request.GET['imager']
             if search_imager != '':
+                features.append('imager')
                 qs = qs.filter(imager=search_imager)
         except MultiValueDictKeyError:
             pass
@@ -272,6 +284,7 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             day = self.request.GET['day_taken']
             if day != '':
+                features.append('date taken')
                 qs = qs.filter(date_taken__day=day)
         except MultiValueDictKeyError:
             pass
@@ -279,6 +292,7 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             month = self.request.GET['month_taken']
             if month != '':
+                features.append('date taken')
                 month = su.month_string_to_int(month)
                 qs = qs.filter(date_taken__month=month)
         except MultiValueDictKeyError:
@@ -287,6 +301,7 @@ class AttributeSearchResultsView(genViews.ListView):
         try:
             year = self.request.GET['year_taken']
             if year != '':
+                features.append('date taken')
                 qs = qs.filter(date_taken__year=year)
         except MultiValueDictKeyError:
             pass
@@ -301,8 +316,20 @@ class AttributeSearchResultsView(genViews.ListView):
         """
 
         qs = get_description_search_qs(self.request, qs)
+        self.features = features
 
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['features'] = self.features
+        context['get_image_details'] = []
+        for image in context['image_list']:
+            t = su.get_html_image_dict(image, self.features)
+            context['get_image_details'].append(t)
+        return context
+
+
 
 
 # ######################### Autocomplete classes #############################
