@@ -43,21 +43,43 @@ def get_organism_list():
     return organisms
 
 
-def get_html_image_list(image):
+def get_html_image_list(image, features=[]):
     # get the associated experiment
     e = image.experiment
     organism_list = ', '.join(str(o) for o in e.organism.all())
-    li = ['Project: {}'.format(e.project),
-          'Lab(s): {}'.format(', '.join([str(l) for l in e.lab.all()])),
-          'Imager: {}'.format(image.imager),
-          'Date Uploaded: {}'.format(image.date_uploaded),
-          'Organsim(s): {}'.format(organism_list),
-          'Microscope Setting: {}'.format(image.microscope_setting),
-          'Vessel: {}'.format(e.vessel),
-          'Growth Substriatum: {}'.format(e.substratum),
-          'Growth Medium: {}'.format(e.growth_medium),
-          'File Name: {}'.format(image.document.name.split('/')[-1])
-          ]
+
+    # if there are no desired features, print them all
+    if len(features) == 0:
+        features = ['project', 'lab', 'imager', 'date uploaded', 'organism',
+                    'microscope setting', 'vessel', 'growth substratum',
+                    'file name']
+    # Create a dictionary of possible lists
+    f_dict = {'project': 'Project: {}'.format(e.project),
+              'lab':
+              'Lab(s): {}'.format(', '.join([str(l) for l in e.lab.all()])),
+              'imager': 'Imager: {}'.format(image.imager),
+              'date uploaded': 'Date Uploaded: {}'.format(image.date_uploaded),
+              'organism': 'Organsim(s): {}'.format(organism_list),
+              'microscope setting':
+              'Microscope Setting: {}'.format(image.microscope_setting),
+              'vessel': 'Vessel: {}'.format(e.vessel),
+              'growth substratum':
+              'Growth Substratum: {}'.format(e.substratum),
+              'growth medium': 'Growth Medium: {}'.format(e.growth_medium),
+              'file name':
+              'File Name: {}'.format(image.document.name.split('/')[-1])
+              }
+
+    # Hold the features wanted
+    li = []
+    for f in features:
+        # get the feature from the dictonary
+        try:
+            li.append(f_dict[f])
+        except KeyError:
+            print('Key {} was not found in search_utils.{}'.format(f,
+                  'get_html_image_list()'))
+
     return li
 
 
