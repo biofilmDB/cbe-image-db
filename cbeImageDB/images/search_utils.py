@@ -47,7 +47,7 @@ def get_html_image_list(image, features=[]):
     # get the associated experiment
     e = image.experiment
     organism_list = ', '.join(str(o) for o in e.organism.all())
-
+    lab_list = ', '.join([str(l) for l in e.lab.all()])
     # if there are no desired features, print them all
     if len(features) == 0:
         features = ['project', 'lab', 'imager', 'organism',
@@ -56,7 +56,7 @@ def get_html_image_list(image, features=[]):
     # Create a dictionary of possible lists
     f_dict = {'project': 'Project: {}'.format(e.project),
               'lab':
-              'Lab(s): {}'.format(', '.join([str(l) for l in e.lab.all()])),
+              'Lab(s): {}'.format(lab_list),
               'imager': 'Imager: {}'.format(image.imager),
               'date uploaded': 'Date Uploaded: {}'.format(image.date_uploaded),
               'date taken': 'Date Taken: {}'.format(image.date_taken),
@@ -68,7 +68,9 @@ def get_html_image_list(image, features=[]):
               'Growth Substratum: {}'.format(e.substratum),
               'growth medium': 'Growth Medium: {}'.format(e.growth_medium),
               'file name':
-              'File Name: {}'.format(image.document.name.split('/')[-1])
+              'File Name: {}'.format(image.document.name.split('/')[-1]),
+              'search':
+              '{}; {}'.format(organism_list, image.microscope_setting),
               }
 
     # Hold the features wanted
