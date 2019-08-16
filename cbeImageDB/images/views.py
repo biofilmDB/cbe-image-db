@@ -129,16 +129,17 @@ class GeneralSearchView(genViews.FormView):
 
 
 def get_description_search_qs(request, qs):
-
+    exist = False
     try:
         desct = request.GET.get('description_search')
         if desct != '':
             s = ImageDocument.search().query("match", brief_description=desct)
             qs = qs & s.to_queryset()
+            exist = True
 
     except MultiValueDictKeyError:
         pass
-    return qs
+    return qs,exist
 
 
 class GeneralSearchResultsView(genViews.ListView):
@@ -205,7 +206,10 @@ class GeneralSearchResultsView(genViews.ListView):
         except MultiValueDictKeyError:
             pass
 
-        qs = get_description_search_qs(self.request, qs)
+        qs,exists = get_description_search_qs(self.request, qs)
+        if exists:
+            features.append('description')
+
         self.features = features
 
         return qs
@@ -344,7 +348,10 @@ class AttributeSearchResultsView(genViews.ListView):
         except MultiValueDictKeyError:
             pass
 
-        qs = get_description_search_qs(self.request, qs)
+        qs,exists = get_description_search_qs(self.request, qs)
+        if exists:
+            features.append('description')
+
         self.features = features
 
         return qs
