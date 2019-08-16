@@ -50,15 +50,16 @@ def get_html_image_list(image, features=[]):
 
     # if there are no desired features, print them all
     if len(features) == 0:
-        features = ['project', 'lab', 'imager', 'date uploaded', 'organism',
+        features = ['project', 'lab', 'imager', 'organism',
                     'microscope setting', 'vessel', 'growth substratum',
-                    'file name']
+                    'file name', 'date taken', 'date uploaded']
     # Create a dictionary of possible lists
     f_dict = {'project': 'Project: {}'.format(e.project),
               'lab':
               'Lab(s): {}'.format(', '.join([str(l) for l in e.lab.all()])),
               'imager': 'Imager: {}'.format(image.imager),
               'date uploaded': 'Date Uploaded: {}'.format(image.date_uploaded),
+              'date taken': 'Date Taken: {}'.format(image.date_taken),
               'organism': 'Organsim(s): {}'.format(organism_list),
               'microscope setting':
               'Microscope Setting: {}'.format(image.microscope_setting),
