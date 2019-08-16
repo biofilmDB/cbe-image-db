@@ -214,7 +214,7 @@ class GeneralSearchResultsView(genViews.ListView):
         context['features'] = self.features
         context['get_image_details'] = []
         for image in context['image_list']:
-            t = su.get_html_image_dict(image, self.features)
+            t = get_html_image_dict(image, self.features)
             context['get_image_details'].append(t)
         return context
 
@@ -242,14 +242,12 @@ class AttributeSearchResultsView(genViews.ListView):
 
         features = ['search', 'lab']
         # Variable to tell if there was something that was searched
-        """
         try:
             search_lab = self.request.GET['lab']
             if search_lab != '':
-                qs = qs.filter(lab=search_lab)
+                qs = qs.filter(experiment__lab=search_lab)
         except MultiValueDictKeyError:
             pass
-        """
 
         try:
             search_imager = self.request.GET['imager']
@@ -306,14 +304,44 @@ class AttributeSearchResultsView(genViews.ListView):
         except MultiValueDictKeyError:
             pass
 
-        """
         try:
             organ = self.request.GET['organism']
             if organ != '':
-                qs = qs.filter(organism=organ)
+                qs = qs.filter(experiment__organism=organ)
         except MultiValueDictKeyError:
             pass
-        """
+
+        try:
+            v = self.request.GET['vessel']
+            if v != '':
+                features.append('vessel')
+                qs = qs.filter(experiment__vessel=v)
+        except MultiValueDictKeyError:
+            pass
+
+        try:
+            v = self.request.GET['growth_medium']
+            if v != '':
+                features.append('growth medium')
+                qs = qs.filter(experiment__growth_medium=v)
+        except MultiValueDictKeyError:
+            pass
+
+        try:
+            v = self.request.GET['growth_substratum']
+            if v != '':
+                features.append('growth substratum')
+                qs = qs.filter(experiment__substratum=v)
+        except MultiValueDictKeyError:
+            pass
+
+        try:
+            v = self.request.GET['project']
+            if v != '':
+                features.append('project')
+                qs = qs.filter(experiment__project=v)
+        except MultiValueDictKeyError:
+            pass
 
         qs = get_description_search_qs(self.request, qs)
         self.features = features
@@ -322,10 +350,9 @@ class AttributeSearchResultsView(genViews.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['features'] = self.features
         context['get_image_details'] = []
         for image in context['image_list']:
-            t = su.get_html_image_dict(image, self.features)
+            t = get_html_image_dict(image, self.features)
             context['get_image_details'].append(t)
         return context
 

@@ -1,6 +1,6 @@
 from django import forms
 from .models import Image, Lab, Imager, Microscope, Medium, Organism, Experiment
-from .models import Project, GrowthMedium, GrowthSubstratum
+from .models import Project, GrowthMedium, GrowthSubstratum, Vessel
 from dal import autocomplete
 
 
@@ -77,6 +77,8 @@ class AttributeSearchImageForm(forms.Form):
     organism = forms.ModelChoiceField(queryset=Organism.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/organism-autocomplete'))
     description_search = forms.CharField(required=False)
+    vessel = forms.ModelChoiceField(queryset=Vessel.objects.all(), required=False,
+        widget=autocomplete.ModelSelect2(url='/images/vessel-autocomplete'))
     growth_medium = forms.ModelChoiceField(queryset=GrowthMedium.objects.all(),
         required=False, widget=autocomplete.ModelSelect2(url='/images/growthmedium-autocomplete'))
     growth_substratum = forms.ModelChoiceField(queryset=GrowthSubstratum.objects.all(),
