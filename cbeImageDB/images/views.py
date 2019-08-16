@@ -12,6 +12,10 @@ from .documents import ImageDocument
 from multi_form_view import MultiFormView
 
 
+class AboutSite(TemplateNames, genViews.TemplateView):
+    pass
+
+
 class AddImagerView(genViews.CreateView):
     """ Allows a user to ad an imager using a webpage. It uses a genaric create
     model template."""
