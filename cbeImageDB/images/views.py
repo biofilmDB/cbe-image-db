@@ -69,6 +69,7 @@ class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
         for image in images:
             t = {'thumb': image.large_thumb.url,
                  'details': su.get_html_image_list(image),
+                 'pk': image.pk,
                  'release_date': image.release_date,
                  }
             context['get_image_details'].append(t)

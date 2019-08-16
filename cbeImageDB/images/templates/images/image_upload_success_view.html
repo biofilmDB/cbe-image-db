@@ -14,8 +14,10 @@
 <h2> Associated Images </h2>
 {% load thumbnail %}
 {% for image in get_image_details %}
+<a href="{% url 'images:image_details' pk=image.pk %}">
 <img src="{{ image.thumb }}"
      alt="An error occured while loading the image" />
+</a>
 <ul>
      {% for info in image.details %}
         <li> {{ info }} </li>
