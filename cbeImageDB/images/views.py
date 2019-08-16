@@ -139,19 +139,21 @@ class GeneralSearchResultsView(genViews.ListView):
     context_object_name = 'image_list'
     template_name = 'images/image_search_results.html'
     paginate_by = 5
+    features = []
 
     def get_queryset(self):
         if self.request.user.is_superuser:
             qs = models.Image.objects.all()
         else:
             qs = models.Image.objects.filter(release_date__lte=datetime.now())
-
+        features = ['search', 'lab']
         try:
             search_list = self.request.GET.getlist('search')
             for search in search_list:
                 q = search.split(': ')
                 q2 = ': '.join(q[1:])
                 if q[0].lower() == 'imager':
+                    features.append('imager')
                     qs = qs.filter(imager__imager_name=q2)
 
                 elif q[0].lower() == 'objective medium':
@@ -165,14 +167,18 @@ class GeneralSearchResultsView(genViews.ListView):
                 elif q[0].lower() == 'microscope':
                     qs = qs.filter(microscope_setting__microscope__microscope_name=q2)
                 elif q[0].lower() == 'day':
+                    features.append('date_taken')
                     qs = qs.filter(date_taken__day=q2)
                 elif q[0].lower() == 'month':
+                    features.append('date_taken')
                     month = su.month_string_to_int(q2)
                     qs = qs.filter(date_taken__month=month)
                 elif q[0].lower() == 'year':
+                    features.append('date_taken')
                     qs = qs.filter(date_taken__year=q2)
                 # Experiment values
                 elif q[0].lower() == 'project':
+                    features.append('project')
                     qs = qs.filter(experiment__project__name=q2)
                 elif q[0].lower() == 'lab':
                     print('looking kup a lab {}'.format(q2))
@@ -180,19 +186,28 @@ class GeneralSearchResultsView(genViews.ListView):
                 elif q[0].lower() == 'organism':
                     qs = qs.filter(experiment__organism__organism_name=q2)
                 elif q[0].lower() == 'vessel':
+                    features.append('vessel')
                     qs = qs.filter(experiment__vessel__name=q2)
                 elif q[0].lower() == 'growth medium':
+                    features.append('growth medium')
                     qs = qs.filter(experiment__growth_medium__growth_medium=q2)
                 elif q[0].lower() == 'growth substratum':
+                    features.append('growth substratum')
                     qs = qs.filter(experiment__substratum__substratum=q2)
-
 
         except MultiValueDictKeyError:
             pass
 
         qs = get_description_search_qs(self.request, qs)
+        self.features = features
 
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['features'] = self.features
+        import pdb; pdb.set_trace()
+        return context
 
 
 # Search by attributes
