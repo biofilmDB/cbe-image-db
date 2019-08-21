@@ -4,6 +4,14 @@ from images.models import Imager, Lab, Project, Vessel, GrowthMedium
 from images.models import GrowthSubstratum
 
 
+def create_vesssels():
+    vessel_list = ['CDC', 'Drip Flow', 'Capillary', 'Membrane Filter',
+                   'Annular', 'Rotating Disk']
+    for vessel in vessel_list:
+        print('Added vessel: {}'.format(vessel))
+        Vessel.objects.create(name=vessel)
+
+
 def create_organisms():
     csv = pandas.read_csv('organisms/organisms.csv', sep='|')
 
@@ -23,7 +31,7 @@ def create_microscope_medium():
         m = Medium(medium_type=med)
         m.save()
         medium_list.append(m)
-        return medium_list
+    return medium_list
 
 
 def create_microscopes():
