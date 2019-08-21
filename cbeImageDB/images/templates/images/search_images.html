@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <h1> Search for images </h1>
-<p> Begin typing to select terms to search by. </p>
+<p> Begin typing to select terms to search by. If there is no input, the results will contain all images in the database. </p>
  <form action="{% url 'images:general_search_results' %}" method="GET" enctype="multipart/form-data">
     {{ form.as_p }}
     <input type="submit" value="Search" />

@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Lab, Microscope_settings, Medium
+from images import models
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from admin_views.admin import AdminViews
+# from django.contrib.admin import AdminSite
 
 
 class AdminSearch(AdminViews):
@@ -18,6 +19,12 @@ class AdminSearch(AdminViews):
         return HttpResponseRedirect(reverse('images:attribute_search'))
 
 
-admin.site.register(Medium)
-admin.site.register(Lab, AdminSearch)
-admin.site.register(Microscope_settings)
+admin.site.register(models.Medium)
+admin.site.register(models.Image, AdminSearch)
+admin.site.register(models.Microscope_settings)
+admin.site.register(models.Vessel)
+admin.site.register(models.GrowthMedium)
+admin.site.register(models.GrowthSubstratum)
+admin.site.register(models.Lab)
+admin.site.register(models.Project)
+admin.site.register(models.Organism)

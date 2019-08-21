@@ -84,19 +84,73 @@ def large_thumb_directory_path(instance, filename):
     return '{}/thumbs/large/{}'.format(formated_imager, filename)
 
 
-class Image(models.Model):
-    # With ForeignKey on_delete was PROTECT
+class GrowthSubstratum(models.Model):
+    substratum = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.substratum
+
+
+class Vessel(models.Model):
+    name = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.name
+
+
+class GrowthMedium(models.Model):
+    growth_medium = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.growth_medium
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.name
+
+
+class Experiment(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.PROTECT)
     lab = models.ManyToManyField(Lab, through='ProtectLab')
-    imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
     organism = models.ManyToManyField(Organism, through='ProtectOrganism')
+    vessel = models.ForeignKey(Vessel, on_delete=models.PROTECT)
+    growth_medium = models.ForeignKey(GrowthMedium, on_delete=models.PROTECT)
+    substratum = models.ForeignKey(GrowthSubstratum, on_delete=models.PROTECT)
+    # TODO: Does this belong here or in image?
+    # brief_description = models.CharField(max_length=1000)
+
+    def __str__(self):
+        lab = ', '.join([str(x) for x in self.lab.all()])
+        return '{} - {} - {}'.format(self.project, lab, self.pk)
+
+
+# TODO: Is cascade correct for experiments?
+class ProtectLab(models.Model):
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
+    lab = models.ForeignKey(Lab, on_delete=models.PROTECT)
+
+
+class ProtectOrganism(models.Model):
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
+    organism = models.ForeignKey(Organism, on_delete=models.PROTECT)
+
+
+class Image(models.Model):
+    experiment = models.ForeignKey(Experiment, on_delete=models.PROTECT)
+    imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
     microscope_setting = models.ForeignKey(Microscope_settings,
                                            on_delete=models.PROTECT)
-    brief_description = models.CharField(max_length=1000)
     date_taken = models.DateField(("Date taken"), default=date.today)
     release_date = models.DateField(("Can't be used before"),
                                     default=date.today)
     date_uploaded = models.DateField(("Date uploaded"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
+    # TODO: Does this blong here or in image?
+    # Leave in image now for simpler refactoring
+    brief_description = models.CharField(max_length=1000)
     medium_thumb = ThumbnailerImageField(upload_to=medium_thumb_directory_path,
                                          resize_source=dict(size=(200, 200),
                                                             sharpen=True))
@@ -113,13 +167,3 @@ def post_delete_file(sender, instance, *args, **kwargs):
     instance.document.delete(save=False)
     instance.medium_thumb.delete(save=False)
     instance.large_thumb.delete(save=False)
-
-
-class ProtectLab(models.Model):
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
-    lab = models.ForeignKey(Lab, on_delete=models.PROTECT)
-
-
-class ProtectOrganism(models.Model):
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
-    organism = models.ForeignKey(Organism, on_delete=models.PROTECT)

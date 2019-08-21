@@ -1,5 +1,6 @@
 from django import forms
-from .models import Image, Lab, Imager, Microscope, Medium, Organism
+from .models import Image, Lab, Imager, Microscope, Medium, Organism, Experiment
+from .models import Project, GrowthMedium, GrowthSubstratum, Vessel
 from dal import autocomplete
 
 
@@ -18,28 +19,44 @@ class AddImagerForm(forms.ModelForm):
             return data
 
 
-class UploadFileForm(forms.ModelForm):
+class CreateExperimentForm(forms.ModelForm):
 
     class Meta:
-        model = Image
-        fields = ['document', 'date_taken', 'release_date', 'imager', 'lab',
-                  'organism', 'microscope_setting', 'brief_description', ]
-        help_texts = {
-            'brief_description': '1000 character max overview of the project',
-        }
+        model = Experiment
+        fields = ['project', 'lab', 'organism', 'growth_medium', 'vessel',
+                  'substratum',]
+
         widgets = {
-            'imager':
-            autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
             'organism':
             autocomplete.ModelSelect2Multiple(url='/images/organism-autocomplete/'),
+            'project':
+            autocomplete.ModelSelect2(url='/images/project-autocomplete/'),
+            'growth_medium':
+            autocomplete.ModelSelect2(url='/images/growthmedium-autocomplete/'),
+            'vessel':
+            autocomplete.ModelSelect2(url='/images/vessel-autocomplete/'),
+            'substratum':
+            autocomplete.ModelSelect2(url='/images/growthsubstratum-autocomplete/'),
+        }
+
+
+class UploadFileForm(forms.ModelForm):
+
+    class Meta:
+        model = Image
+        fields = ['document', 'date_taken', 'release_date', 'imager',
+                  'microscope_setting', 'brief_description', ]
+        widgets = {
+            'imager':
+            autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
             'microscope_setting':
             autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
             'date_taken':
             forms.SelectDateWidget(),
             'release_date':
-            forms.SelectDateWidget()
+            forms.SelectDateWidget(),
         }
 
 
@@ -51,6 +68,8 @@ class GeneralSearchImageForm(forms.Form):
 
 
 class AttributeSearchImageForm(forms.Form):
+    project = forms.ModelChoiceField(queryset=Project.objects.all(), required=False,
+        widget=autocomplete.ModelSelect2(url='/images/project-autocomplete'))
     lab = forms.ModelChoiceField(queryset=Lab.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/lab-autocomplete'))
     imager = forms.ModelChoiceField(queryset=Imager.objects.all(), required=False,
@@ -58,6 +77,12 @@ class AttributeSearchImageForm(forms.Form):
     organism = forms.ModelChoiceField(queryset=Organism.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/organism-autocomplete'))
     description_search = forms.CharField(required=False)
+    vessel = forms.ModelChoiceField(queryset=Vessel.objects.all(), required=False,
+        widget=autocomplete.ModelSelect2(url='/images/vessel-autocomplete'))
+    growth_medium = forms.ModelChoiceField(queryset=GrowthMedium.objects.all(),
+        required=False, widget=autocomplete.ModelSelect2(url='/images/growthmedium-autocomplete'))
+    growth_substratum = forms.ModelChoiceField(queryset=GrowthSubstratum.objects.all(),
+        required=False, widget=autocomplete.ModelSelect2(url='/images/growthsubstratum-autocomplete'))
     microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
         required=False, widget=autocomplete.ModelSelect2(url='/images/microscope-autocomplete'))
     objective = forms.FloatField(required=False)

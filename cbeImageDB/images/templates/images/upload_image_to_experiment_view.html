@@ -1,0 +1,27 @@
+{% extends 'images/base.html' %}
+{% load images_extra %}
+{% load static %}
+
+{% block content %}
+<h1> Upload another Image </h1>	
+<ul>
+    {% for info in get_experiment_details %}
+        <li> {{ info }} </li>
+    {% endfor %}
+</ul>
+<form action = "" method="POST" enctype="multipart/form-data">
+    <div>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+    </div>
+</form>
+
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+{% endblock %}
+
