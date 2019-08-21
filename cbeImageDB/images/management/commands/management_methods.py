@@ -1,7 +1,7 @@
 import pandas
-from images.models import Organism, Microscope, Medium, Microscope_settings
+from images.models import Microscope, ObjectiveMedium, MicroscopeSettings
 from images.models import Imager, Lab, Project, Vessel, GrowthMedium
-from images.models import GrowthSubstratum
+from images.models import GrowthSubstratum, Organism
 
 
 def create_vesssels():
@@ -28,7 +28,7 @@ def create_microscope_medium():
     mediums = ['air', 'water', 'oil', 'glycerin', 'dry']
     medium_list = []
     for med in mediums:
-        m = Medium(medium_type=med)
+        m = ObjectiveMedium(medium_type=med)
         m.save()
         medium_list.append(m)
     return medium_list
@@ -60,9 +60,9 @@ def create_microscope_settings():
               (5, 1, 0), (6, 10, 0), (6, 50, 0), (6, 60, 1), (6, 100, 0)]
 
     for combo in combos:
-        ms = Microscope_settings(microscope=microscope_list[combo[0]],
-                                 objective=float(combo[1]),
-                                 medium=medium_list[combo[2]])
+        ms = MicroscopeSettings(microscope=microscope_list[combo[0]],
+                                objective=float(combo[1]),
+                                medium=medium_list[combo[2]])
         ms.save()
         print('Added: {}'.format(ms))
 
@@ -80,11 +80,11 @@ def create_test_imager():
 
 
 def create_test_microscope_objects():
-    med = Medium(medium_type="Plasma (Test)")
+    med = ObjectiveMedium(medium_type="Plasma (Test)")
     med.save()
     mic = Microscope(microscope_name='Test Scope')
     mic.save()
-    Microscope_settings(microscope=mic, objective=63, medium=med).save()
+    MicroscopeSettings(microscope=mic, objective=63, medium=med).save()
 
 
 def create_test_organism():
