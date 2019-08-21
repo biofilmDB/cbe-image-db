@@ -1,5 +1,5 @@
 from django import forms
-from .models import Image, Lab, Imager, Microscope, Medium, Organism, Experiment
+from .models import Image, Lab, Imager, Microscope, ObjectiveMedium, Organism, Experiment
 from .models import Project, GrowthMedium, GrowthSubstratum, Vessel
 from dal import autocomplete
 
@@ -86,8 +86,8 @@ class AttributeSearchImageForm(forms.Form):
     microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
         required=False, widget=autocomplete.ModelSelect2(url='/images/microscope-autocomplete'))
     objective = forms.FloatField(required=False)
-    objective_medium = forms.ModelChoiceField(queryset=Medium.objects.all(), required=False,
-        widget=autocomplete.ModelSelect2(url='/images/medium-autocomplete'))
+    objective_medium = forms.ModelChoiceField(queryset=ObjectiveMedium.objects.all(), required=False,
+        widget=autocomplete.ModelSelect2(url='/images/objectivemedium-autocomplete'))
     day_taken = forms.ChoiceField(required=False,
         widget=autocomplete.ListSelect2('/images/day-autocomplete'))
     month_taken = forms.ChoiceField(required=False,

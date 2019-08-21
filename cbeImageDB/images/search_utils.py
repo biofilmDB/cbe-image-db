@@ -1,8 +1,8 @@
-from .models import Microscope_settings, Image, Experiment
+from .models import MicroscopeSettings, Image, Experiment
 
 
 def get_objectives():
-    query = Microscope_settings.objects.all()
+    query = MicroscopeSettings.objects.all()
     objectives = []
     for ms in query:
         objectives.append(ms.objective)

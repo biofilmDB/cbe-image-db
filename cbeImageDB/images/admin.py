@@ -19,9 +19,9 @@ class AdminSearch(AdminViews):
         return HttpResponseRedirect(reverse('images:attribute_search'))
 
 
-admin.site.register(models.Medium)
+admin.site.register(models.ObjectiveMedium)
 admin.site.register(models.Image, AdminSearch)
-admin.site.register(models.Microscope_settings)
+admin.site.register(models.MicroscopeSettings)
 admin.site.register(models.Vessel)
 admin.site.register(models.GrowthMedium)
 admin.site.register(models.GrowthSubstratum)

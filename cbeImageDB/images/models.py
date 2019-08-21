@@ -26,17 +26,17 @@ class Microscope(models.Model):
         return self.microscope_name
 
 
-class Medium(models.Model):
+class ObjectiveMedium(models.Model):
     medium_type = models.CharField(max_length=50)
 
     def __str__(self):
         return self.medium_type
 
 
-class Microscope_settings(models.Model):
+class MicroscopeSettings(models.Model):
     microscope = models.ForeignKey(Microscope, on_delete=models.PROTECT)
     objective = models.FloatField()
-    medium = models.ForeignKey(Medium, on_delete=models.PROTECT)
+    medium = models.ForeignKey(ObjectiveMedium, on_delete=models.PROTECT)
 
     def __str__(self):
         if self.objective.is_integer():
@@ -141,7 +141,7 @@ class ProtectOrganism(models.Model):
 class Image(models.Model):
     experiment = models.ForeignKey(Experiment, on_delete=models.PROTECT)
     imager = models.ForeignKey(Imager, on_delete=models.PROTECT)
-    microscope_setting = models.ForeignKey(Microscope_settings,
+    microscope_setting = models.ForeignKey(MicroscopeSettings,
                                            on_delete=models.PROTECT)
     date_taken = models.DateField(("Date taken"), default=date.today)
     release_date = models.DateField(("Can't be used before"),

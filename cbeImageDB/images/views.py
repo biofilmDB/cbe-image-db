@@ -375,9 +375,9 @@ class AttributeSearchResultsView(genViews.ListView):
 class MicroscopeSettingAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        settings = models.Microscope_settings.objects.all()
+        settings = models.MicroscopeSettings.objects.all()
         scopes = models.Microscope.objects.all()
-        mediums = models.Medium.objects.all()
+        mediums = models.ObjectiveMedium.objects.all()
 
         if self.q:
             # filter by objective
@@ -409,10 +409,10 @@ class MicroscopeAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
-class MediumAutocomplete(autocomplete.Select2QuerySetView):
+class ObjectiveMediumAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        qs = models.Medium.objects.all()
+        qs = models.ObjectiveMedium.objects.all()
         if self.q:
             qs = qs.filter(medium_type__icontains=self.q)
         return qs
@@ -547,7 +547,7 @@ class SearchAutocomplete(autocomplete.Select2ListView):
         search_terms.extend(['Microscope: ' + str(x) for x in
                             list(models.Microscope.objects.all())])
         search_terms.extend(['Objective Medium: ' + str(x) for x in
-                             list(models.Medium.objects.all())])
+                             list(models.ObjectiveMedium.objects.all())])
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
         search_terms.extend(['Organism: ' + x for x in su.get_organism_list()])
         search_terms.extend(['Vessel: ' + str(x) for x in models.Vessel.objects.all()])
