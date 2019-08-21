@@ -8,7 +8,7 @@ from template_names import TemplateNames
 from images import search_utils as su
 from django import http
 from datetime import datetime
-from .documents import ImageDocument
+from images.documents import ImageDocument
 from multi_form_view import MultiFormView
 
 
