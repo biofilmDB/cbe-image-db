@@ -1,11 +1,11 @@
-from . import forms, models
+from images import forms, models
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 import django.views.generic as genViews
 from django.urls import reverse
 from dal import autocomplete
 from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
-from . import search_utils as su
+from images import search_utils as su
 from django import http
 from datetime import datetime
 from .documents import ImageDocument
