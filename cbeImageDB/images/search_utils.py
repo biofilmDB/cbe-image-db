@@ -98,3 +98,18 @@ def get_html_experiment_list(experiment):
           'Growth Medium: {}'.format(experiment.growth_medium)
           ]
     return li
+
+
+# Method to standardize image templates and printing information out
+def get_html_image_dict(image, features):
+    try:
+        url = image.large_thumb.url
+    except ValueError:
+        url = ''
+
+    image_info_dict = {'thumb': url,
+                       'details': get_html_image_list(image, features),
+                       'pk': image.pk,
+                       'release_date': image.release_date,
+                       }
+    return image_info_dict

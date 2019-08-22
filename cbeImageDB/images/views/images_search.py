@@ -8,17 +8,6 @@ from datetime import datetime
 from images.documents import ImageDocument
 
 
-# Method to standardize image templates and printing information out
-# TODO: Move to search_utils
-def get_html_image_dict(image, features):
-    image_info_dict = {'thumb': image.large_thumb.url,
-                       'details': su.get_html_image_list(image, features),
-                       'pk': image.pk,
-                       'release_date': image.release_date,
-                       }
-    return image_info_dict
-
-
 def get_description_search_qs(request, qs):
     exist = False
     try:
@@ -36,13 +25,13 @@ def get_description_search_qs(request, qs):
 # Search all searchable terms at the same time
 class GeneralSearchView(genViews.FormView):
     form_class = forms.GeneralSearchImageForm
-    template_name = 'images/search_images.html'
+    template_name = 'images_search/search_images.html'
 
 
 class GeneralSearchResultsView(genViews.ListView):
     model = models.Image
     context_object_name = 'image_list'
-    template_name = 'images/image_search_results.html'
+    template_name = 'images_search/image_search_results.html'
     paginate_by = 5
     features = []
 
@@ -115,9 +104,10 @@ class GeneralSearchResultsView(genViews.ListView):
         context = super().get_context_data(**kwargs)
         context['features'] = self.features
         context['get_image_details'] = []
-        for image in context['image_list']:
-            t = get_html_image_dict(image, self.features)
-            context['get_image_details'].append(t)
+        if len(context['image_list']) > 0:
+            for image in context['image_list']:
+                t = su.get_html_image_dict(image, self.features)
+                context['get_image_details'].append(t)
         return context
 
 
@@ -132,7 +122,7 @@ class AttributeSearchResultsView(genViews.ListView):
     """ Shows all of the images that match a search criteria."""
     model = models.Image
     context_object_name = 'image_list'
-    template_name = 'images/image_search_results.html'
+    template_name = 'images_search/image_search_results.html'
     paginate_by = 5
     features = []
 
@@ -257,7 +247,7 @@ class AttributeSearchResultsView(genViews.ListView):
         context = super().get_context_data(**kwargs)
         context['get_image_details'] = []
         for image in context['image_list']:
-            t = get_html_image_dict(image, self.features)
+            t = su.get_html_image_dict(image, self.features)
             context['get_image_details'].append(t)
         return context
 

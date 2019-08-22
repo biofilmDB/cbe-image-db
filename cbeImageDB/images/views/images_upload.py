@@ -7,16 +7,6 @@ from images import search_utils as su
 from multi_form_view import MultiFormView
 
 
-# Method to standardize image templates and printing information out
-def get_html_image_dict(image, features):
-    image_info_dict = {'thumb': image.large_thumb.url,
-                       'details': su.get_html_image_list(image, features),
-                       'pk': image.pk,
-                       'release_date': image.release_date,
-                       }
-    return image_info_dict
-
-
 class UploadImageView(TemplateNames, MultiFormView):
     """ Allows the user to upload an image file and requests they fill in the
     model fields."""
@@ -53,8 +43,8 @@ class ImageUploadSuccessView(TemplateNames, genViews.DetailView):
         context['get_image_details'] = []
         # Make dictionarys for each image
         for image in images:
-            t = get_html_image_dict(image, ['microscope setting', 'imager',
-                                            'date taken', 'date uploaded'])
+            t = su.get_html_image_dict(image, ['microscope setting', 'imager',
+                                               'date taken', 'date uploaded'])
             context['get_image_details'].append(t)
         return context
 
