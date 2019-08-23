@@ -4,7 +4,6 @@ from . import views
 
 app_name = 'images'
 urlpatterns = [
-    path('about/', views.AboutSite.as_view(), name='about'),
     path('upload-image/', views.UploadImageView.as_view(), name='upload'),
     path('upload-success/<int:pk>', views.ImageUploadSuccessView.as_view(),
          name='upload_success'),
