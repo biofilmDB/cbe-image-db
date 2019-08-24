@@ -6,7 +6,7 @@
 <p> Your image has been successfully uploaded to experiment {{ experiment }}. Would you like to upload another with these same features? </p>
 <ul>
     {% for info in get_experiment_details %}
-        <li> {{ info }} </li>
+        <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
     {% endfor %}
 </ul>
 <p><b> <a href={% url 'images:upload_image_to_experiment' pk=experiment.pk %}>Upload Another Image </a> </b> <p>
@@ -20,10 +20,10 @@
 </a>
 <ul>
      {% for info in image.details %}
-        <li> {{ info }} </li>
+        <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
     {% endfor %}
     {% if user.is_superuser %}
-        <li>Release date: {{ image.release_date }} </li>
+        <li><b> Release date: </b>{{ image.release_date }} </li>
     {% endif %}
 
 </ul>

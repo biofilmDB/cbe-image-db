@@ -10,13 +10,13 @@
     <ul>
         {% for image in get_image_details %}
             {% for info in image.details %} 
-                <li> {{ info }} </li>
+                <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
             {% endfor %}
             {% if user.is_superuser %}
-                <li> Release Date: {{ image.release_date }} </li>
+                <li> <b>Release Date: </b>{{ image.release_date }} </li>
             {% endif %}
             <a href="{% url 'images:image_details' pk=image.pk %}">
-            <img src="{{ image.thumb }}" alt="" ></a>
+            <img src="{{ image.thumb }}" alt="Cannot show image, an error occured" ></a>
             </br>
             </br>
         {% endfor %}
