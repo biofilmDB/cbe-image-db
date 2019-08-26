@@ -25,7 +25,6 @@ class CreateExperimentForm(forms.ModelForm):
         model = Experiment
         fields = ['project', 'lab', 'organism', 'growth_medium', 'vessel',
                   'substratum',]
-
         widgets = {
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
@@ -48,6 +47,9 @@ class UploadFileForm(forms.ModelForm):
         model = Image
         fields = ['document', 'date_taken', 'release_date', 'imager',
                   'microscope_setting', 'brief_description', ]
+        help_texts = {
+            'brief_description': 'General overview (1000 character max)',
+        }
         widgets = {
             'imager':
             autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
