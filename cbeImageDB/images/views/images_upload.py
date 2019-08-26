@@ -27,7 +27,7 @@ class UploadImageView(TemplateNames, MultiFormView):
                                content=image.document)
         image.save()
         return HttpResponseRedirect(reverse('images:upload_success',
-                                            {'experiment': experiment.id}))
+                                            args=(image.experiment.id,)))
 
 
 class ImageUploadSuccessView(TemplateNames, genViews.ListView):
