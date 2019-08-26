@@ -84,7 +84,12 @@ def get_html_image_list(image, features=[]):
             print('Key {} was not found in search_utils.{}'.format(f,
                   'get_html_image_list()'))
 
-    return li
+    li_new = []
+    for f in li:
+        f_list = f.split(': ')
+        li_new.append([(f_list[0] + ': '), ': '.join(f_list[1:])])
+
+    return li_new
 
 
 def get_html_experiment_list(experiment):
@@ -97,7 +102,12 @@ def get_html_experiment_list(experiment):
           'Growth Substriatum: {}'.format(experiment.substratum),
           'Growth Medium: {}'.format(experiment.growth_medium)
           ]
-    return li
+    li_new = []
+    for f in li:
+        f_list = f.split(': ')
+        li_new.append([(f_list[0] + ': '), ': '.join(f_list[1:])])
+
+    return li_new
 
 
 # Method to standardize image templates and printing information out

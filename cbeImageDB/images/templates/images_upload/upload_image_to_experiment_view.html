@@ -6,7 +6,7 @@
 <h1> Upload another Image </h1>	
 <ul>
     {% for info in get_experiment_details %}
-        <li> {{ info }} </li>
+        <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
     {% endfor %}
 </ul>
 <form action = "" method="POST" enctype="multipart/form-data">
