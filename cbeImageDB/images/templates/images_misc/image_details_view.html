@@ -12,7 +12,7 @@
     {% endfor %}
     {% if user.is_superuser %}
         <li><b>Release date: </b>{{ image.release_date }} </li>
-        <li> <a href={% url 'images:upload_success' pk=image.experiment.pk %}> Upload/view </a> other images associated with experiment </li>
+        <li> <a href={% url 'images:upload_success' experiment=image.experiment.pk %}> Upload/view </a> other images associated with experiment </li>
     {% endif %}
 
 </ul>
