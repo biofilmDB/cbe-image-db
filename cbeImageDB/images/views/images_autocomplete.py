@@ -71,32 +71,7 @@ class OrganismAutocomplete(autocomplete.Select2QuerySetView):
 
 
 class AddImagerAutocomplete(autocomplete.Select2QuerySetView):
-
-    # Overwrite method from autocomplete
-    # Only give the option of creating a new imager if the value does not exist
-    # somewhere in the imager names
-    def get_create_option(self, context, q):
-        display_create_option = False
-        create_object = []
-
-        possibles = models.Imager.objects.filter(imager_name__icontains=q)
-        if len(possibles) == 0:
-            display_create_option = True
-            create_object = [{'id': q,
-                              'text': 'Add imager: {}'.format(q),
-                             'create_id': True}]
-        return create_object
-
-    # post method is only called when creating a new object
-    def post(self, request):
-        text = request.POST.get('text', None)
-        if text is None:
-            return http.HttpResponseBadRequest()
-        result = models.Imager.objects.create(imager_name=text)
-        return http.JsonResponse({
-            'id': result.pk,
-            'text': self.get_result_label(result),
-        })
+    create_field = 'imager_name'
 
     def get_queryset(self):
         qs = models.Imager.objects.all()
