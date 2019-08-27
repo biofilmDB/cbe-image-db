@@ -9,7 +9,8 @@
         <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
     {% endfor %}
 </ul>
-<p><b> <a href={% url 'images:upload_image_to_experiment' pk=experiment_pk %}>Upload Another Image </a> </b> <p>
+<p><b> <a href={% url 'images:upload_image_to_experiment' pk=experiment_pk %}>Upload Another Image to Same Experiment </a> </b><p>
+<p><b> <a href={% url 'images:upload' %}> Upload to New Experiment </a></b></p>
 
 <h2> Associated Images </h2>
 {% load thumbnail %}
