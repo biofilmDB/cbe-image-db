@@ -16,7 +16,8 @@
 
 {% if user.is_superuser %}
 <h4> Admin </h4>
-<p> Admin are able to create new growth mediums, growth substratums, labs, microscope settings, objective mediums, organisms, projects, and vessels. To upload a new image, admin must use the upload image page on the main website. Admin are able to search all images regardless of their release date. Regular users only have access to images that have a release date equal or less than the current day. Admin are also able to view the associated experiments with images from the image details page. </p>
+<p> Admin are able to create new growth mediums, growth substratums, labs, microscope settings, objective mediums, organisms, projects, and vessels. To upload a new image, admin must use the upload image page on the main website.  A link to modify image information can be found on the details page for that image. </p>
+<p>Admin are able to search all images regardless of their release date. Regular users only have access to images that have a release date equal or less than the current day. Admin are also able to view the associated experiments with images from the image details page. </p>
 {% endif %}
 
 {% endblock %}
