@@ -46,10 +46,15 @@ class UploadFileForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ['document', 'date_taken', 'release_date', 'imager',
-                  'microscope_setting', 'brief_description', ]
+                  'microscope_setting', 'brief_description',
+                  'path_to_raw_data']
+
         help_texts = {
             'brief_description': 'General overview (1000 character max)',
+            'path_to_raw_data': 'Optional path to location of raw image data \
+                                (500 character max)',
         }
+
         widgets = {
             'imager':
             autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
