@@ -8,9 +8,13 @@ from admin_views.admin import AdminViews
 
 class AdminSearch(AdminViews):
     admin_views = (
+                    ('Upload Image', 'redirect_to_upload'),
                     ('General Search', 'redirect_to_general'),
                     ('Attribute Search', 'redirect_to_attribute'),
         )
+
+    def redirect_to_upload(self, *args, **kwargs):
+        return HttpResponseRedirect(reverse('images:upload'))
 
     def redirect_to_general(self, *args, **kwargs):
         return HttpResponseRedirect(reverse('images:general_search'))
@@ -20,11 +24,10 @@ class AdminSearch(AdminViews):
 
 
 admin.site.register(models.ObjectiveMedium)
-admin.site.register(models.Image, AdminSearch)
+admin.site.register(models.Lab, AdminSearch)
 admin.site.register(models.MicroscopeSettings)
 admin.site.register(models.Vessel)
 admin.site.register(models.GrowthMedium)
 admin.site.register(models.GrowthSubstratum)
-admin.site.register(models.Lab)
 admin.site.register(models.Project)
 admin.site.register(models.Organism)
