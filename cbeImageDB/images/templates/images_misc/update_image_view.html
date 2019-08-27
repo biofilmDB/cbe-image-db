@@ -1,0 +1,33 @@
+{% extends 'images/base.html' %}
+{% load static %}
+{% block content %}
+
+
+{% if user.is_superuser %}
+    <h1> Update Image Content </h1>
+    <p> You are updating info for the image with the id {{ image.id }} and in the experiment {{ image.experiment }} with the fields: </p>
+    <ul>
+    {% for data in experiment_data %}
+        <li> <b> {{ data.0 }} </b> {{ data.1 }} </li>
+    {% endfor %}
+    </ul>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update">
+    </form>
+{% else %}
+    <h1> Error </h1>
+    <p> You do not have permission to view this page </p>
+{% endif %}
+
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+{% endblock %}
+
+

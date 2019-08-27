@@ -2,6 +2,8 @@ from images import forms, models
 import django.views.generic as genViews
 from template_names import TemplateNames
 from images import search_utils as su
+from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
+from django.urls import reverse
 
 
 class AboutSite(TemplateNames, genViews.TemplateView):
@@ -39,3 +41,26 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
         image = kwargs['object']
         context['get_image_details'] = su.get_html_image_list(image)
         return context
+
+
+class UpdateImageView(TemplateNames, genViews.UpdateView):
+    model = models.Image
+    form_class = forms.UploadFileForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        image = models.Image.objects.get(id=self.kwargs['pk'])
+        e = image.experiment
+        context['experiment_data'] = su.get_html_experiment_list(e)
+        return context
+
+    def form_valid(self, form):
+        image = form.save(commit=False)
+
+        image.medium_thumb.save(name=image.document.name,
+                                content=image.document)
+        image.large_thumb.save(name=image.document.name,
+                               content=image.document)
+        image.save()
+        return HttpResponseRedirect(reverse('images:image_details',
+                                            args=(image.id,)))
