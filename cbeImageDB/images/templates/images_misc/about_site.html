@@ -1,7 +1,22 @@
 {% extends 'images/base.html' %}
 {% block content %}
 <h1 align="center"> About the CBE Image Database </h1>
-<h2> Setup </h2>
+<h2 align="center"> About </h2>
+<p> The image database is designed to be a storage location for biofilm images to help with organization of and loss of data. It allows users to upload and search biofilm images. It keeps track of such things as the associated labs, organism, and microscope used. </p>
+
+<h2 align="center"> Setup </h2>
 <h4> Projects </h4>
+<p> A project is the overall, larger project that the image fits into. (TODO: Add a better description) </p>
+
+<h4> Uploading Images </h4>
+<p>When a user first uploads an image, a new experiment is created under a specific project. An experiment is designed to hold only images relating to the a single experiment. If a user is taking images for multiple experiments, they should use the upload image tab when moving onto a new experiment. A user can upload multiple images to a given experiment. If the user saves the url, they can later upload images to the same experiment. Clicking on an image will show the user more information about a specific image. </p>
+
+<h4> Searching </h4>
+<p> Users can either search by individual attributes or a more general search as well as by the terms that appear in the image descriptions. If nothing is entered in the search, all images with appropriate release dates (TODO: wording?) in the database will be given as a result. Clicking on the image on the search results page will bring the user to a page a details page showing all the images information.</p>
+
+{% if user.is_superuser %}
+<h4> Admin </h4>
+<p> Admin are able to create new growth mediums, growth substratums, labs, microscope settings, objective mediums, organisms, projects, and vessels. To upload a new image, admin must use the upload image page on the main website. Admin are able to search all images regardless of their release date. Regular users only have access to images that have a release date equal or less than the current day. Admin are also able to view the associated experiments with images from the image details page. </p>
+{% endif %}
 
 {% endblock %}
