@@ -1,0 +1,56 @@
+{% extends 'images/base.html' %}
+{% load images_extra %}
+
+{% block content %}
+<h1> Experiment Information </h1>
+<p> Information and associated images are being shown for the experiment {{ experiment }} with id {{ experiment_pk }}. The experiment parameters are as follows: </p>
+<ul>
+    {% for info in get_experiment_details %}
+        <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
+    {% endfor %}
+</ul>
+<p><b> <a href={% url 'images:upload_image_to_experiment' pk=experiment_pk %}>Upload Another Image to This Experiment </a> </b><p>
+
+<h2> Associated Images </h2>
+{% load thumbnail %}
+{% for image in get_image_details %}
+<a href="{% url 'images:image_details' pk=image.pk %}">
+<img src="{{ image.thumb }}"
+     alt="An error occured while loading the image" />
+</a>
+<ul>
+     {% for info in image.details %}
+        <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
+    {% endfor %}
+    {% if user.is_superuser %}
+        <li><b> Release date: </b>{{ image.release_date }} </li>
+    {% endif %}
+
+</ul>
+</br>
+
+{% endfor %}
+</br>
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?{% url_replace page=page_obj.previous_page_number %}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?{% url_replace page=i %}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?{% url_replace page=page_obj.next_page_number %}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+{% endblock %}
