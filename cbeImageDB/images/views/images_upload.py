@@ -1,11 +1,12 @@
 from images import forms, models
-from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
+from django.http import HttpResponseRedirect, HttpResponse  # , Redirect
 import django.views.generic as genViews
 from django.urls import reverse
 from template_names import TemplateNames
 from images import search_utils as su
 from multi_form_view import MultiFormView
 from datetime import datetime
+from django.template.loader import render_to_string
 
 
 class UploadImageView(TemplateNames, MultiFormView):
@@ -26,8 +27,20 @@ class UploadImageView(TemplateNames, MultiFormView):
         image.large_thumb.save(name=image.document.name,
                                content=image.document)
         image.save()
-        return HttpResponseRedirect(reverse('images:upload_success',
-                                            args=(image.experiment.id,)))
+        # Render the results page
+        success = {}
+        success['user'] = self.request.user
+        success['experiment'] = str(experiment)
+        success['experiment_pk'] = experiment.id
+        e = su.get_html_experiment_list(experiment)
+        success['get_experiment_details'] = e
+        feat = ['microscope setting', 'imager', 'date taken',
+                'date uploaded']
+        success['get_image_details'] = [su.get_html_image_dict(image, feat)]
+        # import pdb; pdb.set_trace()
+        rendered = render_to_string('images_upload/image_upload_success.html',
+                                    success)
+        return HttpResponse(rendered)
 
 
 class ImageUploadSuccessView(TemplateNames, genViews.ListView):
@@ -45,7 +58,6 @@ class ImageUploadSuccessView(TemplateNames, genViews.ListView):
             qs = qs.filter(release_date__lte=datetime.now())
 
         return qs
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
