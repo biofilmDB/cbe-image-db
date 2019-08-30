@@ -5,14 +5,14 @@ from . import views
 app_name = 'images'
 urlpatterns = [
     path('upload-image/', views.UploadImageView.as_view(), name='upload'),
-    path('upload-image-experiment/<int:pk>/',
+    path('experiment-image-upload/<int:pk>/',
          views.UploadImageToExperimentView.as_view(),
          name='upload_image_to_experiment'),
 
     # Misc views
     path('experiment/<experiment>/', views.ExperimentDetailsView.as_view(),
          name='experiment_details'),
-    path('details/<int:pk>/', views.ImageDetailsView.as_view(),
+    path('image/<int:pk>/', views.ImageDetailsView.as_view(),
          name='image_details'),
     path('update-image/<int:pk>/', views.UpdateImageView.as_view(),
          name='update_image'),
