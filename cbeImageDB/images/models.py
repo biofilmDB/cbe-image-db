@@ -6,31 +6,31 @@ from django.urls import reverse
 
 
 class Organism(models.Model):
-    organism_name = models.CharField(db_index=True, max_length=1000)
+    name = models.CharField(db_index=True, max_length=1000)
     ncbi_id = models.CharField(max_length=100)
     storid = models.IntegerField()
 
     def __str__(self):
-        return self.organism_name
+        return self.name
 
     class Meta:
         indexes = [
-            models.Index(fields=['organism_name', ])
+            models.Index(fields=['name', ])
         ]
 
 
 class Microscope(models.Model):
-    microscope_name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500)
 
     def __str__(self):
-        return self.microscope_name
+        return self.name
 
 
 class ObjectiveMedium(models.Model):
-    medium_type = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.medium_type
+        return self.name
 
 
 class MicroscopeSettings(models.Model):
@@ -47,17 +47,17 @@ class MicroscopeSettings(models.Model):
 
 
 class Lab(models.Model):
-    pi_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-            return self.pi_name
+            return self.name
 
 
 class Imager(models.Model):
-    imager_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.imager_name
+        return self.name
 
     def get_absolute_url(self):
         return reverse('images:imager_success', kwargs={'pk': self.pk})
@@ -85,10 +85,10 @@ def large_thumb_directory_path(instance, filename):
 
 
 class GrowthSubstratum(models.Model):
-    substratum = models.CharField(max_length=500)
+    name = models.CharField(max_length=500)
 
     def __str__(self):
-        return self.substratum
+        return self.name
 
 
 class Vessel(models.Model):
@@ -99,10 +99,10 @@ class Vessel(models.Model):
 
 
 class GrowthMedium(models.Model):
-    growth_medium = models.CharField(max_length=500)
+    name = models.CharField(max_length=500)
 
     def __str__(self):
-        return self.growth_medium
+        return self.name
 
 
 class Project(models.Model):

@@ -51,7 +51,7 @@ class GeneralSearchResultsView(genViews.ListView):
                     qs = qs.filter(imager__imager_name=q2)
 
                 elif q[0].lower() == 'objective medium':
-                    qs = qs.filter(microscope_setting__medium__medium_type=q2)
+                    qs = qs.filter(microscope_setting__medium__name=q2)
 
                 elif q[0].lower() == 'objective':
                     # remove x from objective
@@ -59,7 +59,7 @@ class GeneralSearchResultsView(genViews.ListView):
                     qs = qs.filter(microscope_setting__objective=obj)
 
                 elif q[0].lower() == 'microscope':
-                    qs = qs.filter(microscope_setting__microscope__microscope_name=q2)
+                    qs = qs.filter(microscope_setting__microscope__name=q2)
                 elif q[0].lower() == 'day':
                     features.append('date_taken')
                     qs = qs.filter(date_taken__day=q2)
@@ -76,18 +76,18 @@ class GeneralSearchResultsView(genViews.ListView):
                     qs = qs.filter(experiment__project__name=q2)
                 elif q[0].lower() == 'lab':
                     print('looking kup a lab {}'.format(q2))
-                    qs = qs.filter(experiment__lab__pi_name=q2)
+                    qs = qs.filter(experiment__lab__name=q2)
                 elif q[0].lower() == 'organism':
-                    qs = qs.filter(experiment__organism__organism_name=q2)
+                    qs = qs.filter(experiment__organism__name=q2)
                 elif q[0].lower() == 'vessel':
                     features.append('vessel')
                     qs = qs.filter(experiment__vessel__name=q2)
                 elif q[0].lower() == 'growth medium':
                     features.append('growth medium')
-                    qs = qs.filter(experiment__growth_medium__growth_medium=q2)
+                    qs = qs.filter(experiment__growth_medium__name=q2)
                 elif q[0].lower() == 'growth substratum':
                     features.append('growth substratum')
-                    qs = qs.filter(experiment__substratum__substratum=q2)
+                    qs = qs.filter(experiment__substratum__name=q2)
 
         except MultiValueDictKeyError:
             pass
