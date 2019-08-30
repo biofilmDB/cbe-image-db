@@ -25,6 +25,7 @@ class AdminSearch(AdminViews):
 
 admin.site.register(models.ObjectiveMedium)
 admin.site.register(models.Lab, AdminSearch)
+admin.site.register(models.Experiment)
 admin.site.register(models.MicroscopeSettings)
 admin.site.register(models.Vessel)
 admin.site.register(models.GrowthMedium)
