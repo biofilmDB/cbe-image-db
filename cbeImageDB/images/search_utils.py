@@ -111,7 +111,7 @@ def get_html_experiment_list(experiment):
 
 
 # Method to standardize image templates and printing information out
-def get_html_image_dict(image, features):
+def get_html_image_dict(image, features=[]):
     try:
         url = image.large_thumb.url
     except ValueError:
