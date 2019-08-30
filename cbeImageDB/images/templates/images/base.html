@@ -6,11 +6,12 @@
         <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
         <style>
             body {
-              margin: 0;
+              margin-top: 0;
               font-family: Arial, Helvetica, sans-serif;
             }
         
             .topnav {
+              margin-left: 0;
               overflow: hidden;
               {% if user.is_superuser %}
                   background-color: #417690;
@@ -47,6 +48,12 @@
                 display: inline;
                 float: center;
                 width: 75%; 
+            }
+            .template-content {
+                margin: 25px;
+            }
+            p {
+                margin: 25;
             }
         </style>
         <title></title>
