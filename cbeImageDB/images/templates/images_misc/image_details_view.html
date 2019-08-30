@@ -13,7 +13,7 @@
     <li><b> Raw Data Path: </b>{{ image.path_to_raw_data }} </li>
     {% if user.is_superuser %}
         <li><b>Release date: </b>{{ image.release_date }} </li>
-        <li> <a href={% url 'images:upload_success' experiment=image.experiment.pk %}> Upload/view </a> other images associated with experiment </li>
+        <li> <a href={% url 'images:experiment_details' experiment=image.experiment.pk %}> Upload/view </a> other images associated with experiment </li>
         <li> <a href={% url 'images:update_image' pk=image.pk %}> Update image information </a> </li>
     {% endif %}
 

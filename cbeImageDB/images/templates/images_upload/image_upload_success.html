@@ -3,16 +3,16 @@
 
 {% block content %}
 <h1> Upload Success </h1>
-<p> Your image has been successfully uploaded to experiment {{ experiment }}. Would you like to upload another with these same features? </p>
+<p> Your image has been successfully uploaded to experiment {{ experiment }}. You can view all of the associated images for this experiment <a href={% url 'images:experiment_details' experiment=experiment_pk %}> here </a>. Would you like to upload another with these same features? </p>
 <ul>
     {% for info in get_experiment_details %}
         <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
     {% endfor %}
 </ul>
-<p><b> <a href={% url 'images:upload_image_to_experiment' pk=experiment_pk %}>Upload Another Image to Same Experiment </a> </b><p>
-<p><b> <a href={% url 'images:upload' %}> Upload to New Experiment </a></b></p>
+<p><b> <a href={% url 'images:upload_image_to_experiment' pk=experiment_pk %}>Yes, upload another image to this experiment</a> </b><p>
+<p><b> <a href={% url 'images:upload' %}> No, upload to new experiment </a></b></p>
 
-<h2> Associated Images </h2>
+<h2> Image Details </h2>
 {% load thumbnail %}
 {% for image in get_image_details %}
 <a href="{% url 'images:image_details' pk=image.pk %}">

@@ -111,7 +111,7 @@ def get_html_experiment_list(experiment):
 
 
 # Method to standardize image templates and printing information out
-def get_html_image_dict(image, features):
+def get_html_image_dict(image, features=[]):
     try:
         url = image.large_thumb.url
     except ValueError:
@@ -123,3 +123,15 @@ def get_html_image_dict(image, features):
                        'release_date': image.release_date,
                        }
     return image_info_dict
+
+
+def get_success_context(experiment, image):
+    success = {}
+    success['experiment'] = str(experiment)
+    success['experiment_pk'] = experiment.id
+    e = get_html_experiment_list(experiment)
+    success['get_experiment_details'] = e
+    feat = ['microscope setting', 'imager', 'date taken',
+            'date uploaded']
+    success['get_image_details'] = [get_html_image_dict(image, feat)]
+    return success
