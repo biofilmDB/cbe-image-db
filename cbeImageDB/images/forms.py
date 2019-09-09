@@ -8,10 +8,10 @@ class AddImagerForm(forms.ModelForm):
 
     class Meta:
         model = Imager
-        fields = ['imager_name', ]
+        fields = ['name', ]
 
     def clean_imager_name(self):
-        data = self.cleaned_data['imager_name']
+        data = self.cleaned_data['name']
         query = Imager.objects.filter(imager_name__iexact=data)
         if len(query) > 0:
             raise forms.ValidationError("{} already exists, try again".format(data))

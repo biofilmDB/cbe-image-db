@@ -21,14 +21,14 @@ def create_organisms():
             print('Added organism number: {}'.format(index))
 
         Organism.objects.create(storid=row[0], ncbi_id=row[1],
-                                organism_name=row[2])
+                                name=row[2])
 
 
 def create_microscope_medium():
     mediums = ['air', 'water', 'oil', 'glycerin', 'dry']
     medium_list = []
     for med in mediums:
-        m = ObjectiveMedium(medium_type=med)
+        m = ObjectiveMedium(name=med)
         m.save()
         medium_list.append(m)
     return medium_list
@@ -40,7 +40,7 @@ def create_microscopes():
               'Epifluorescent Microscope', 'Nikon Steroscope', 'Bio-Raman']
     microscope_list = []
     for scope in scopes:
-        m = Microscope(microscope_name=scope)
+        m = Microscope(name=scope)
         m.save()
         microscope_list.append(m)
     return microscope_list
@@ -68,34 +68,34 @@ def create_microscope_settings():
 
 
 def create_test_labs():
-    tl1 = Lab(pi_name='test lab 1')
+    tl1 = Lab(name='test lab 1')
     tl1.save()
 
-    tl2 = Lab(pi_name='test lab 2')
+    tl2 = Lab(name='test lab 2')
     tl2.save()
 
 
 def create_test_imager():
-    Imager(imager_name='Jane Doe').save()
+    Imager(name='Jane Doe').save()
 
 
 def create_test_microscope_objects():
-    med = ObjectiveMedium(medium_type="Plasma (Test)")
+    med = ObjectiveMedium(name="Plasma (Test)")
     med.save()
-    mic = Microscope(microscope_name='Test Scope')
+    mic = Microscope(name='Test Scope')
     mic.save()
     MicroscopeSettings(microscope=mic, objective=63, medium=med).save()
 
 
 def create_test_organism():
-    Organism.objects.create(organism_name='Fluffy Stuff (Test organism)',
+    Organism.objects.create(name='Fluffy Stuff (Test organism)',
                             storid='123', ncbi_id='ncbi25')
-    Organism.objects.create(organism_name='Squishy Goo (Test organism)',
+    Organism.objects.create(name='Squishy Goo (Test organism)',
                             storid='567', ncbi_id='ncbi66')
 
 
 def create_test_experiment_objects():
     Project.objects.create(name='Test Exploration of Mystical Bacteria')
     Vessel.objects.create(name='Test Reactor A')
-    GrowthSubstratum.objects.create(substratum='Dimond (Test)')
-    GrowthMedium.objects.create(growth_medium='Fruit Juice (Test)')
+    GrowthSubstratum.objects.create(name='Dimond (Test)')
+    GrowthMedium.objects.create(name='Fruit Juice (Test)')
