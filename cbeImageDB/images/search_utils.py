@@ -38,7 +38,7 @@ def get_organism_list():
     organisms = []
     for i in Experiment.objects.all():
         for o in i.organism.all():
-            organisms.append(o.organism_name)
+            organisms.append(o.name)
     organisms = list(set(organisms))
     return organisms
 
