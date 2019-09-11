@@ -4,7 +4,8 @@ from template_names import TemplateNames
 from images import search_utils as su
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 from django.urls import reverse
-from datetime import datetime
+from datetime import datetime, date
+from django.core.exceptions import PermissionDenied
 
 
 class AboutSite(TemplateNames, genViews.TemplateView):
@@ -65,6 +66,14 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
     """ Shows the details of an image. It is where a sucessfull image upload is
     redirected to."""
     model = models.Image
+
+    def get_object(self):
+        img = models.Image.objects.get(id=self.kwargs['pk'])
+        if img.release_date > date.today():
+            if not self.request.user.is_superuser:
+                raise PermissionDenied()
+        else:
+            return models.Image.objects.get(id=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
