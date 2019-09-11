@@ -56,7 +56,8 @@ class ExperimentDetailsView(TemplateNames, genViews.ListView):
         # Make dictionarys for each image
         for image in context['image_obj_list']:
             t = su.get_html_image_dict(image, ['microscope setting', 'imager',
-                                               'date taken', 'date uploaded'])
+                                               'date taken', 'date uploaded',
+                                               'release date'])
             context['get_image_details'].append(t)
 
         return context
