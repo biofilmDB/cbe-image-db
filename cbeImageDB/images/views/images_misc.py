@@ -71,7 +71,9 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
         img = models.Image.objects.get(id=self.kwargs['pk'])
         if img.release_date > date.today():
             if not self.request.user.is_superuser:
-                raise PermissionDenied()
+                error = "You do not have permission to view this image due to \
+                         its release date."
+                raise PermissionDenied(error)
         else:
             return models.Image.objects.get(id=self.kwargs['pk'])
 
