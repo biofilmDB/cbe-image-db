@@ -5,6 +5,7 @@ from template_names import TemplateNames
 from images import search_utils as su
 from multi_form_view import MultiFormView
 from django.template.loader import render_to_string
+from django.db import transaction
 
 
 class UploadImageView(TemplateNames, MultiFormView):
@@ -16,20 +17,21 @@ class UploadImageView(TemplateNames, MultiFormView):
     }
 
     def forms_valid(self, forms):
-        experiment = forms['experiment_form'].save()
-        experiment.save()
-        image = forms['image_form'].save(commit=False)
-        image.experiment = experiment
-        image.medium_thumb.save(name=image.document.name,
-                                content=image.document)
-        image.large_thumb.save(name=image.document.name,
-                               content=image.document)
-        image.save()
-        # Render the results page
-        success = su.get_success_context(experiment, image)
-        success['user'] = self.request.user
-        rendered = render_to_string('images_upload/image_upload_success.html',
-                                    success)
+        with transaction.atomic():
+            experiment = forms['experiment_form'].save()
+            experiment.save()
+            image = forms['image_form'].save(commit=False)
+            image.experiment = experiment
+            image.medium_thumb.save(name=image.document.name,
+                                    content=image.document)
+            image.large_thumb.save(name=image.document.name,
+                                   content=image.document)
+            image.save()
+            # Render the results page
+            success = su.get_success_context(experiment, image)
+            success['user'] = self.request.user
+            template = 'images_upload/image_upload_success.html'
+            rendered = render_to_string(template, success)
         return HttpResponse(rendered)
 
 
