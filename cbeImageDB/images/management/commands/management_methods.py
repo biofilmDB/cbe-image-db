@@ -6,7 +6,7 @@ from images.models import GrowthSubstratum, Organism
 
 def create_vesssels():
     vessel_list = ['CDC', 'Drip Flow', 'Capillary', 'Membrane Filter',
-                   'Annular', 'Rotating Disk']
+                   'Annular', 'Rotating Disk', 'Flask', 'Bottle', 'Tube']
     for vessel in vessel_list:
         print('Added vessel: {}'.format(vessel))
         Vessel.objects.create(name=vessel)
