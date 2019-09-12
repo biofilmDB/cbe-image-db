@@ -19,6 +19,8 @@ class Command(BaseCommand):
         mm.create_microscope_settings()
         print('\n#### Initializing Vessels ####')
         mm.create_vesssels()
+        print('\n#### Initializing Growth Substratum ####')
+        mm.create_substratum()
 
         if not options['noorganisms']:
             print('\n#### Initializing Organisms ####')

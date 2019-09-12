@@ -38,7 +38,7 @@ def get_organism_list():
     organisms = []
     for i in Experiment.objects.all():
         for o in i.organism.all():
-            organisms.append(o.organism_name)
+            organisms.append(o.name)
     organisms = list(set(organisms))
     return organisms
 
@@ -52,7 +52,8 @@ def get_html_image_list(image, features=[]):
     if len(features) == 0:
         features = ['project', 'lab', 'imager', 'description', 'organism',
                     'microscope setting', 'vessel', 'growth substratum',
-                    'file name', 'date taken', 'date uploaded']
+                    'file name', 'date taken', 'date uploaded', 'release date',
+                    'raw data path']
     # Create a dictionary of possible lists
     f_dict = {'project': 'Project: {}'.format(e.project),
               'lab':
@@ -72,6 +73,10 @@ def get_html_image_list(image, features=[]):
               'search':
               '{}; {}'.format(organism_list, image.microscope_setting),
               'description': 'Description: {}'.format(image.brief_description),
+              'release date':
+              'Release Date: {}'.format(image.release_date),
+              'raw data path':
+              'Raw Data Path: {}'.format(image.path_to_raw_data),
               }
 
     # Hold the features wanted
@@ -120,7 +125,6 @@ def get_html_image_dict(image, features=[]):
     image_info_dict = {'thumb': url,
                        'details': get_html_image_list(image, features),
                        'pk': image.pk,
-                       'release_date': image.release_date,
                        }
     return image_info_dict
 

@@ -20,9 +20,6 @@
      {% for info in image.details %}
         <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
     {% endfor %}
-    {% if user.is_superuser %}
-        <li><b> Release date: </b>{{ image.release_date }} </li>
-    {% endif %}
 
 </ul>
 </br>

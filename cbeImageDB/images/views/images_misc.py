@@ -4,7 +4,8 @@ from template_names import TemplateNames
 from images import search_utils as su
 from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
 from django.urls import reverse
-from datetime import datetime
+from datetime import datetime, date
+from django.core.exceptions import PermissionDenied
 
 
 class AboutSite(TemplateNames, genViews.TemplateView):
@@ -55,7 +56,8 @@ class ExperimentDetailsView(TemplateNames, genViews.ListView):
         # Make dictionarys for each image
         for image in context['image_obj_list']:
             t = su.get_html_image_dict(image, ['microscope setting', 'imager',
-                                               'date taken', 'date uploaded'])
+                                               'date taken', 'date uploaded',
+                                               'release date'])
             context['get_image_details'].append(t)
 
         return context
@@ -65,6 +67,16 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
     """ Shows the details of an image. It is where a sucessfull image upload is
     redirected to."""
     model = models.Image
+
+    def get_object(self):
+        img = models.Image.objects.get(id=self.kwargs['pk'])
+        rd = img.release_date
+        if rd > date.today() and not self.request.user.is_superuser:
+                error = "You do not have permission to view this image due to \
+                         its release date."
+                raise PermissionDenied(error)
+        else:
+            return models.Image.objects.get(id=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
