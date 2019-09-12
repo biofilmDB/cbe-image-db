@@ -4,6 +4,13 @@ from images.models import Imager, Lab, Project, Vessel, GrowthMedium
 from images.models import GrowthSubstratum, Organism
 
 
+def create_substratum():
+    with open('substratum.txt') as f:
+        for line in f:
+            GrowthSubstratum.objects.create(name=line.strip())
+            print('Created GrowthSubstratum: {}'.format(line.strip()))
+
+
 def create_vesssels():
     vessel_list = ['CDC', 'Drip Flow', 'Capillary', 'Membrane Filter',
                    'Annular', 'Rotating Disk', 'Flask', 'Bottle', 'Tube']
