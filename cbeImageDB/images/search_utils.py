@@ -67,7 +67,6 @@ def get_html_image_list(image, features=[]):
               'vessel': 'Vessel: {}'.format(e.vessel),
               'growth substratum':
               'Growth Substratum: {}'.format(e.substratum),
-              'growth medium': 'Growth Medium: {}'.format(e.growth_medium),
               'file name':
               'File Name: {}'.format(image.document.name.split('/')[-1]),
               'search':
@@ -105,7 +104,6 @@ def get_html_experiment_list(experiment):
           'Organism(s): {}'.format(organism_list),
           'Vessel: {}'.format(experiment.vessel),
           'Growth Substriatum: {}'.format(experiment.substratum),
-          'Growth Medium: {}'.format(experiment.growth_medium)
           ]
     li_new = []
     for f in li:
@@ -125,6 +123,7 @@ def get_html_image_dict(image, features=[]):
     image_info_dict = {'thumb': url,
                        'details': get_html_image_list(image, features),
                        'pk': image.pk,
+                       'release_date': image.release_date,
                        }
     return image_info_dict
 

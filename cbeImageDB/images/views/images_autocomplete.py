@@ -88,15 +88,6 @@ class LabAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
-class GrowthMediumAutocomplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        qs = models.GrowthMedium.objects.all()
-        if self.q:
-            qs = qs.filter(name__icontains=self.q)
-        return qs
-
-
 class GrowthSubstratumAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
