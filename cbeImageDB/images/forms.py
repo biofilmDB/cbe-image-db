@@ -1,6 +1,6 @@
 from django import forms
 from .models import Image, Lab, Imager, Microscope, ObjectiveMedium, Organism, Experiment
-from .models import Project, GrowthMedium, GrowthSubstratum, Vessel
+from .models import Project, GrowthSubstratum, Vessel
 from dal import autocomplete
 
 
@@ -19,12 +19,26 @@ class AddImagerForm(forms.ModelForm):
             return data
 
 
+class AddProjectForm(forms.ModelForm):
+
+    class Meta:
+        model = Project
+        fields = ['name', ]
+
+    def clean_name(self):
+        data = self.cleaned_data['name']
+        query = Project.objects.filter(name__iexact=data)
+        if len(query) > 0:
+            raise forms.ValidationError("{} already exists, try again".format(data))
+        else:
+            return data
+
+
 class CreateExperimentForm(forms.ModelForm):
 
     class Meta:
         model = Experiment
-        fields = ['project', 'lab', 'organism', 'growth_medium', 'vessel',
-                  'substratum',]
+        fields = ['project', 'lab', 'organism', 'vessel', 'substratum',]
         widgets = {
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
@@ -32,8 +46,6 @@ class CreateExperimentForm(forms.ModelForm):
             autocomplete.ModelSelect2Multiple(url='/images/organism-autocomplete/'),
             'project':
             autocomplete.ModelSelect2(url='/images/project-autocomplete/'),
-            'growth_medium':
-            autocomplete.ModelSelect2(url='/images/growthmedium-autocomplete/'),
             'vessel':
             autocomplete.ModelSelect2(url='/images/vessel-autocomplete/'),
             'substratum':
@@ -86,8 +98,6 @@ class AttributeSearchImageForm(forms.Form):
     description_search = forms.CharField(required=False)
     vessel = forms.ModelChoiceField(queryset=Vessel.objects.all(), required=False,
         widget=autocomplete.ModelSelect2(url='/images/vessel-autocomplete'))
-    growth_medium = forms.ModelChoiceField(queryset=GrowthMedium.objects.all(),
-        required=False, widget=autocomplete.ModelSelect2(url='/images/growthmedium-autocomplete'))
     growth_substratum = forms.ModelChoiceField(queryset=GrowthSubstratum.objects.all(),
         required=False, widget=autocomplete.ModelSelect2(url='/images/growthsubstratum-autocomplete'))
     microscope = forms.ModelChoiceField(queryset=Microscope.objects.all(),
