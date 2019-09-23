@@ -2,11 +2,10 @@ from images import forms, models
 import django.views.generic as genViews
 from template_names import TemplateNames
 from images import search_utils as su
-from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from datetime import datetime, date
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404
 
 
 class AboutSite(TemplateNames, genViews.TemplateView):
@@ -90,7 +89,12 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
     model = models.Image
 
     def get_object(self):
-        img = get_object_or_404(models.Image, pk=self.kwargs['pk'])
+        try:
+            img = models.Image.objects.get(pk=self.kwargs['pk'])
+        except models.Image.DoesNotExist:
+            error = "Image with id: {} does not exist.".format(
+                self.kwargs['pk'])
+            raise Http404(error)
         rd = img.release_date
         if rd > date.today() and not self.request.user.is_superuser:
                 error = "You do not have permission to view this image due to \
