@@ -48,7 +48,7 @@ class GeneralSearchResultsView(genViews.ListView):
                 q2 = ': '.join(q[1:])
                 if q[0].lower() == 'imager':
                     features.append('imager')
-                    qs = qs.filter(imager__imager_name=q2)
+                    qs = qs.filter(imager__name=q2)
 
                 elif q[0].lower() == 'objective medium':
                     qs = qs.filter(microscope_setting__medium__name=q2)
