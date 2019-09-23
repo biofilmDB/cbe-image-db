@@ -82,9 +82,6 @@ class GeneralSearchResultsView(genViews.ListView):
                 elif q[0].lower() == 'vessel':
                     features.append('vessel')
                     qs = qs.filter(experiment__vessel__name=q2)
-                elif q[0].lower() == 'growth medium':
-                    features.append('growth medium')
-                    qs = qs.filter(experiment__growth_medium__name=q2)
                 elif q[0].lower() == 'growth substratum':
                     features.append('growth substratum')
                     qs = qs.filter(experiment__substratum__name=q2)
@@ -212,14 +209,6 @@ class AttributeSearchResultsView(genViews.ListView):
             pass
 
         try:
-            v = self.request.GET['growth_medium']
-            if v != '':
-                features.append('growth medium')
-                qs = qs.filter(experiment__growth_medium=v)
-        except MultiValueDictKeyError:
-            pass
-
-        try:
             v = self.request.GET['growth_substratum']
             if v != '':
                 features.append('growth substratum')
@@ -267,8 +256,6 @@ class SearchAutocomplete(autocomplete.Select2ListView):
         search_terms.extend(['Objective: ' + x for x in su.get_objectives()])
         search_terms.extend(['Organism: ' + x for x in su.get_organism_list()])
         search_terms.extend(['Vessel: ' + str(x) for x in models.Vessel.objects.all()])
-        search_terms.extend(['Growth Medium: ' + str(x) for x in
-                             models.GrowthMedium.objects.all()])
         search_terms.extend(['Growth Substriatum: ' + str(x) for x in
                              models.GrowthSubstratum.objects.all()])
         search_terms.extend(['Day: ' + str(x) for x in range(1, 32)])

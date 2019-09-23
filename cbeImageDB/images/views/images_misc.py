@@ -2,7 +2,7 @@ from images import forms, models
 import django.views.generic as genViews
 from template_names import TemplateNames
 from images import search_utils as su
-from django.http import HttpResponseRedirect  # , HttpResponse, Redirect
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from datetime import datetime, date
 from django.core.exceptions import PermissionDenied
@@ -30,6 +30,26 @@ class AddImagerView(genViews.CreateView):
 
 class ImagerSuccessView(TemplateNames, genViews.DetailView):
     model = models.Imager
+
+
+class ProjectSuccessView(TemplateNames, genViews.DetailView):
+    model = models.Project
+
+
+class AddProjectView(genViews.CreateView):
+    """ Allows a user to ad an imager using a webpage. It uses a genaric create
+    model template."""
+    template_name = 'images/create_model.html'
+    form_class = forms.AddProjectForm
+    model = models.Project
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['heading1'] = "Add a new project"
+        context['intro_p'] = "Type the name of your project into the box to "
+        context['intro_p'] += "add it as a new project"
+        context['button_text'] = "Add"
+        return context
 
 
 class ExperimentDetailsView(TemplateNames, genViews.ListView):
@@ -69,14 +89,19 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
     model = models.Image
 
     def get_object(self):
-        img = models.Image.objects.get(id=self.kwargs['pk'])
+        try:
+            img = models.Image.objects.get(pk=self.kwargs['pk'])
+        except models.Image.DoesNotExist:
+            error = "Image with id: {} does not exist.".format(
+                self.kwargs['pk'])
+            raise Http404(error)
         rd = img.release_date
         if rd > date.today() and not self.request.user.is_superuser:
                 error = "You do not have permission to view this image due to \
                          its release date."
                 raise PermissionDenied(error)
         else:
-            return models.Image.objects.get(id=self.kwargs['pk'])
+            return img
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -98,18 +98,14 @@ class Vessel(models.Model):
         return self.name
 
 
-class GrowthMedium(models.Model):
-    name = models.CharField(max_length=500)
-
-    def __str__(self):
-        return self.name
-
-
 class Project(models.Model):
     name = models.CharField(max_length=500)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('images:project_success', kwargs={'pk': self.pk})
 
 
 class Experiment(models.Model):
@@ -117,7 +113,6 @@ class Experiment(models.Model):
     lab = models.ManyToManyField(Lab, through='ProtectLab')
     organism = models.ManyToManyField(Organism, through='ProtectOrganism')
     vessel = models.ForeignKey(Vessel, on_delete=models.PROTECT)
-    growth_medium = models.ForeignKey(GrowthMedium, on_delete=models.PROTECT)
     substratum = models.ForeignKey(GrowthSubstratum, on_delete=models.PROTECT)
     # TODO: Does this belong here or in image?
     # brief_description = models.CharField(max_length=1000)

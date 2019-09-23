@@ -1,6 +1,6 @@
 import pandas
 from images.models import Microscope, ObjectiveMedium, MicroscopeSettings
-from images.models import Imager, Lab, Project, Vessel, GrowthMedium
+from images.models import Imager, Lab, Project, Vessel
 from images.models import GrowthSubstratum, Organism
 
 
@@ -105,4 +105,3 @@ def create_test_experiment_objects():
     Project.objects.create(name='Test Exploration of Mystical Bacteria')
     Vessel.objects.create(name='Test Reactor A')
     GrowthSubstratum.objects.create(name='Dimond (Test)')
-    GrowthMedium.objects.create(name='Fruit Juice (Test)')
