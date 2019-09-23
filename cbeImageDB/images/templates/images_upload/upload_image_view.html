@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
     <h1> Upload an Image </h1>	
+    <p> If the option you need is not present, select other and then describe why you put other in the breif description field. </p>
     <form action = "" method="POST" enctype="multipart/form-data">
         <div>
             {% csrf_token %}
