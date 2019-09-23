@@ -16,12 +16,6 @@ urlpatterns = [
          name='image_details'),
     path('update-image/<int:pk>/', views.UpdateImageView.as_view(),
          name='update_image'),
-    path('add-imager/', views.AddImagerView.as_view(), name='add_imager'),
-    path('imager-success/<int:pk>', views.ImagerSuccessView.as_view(),
-         name='imager_success'),
-    path('add-project/', views.AddProjectView.as_view(), name='add_project'),
-    path('project-success/<int:pk>', views.ProjectSuccessView.as_view(),
-         name='project_success'),
 
     # Searching and results urls
     path('general-search/', views.GeneralSearchView.as_view(),

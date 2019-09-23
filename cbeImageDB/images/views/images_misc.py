@@ -12,46 +12,6 @@ class AboutSite(TemplateNames, genViews.TemplateView):
     pass
 
 
-class AddImagerView(genViews.CreateView):
-    """ Allows a user to ad an imager using a webpage. It uses a genaric create
-    model template."""
-    template_name = 'images/create_model.html'
-    form_class = forms.AddImagerForm
-    model = models.Imager
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['heading1'] = "Add a new Imager"
-        context['intro_p'] = "Type your name into the box to add yourself as "
-        context['intro_p'] += "an imager."
-        context['button_text'] = "Add"
-        return context
-
-
-class ImagerSuccessView(TemplateNames, genViews.DetailView):
-    model = models.Imager
-
-
-class ProjectSuccessView(TemplateNames, genViews.DetailView):
-    model = models.Project
-
-
-class AddProjectView(genViews.CreateView):
-    """ Allows a user to ad an imager using a webpage. It uses a genaric create
-    model template."""
-    template_name = 'images/create_model.html'
-    form_class = forms.AddProjectForm
-    model = models.Project
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['heading1'] = "Add a new project"
-        context['intro_p'] = "Type the name of your project into the box to "
-        context['intro_p'] += "add it as a new project"
-        context['button_text'] = "Add"
-        return context
-
-
 class ExperimentDetailsView(TemplateNames, genViews.ListView):
     model = models.Image
     context_object_name = 'image_obj_list'
