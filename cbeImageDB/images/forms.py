@@ -45,7 +45,7 @@ class CreateExperimentForm(forms.ModelForm):
             'organism':
             autocomplete.ModelSelect2Multiple(url='/images/organism-autocomplete/'),
             'project':
-            autocomplete.ModelSelect2(url='/images/project-autocomplete/'),
+            autocomplete.ModelSelect2(url='/images/add-project-autocomplete/'),
             'vessel':
             autocomplete.ModelSelect2(url='/images/vessel-autocomplete/'),
             'substratum':

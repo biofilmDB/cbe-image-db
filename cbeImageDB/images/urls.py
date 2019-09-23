@@ -58,6 +58,8 @@ urlpatterns = [
          name='vessel_autocomplete'),
     path('project-autocomplete/', views.ProjectAutocomplete.as_view(),
          name='project_autocomplete'),
+    path('add-project-autocomplete/', views.AddProjectAutocomplete.as_view(),
+         name='add_project_autocomplete'),
     path('search-autocomplete/', views.SearchAutocomplete.as_view(),
          name='search_autocomplete'),
     path('month-autocomplete/', views.MonthAutocomplete.as_view(),

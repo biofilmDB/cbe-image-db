@@ -71,12 +71,29 @@ class OrganismAutocomplete(autocomplete.Select2QuerySetView):
 
 class AddImagerAutocomplete(autocomplete.Select2QuerySetView):
     create_field = 'name'
+    model = models.Imager
+    model_field_name = 'name'
 
+
+    def has_add_permission(self, request):
+        return True
+
+    """
     def get_queryset(self):
         qs = models.Imager.objects.all()
         if self.q:
             qs = qs.filter(name__icontains=self.q)
         return qs
+    """
+
+class AddProjectAutocomplete(autocomplete.Select2QuerySetView):
+    create_field = 'name'
+    model = models.Project
+    model_field_name = 'name'
+
+
+    def has_add_permission(self, request):
+        return True
 
 
 class LabAutocomplete(autocomplete.Select2QuerySetView):
