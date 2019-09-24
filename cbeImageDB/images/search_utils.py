@@ -99,7 +99,8 @@ def get_html_image_list(image, features=[]):
 def get_html_experiment_list(experiment):
     organism_list = ', '.join(str(o) for o in experiment.organism.all())
     lab_list = ', '.join(str(l) for l in experiment.lab.all())
-    li = ['Project: {}'.format(experiment.project),
+    li = ['Name: {}'.format(experiment.name),
+          'Project: {}'.format(experiment.project),
           'Lab(s): {}'.format(lab_list),
           'Organism(s): {}'.format(organism_list),
           'Vessel: {}'.format(experiment.vessel),
