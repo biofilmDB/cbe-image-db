@@ -56,6 +56,10 @@ class UploadFileForm(forms.ModelForm):
         }
 
 
+class ExperimentSearchForm(forms.Form):
+    experiment_name = forms.CharField()
+
+
 class GeneralSearchImageForm(forms.Form):
     search = forms.MultipleChoiceField(
         widget=autocomplete.Select2Multiple('/images/search-autocomplete'),

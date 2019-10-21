@@ -26,6 +26,10 @@ urlpatterns = [
          name='attribute_search'),
     path('attribute-results/', views.AttributeSearchResultsView.as_view(),
          name='attribute_search_results'),
+    path('experiment-search/', views.ExperimentSearchView.as_view(),
+         name='experiment_search'),
+    path('experiment-results/', views.ExperimentSearchResultView.as_view(),
+         name='experiment_search_results'),
 
     # Autocomplete urls
     path('microscope-setting-autocomplete/',
