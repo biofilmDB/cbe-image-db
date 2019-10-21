@@ -10,16 +10,16 @@ def create_substratum():
             GrowthSubstratum.objects.create(name=line.strip())
             print('Created GrowthSubstratum: {}'.format(line.strip()))
     GrowthSubstratum.objects.create(name='other')
+    print('Created GrowthSubstratum: other')
 
 
 def create_vesssels():
-    vessel_list = ['CDC', 'Drip Flow', 'Capillary', 'Membrane Filter',
-                   'Annular', 'Rotating Disk', 'Flask', 'Bottle', 'Tube']
-    for vessel in vessel_list:
-        print('Added vessel: {}'.format(vessel))
-        Vessel.objects.create(name=vessel)
-
+    with open('vessels.txt') as f:
+        for line in f:
+            Vessel.objects.create(name=line.strip())
+            print('Created Vessel: {}'.format(line.strip()))
     Vessel.objects.create(name="other")
+    print('Created Vessel: other')
 
 
 def create_organisms():
