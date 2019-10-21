@@ -39,7 +39,6 @@ class ExperimentSearchResultView(TemplateNames, genViews.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # TODO: Put experiment details and return them here
         context['experiments'] = []
         if len(context['experiment_list']) > 0:
             for e in context['experiment_list']:
