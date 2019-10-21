@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from datetime import datetime, date
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
 
 
 class AboutSite(TemplateNames, genViews.TemplateView):
@@ -18,7 +19,7 @@ class ExperimentDetailsView(TemplateNames, genViews.ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        e = models.Experiment.objects.get(id=self.kwargs['experiment'])
+        e = get_object_or_404(models.Experiment, pk=self.kwargs['experiment'])
         qs = e.image_set.all()
 
         if not self.request.user.is_superuser:
