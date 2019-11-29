@@ -1,8 +1,17 @@
 import owlready2
+import sys
 
 output_file_name = 'organisms.csv'
 
-ont = owlready2.get_ontology('ncbi-root-root.owx')
+if len(sys.argv) <= 1:
+    print('*******************************************************************')
+    print('   Please enter the location of the NCBI taxonomy as a parameter')
+    print('*******************************************************************')
+    sys.exit(1)
+
+owl_file = sys.argv[1]
+ont = owlready2.get_ontology(owl_file)
+# ont = owlready2.get_ontology('ncbi-root-root.owx')
 ont.load()
 print('The ontology has been loaded')
 
