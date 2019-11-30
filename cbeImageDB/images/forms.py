@@ -8,7 +8,14 @@ class CreateExperimentForm(forms.ModelForm):
 
     class Meta:
         model = Experiment
-        fields = ['project', 'lab', 'organism', 'vessel', 'substratum',]
+        fields = ['name', 'project', 'lab', 'organism', 'vessel',
+                  'substratum',]
+        labels = {
+            'name': 'Experiment Name',
+        }
+        help_texts = {
+            'name': 'Name this experiment so you can search it later',
+        }
         widgets = {
             'lab':
             autocomplete.ModelSelect2Multiple(url='/images/lab-autocomplete/'),
@@ -47,6 +54,10 @@ class UploadFileForm(forms.ModelForm):
             'release_date':
             forms.SelectDateWidget(),
         }
+
+
+class ExperimentSearchForm(forms.Form):
+    experiment_name = forms.CharField()
 
 
 class GeneralSearchImageForm(forms.Form):

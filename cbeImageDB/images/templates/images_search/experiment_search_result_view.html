@@ -1,0 +1,48 @@
+{% extends 'images/base.html' %}
+
+{% load thumbnail %}
+{% load images_extra %}
+<div id='template-content'>
+{% block content %}
+<h1> Search Results </h1>
+
+    {% if experiment_list %}
+    
+        {% for experiment in experiments %}
+            <h2> {{ experiment.name.1 }} </h2>
+            <ul>
+            {% for info in experiment.details %} 
+                <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
+            {% endfor %}
+            <a href="{% url 'images:experiment_details' experiment=experiment.pk %}"> View Experiment Page </a>
+            </ul>
+            </br>
+            </br>
+        {% endfor %}
+    {% else %}
+            <p> There are no experiments with <b> "{{ searched }}" </b> in their name. </p>
+    {% endif %}
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?{% url_replace page=page_obj.previous_page_number %}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?{% url_replace page=i %}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?{% url_replace page=page_obj.next_page_number %}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+{% endblock %}
+
+</div>

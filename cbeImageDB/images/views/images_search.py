@@ -5,7 +5,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from template_names import TemplateNames
 from images import search_utils as su
 from datetime import datetime
-from images.documents import ImageDocument
+from images.documents import ImageDocument, ExperimentDocument
 
 
 def get_description_search_qs(request, qs):
@@ -20,6 +20,35 @@ def get_description_search_qs(request, qs):
     except MultiValueDictKeyError:
         pass
     return qs, exist
+
+
+# Search experiment names
+class ExperimentSearchView(TemplateNames, genViews.FormView):
+    form_class = forms.ExperimentSearchForm
+
+
+class ExperimentSearchResultView(TemplateNames, genViews.ListView):
+    model = models.Experiment
+    context_object_name = 'experiment_list'
+
+    def get_queryset(self):
+        name = self.request.GET.get('experiment_name')
+        qs = ExperimentDocument.search().query("match", name=name)
+        qs = qs.to_queryset()
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['experiments'] = []
+        if len(context['experiment_list']) > 0:
+            for e in context['experiment_list']:
+                exp_details = su.get_html_experiment_list(e)
+                lis = {'details': exp_details[1:],
+                       'name': exp_details[0], 'pk': e.pk}
+                context['experiments'].append(lis)
+        else:
+            context['searched'] = self.request.GET.get('experiment_name')
+        return context
 
 
 # Search all searchable terms at the same time

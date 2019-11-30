@@ -109,6 +109,7 @@ class Project(models.Model):
 
 
 class Experiment(models.Model):
+    name = models.CharField(max_length=500)
     project = models.ForeignKey(Project, on_delete=models.PROTECT)
     lab = models.ManyToManyField(Lab, through='ProtectLab')
     organism = models.ManyToManyField(Organism, through='ProtectOrganism')

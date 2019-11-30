@@ -1,4 +1,5 @@
 from .models import MicroscopeSettings, Image, Experiment
+from datetime import datetime
 
 
 def get_objectives():
@@ -50,12 +51,14 @@ def get_html_image_list(image, features=[]):
     lab_list = ', '.join([str(l) for l in e.lab.all()])
     # if there are no desired features, print them all
     if len(features) == 0:
-        features = ['project', 'lab', 'imager', 'description', 'organism',
+        features = ['experiment name', 'project', 'lab', 'imager',
+                    'description', 'organism',
                     'microscope setting', 'vessel', 'growth substratum',
                     'file name', 'date taken', 'date uploaded', 'release date',
                     'raw data path']
     # Create a dictionary of possible lists
     f_dict = {'project': 'Project: {}'.format(e.project),
+              'experiment name': 'Experiment Name: {}'.format(e.name),
               'lab':
               'Lab(s): {}'.format(lab_list),
               'imager': 'Imager: {}'.format(image.imager),
@@ -99,11 +102,16 @@ def get_html_image_list(image, features=[]):
 def get_html_experiment_list(experiment):
     organism_list = ', '.join(str(o) for o in experiment.organism.all())
     lab_list = ', '.join(str(l) for l in experiment.lab.all())
-    li = ['Project: {}'.format(experiment.project),
+    images = experiment.image_set.all()
+    dated = experiment.image_set.filter(release_date__lte=datetime.now())
+    li = ['Name: {}'.format(experiment.name),
+          'Project: {}'.format(experiment.project),
           'Lab(s): {}'.format(lab_list),
           'Organism(s): {}'.format(organism_list),
           'Vessel: {}'.format(experiment.vessel),
           'Growth Substriatum: {}'.format(experiment.substratum),
+          'Total Images: {}'.format(len(images)),
+          'Total Viewable Images: {}'.format(len(dated))
           ]
     li_new = []
     for f in li:
