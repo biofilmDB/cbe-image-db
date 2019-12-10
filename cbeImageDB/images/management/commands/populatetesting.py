@@ -15,3 +15,5 @@ class Command(BaseCommand):
         print('Created an imager')
         mm.create_test_microscope_objects()
         print('Created microscope settings and associated objects')
+        mm.create_test_organism()
+        print('Created test organisms')

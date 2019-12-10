@@ -8,6 +8,17 @@ from django.template.loader import render_to_string
 from django.db import transaction
 
 
+# Render image so users can't return to the page if the release
+# date is in the future. It just generates a one time string to return
+def render_upload_success(obj, image, experiment):
+    success = su.get_success_context(experiment, image)
+    success['experiment_name'] = experiment.name
+    success['user'] = obj.request.user
+    rendered = render_to_string('images_upload/image_upload_success.html',
+                                success)
+    return rendered
+
+
 class UploadImageView(TemplateNames, MultiFormView):
     """ Allows the user to upload an image file and requests they fill in the
     model fields."""
@@ -28,10 +39,7 @@ class UploadImageView(TemplateNames, MultiFormView):
                                    content=image.document)
             image.save()
             # Render the results page
-            success = su.get_success_context(experiment, image)
-            success['user'] = self.request.user
-            template = 'images_upload/image_upload_success.html'
-            rendered = render_to_string(template, success)
+            rendered = render_upload_success(self, image, experiment)
         return HttpResponse(rendered)
 
 
@@ -49,12 +57,10 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
         image.large_thumb.save(name=image.document.name,
                                content=image.document)
         image.save()
+        
         # Render the results page
         experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
-        success = su.get_success_context(experiment, image)
-        success['user'] = self.request.user
-        rendered = render_to_string('images_upload/image_upload_success.html',
-                                    success)
+        rendered = render_upload_success(self, image, experiment)
         return HttpResponse(rendered)
 
     def get_context_data(self, **kwargs):

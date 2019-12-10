@@ -10,23 +10,24 @@
     {% endfor %}
 </ul>
 <h2> Associated Images </h2>
+<p><b> <a href={% url 'images:upload_image_to_experiment' pk=experiment_pk %}>Upload Another Image to This Experiment </a> </b><p>
 {% load thumbnail %}
 {% for image in get_image_details %}
-<a href="{% url 'images:image_details' pk=image.pk %}">
-<img src="{{ image.thumb }}"
-     alt="An error occured while loading the image" />
-</a>
 <ul>
      {% for info in image.details %}
         <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
     {% endfor %}
 
+</br>
+<a href="{% url 'images:image_details' pk=image.pk %}">
+<img src="{{ image.thumb }}"
+     alt="An error occured while loading the image" />
+</a>
 </ul>
 </br>
-
+</br>
 {% endfor %}
 </br>
-<p><b> <a href={% url 'images:upload_image_to_experiment' pk=experiment_pk %}>Upload Another Image to This Experiment </a> </b><p>
 
 {% if is_paginated %}
   <ul class="pagination">

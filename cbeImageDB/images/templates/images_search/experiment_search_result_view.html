@@ -2,29 +2,25 @@
 
 {% load thumbnail %}
 {% load images_extra %}
-<div id='template-content>
+<div id='template-content'>
 {% block content %}
 <h1> Search Results </h1>
 
-    {% if image_list %}
-    <ul>
-        {% for image in get_image_details %}
-            {% for info in image.details %} 
+    {% if experiment_list %}
+    
+        {% for experiment in experiments %}
+            <h2> {{ experiment.name.1 }} </h2>
+            <ul>
+            {% for info in experiment.details %} 
                 <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
             {% endfor %}
-            {% if user.is_superuser %}
-                <li> <b>Release Date: </b>{{ image.release_date }} </li>
-            {% endif %}
-            </br>
-            <a href="{% url 'images:image_details' pk=image.pk %}">
-            <img src="{{ image.thumb }}" alt="Cannot show image, an error occured" ></a>
-            </br>
+            <a href="{% url 'images:experiment_details' experiment=experiment.pk %}"> View Experiment Page </a>
+            </ul>
             </br>
             </br>
         {% endfor %}
-    </u>
     {% else %}
-            <p> There are no images matching these search parameters. </p>
+            <p> There are no experiments with <b> "{{ searched }}" </b> in their name. </p>
     {% endif %}
 {% if is_paginated %}
   <ul class="pagination">
