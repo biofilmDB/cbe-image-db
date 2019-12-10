@@ -90,14 +90,14 @@ class GeneralSearchResultsView(genViews.ListView):
                 elif q[0].lower() == 'microscope':
                     qs = qs.filter(microscope_setting__microscope__name=q2)
                 elif q[0].lower() == 'day':
-                    features.append('date_taken')
+                    features.append('date taken')
                     qs = qs.filter(date_taken__day=q2)
                 elif q[0].lower() == 'month':
-                    features.append('date_taken')
+                    features.append('date taken')
                     month = su.month_string_to_int(q2)
                     qs = qs.filter(date_taken__month=month)
                 elif q[0].lower() == 'year':
-                    features.append('date_taken')
+                    features.append('date taken')
                     qs = qs.filter(date_taken__year=q2)
                 # Experiment values
                 elif q[0].lower() == 'project':
