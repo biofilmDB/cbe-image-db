@@ -59,7 +59,7 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
         image.save()
         
         # Render the results page
-        experiment = models.Experiment.objects.get(id=obj.kwargs['pk'])
+        experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
         rendered = render_upload_success(self, image, experiment)
         return HttpResponse(rendered)
 
