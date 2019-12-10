@@ -12,6 +12,7 @@ from django.db import transaction
 # date is in the future. It just generates a one time string to return
 def render_upload_success(obj, image, experiment):
     success = su.get_success_context(experiment, image)
+    success['experiment_name'] = experiment.name
     success['user'] = obj.request.user
     rendered = render_to_string('images_upload/image_upload_success.html',
                                 success)
