@@ -64,8 +64,9 @@
             {% endif %} 
             <a class="navbar-brand" href="{% url 'about' %}">About</a>
             <a class="navbar-brand" href="{% url 'images:upload' %}">Upload Image</a>
-            <a class="navbar-brand" href="{% url 'images:attribute_search' %}">Attribute Search</a>
-            <a class="navbar-brand" href={% url 'images:general_search' %}>General Search</a>
+            <a class="navbar-brand" href="{% url 'images:attribute_search' %}">Search Attributes</a>
+            <a class="navbar-brand" href={% url 'images:general_search' %}>Search General</a>
+	    <a class="navbar-brand" href={% url 'images:experiment_search' %}> Search Experiments </a>
         </div>
     </header>
     {# The Document Body #}

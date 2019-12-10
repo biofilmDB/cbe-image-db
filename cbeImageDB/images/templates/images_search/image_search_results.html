@@ -15,8 +15,10 @@
             {% if user.is_superuser %}
                 <li> <b>Release Date: </b>{{ image.release_date }} </li>
             {% endif %}
+            </br>
             <a href="{% url 'images:image_details' pk=image.pk %}">
             <img src="{{ image.thumb }}" alt="Cannot show image, an error occured" ></a>
+            </br>
             </br>
             </br>
         {% endfor %}
