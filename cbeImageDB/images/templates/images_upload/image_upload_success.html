@@ -3,7 +3,12 @@
 
 {% block content %}
 <h1> Upload Success </h1>
-<p> Your image has been successfully uploaded to experiment {{ experiment }}. You can view all of the associated images for this experiment <a href={% url 'images:experiment_details' experiment=experiment_pk %}> here </a>. Would you like to upload another with these same features? </p>
+<p> Your image has been successfully uploaded to experiment 
+{{ experiment_name }}. You can view all of the associated images 
+for this experiment <a href={% url 'images:experiment_details' experiment=experiment_pk %}>
+ <b>here</b> </a>. 
+Would you like to upload another with these same features? </p>
+
 <ul>
     {% for info in get_experiment_details %}
         <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
