@@ -45,10 +45,6 @@ html_strip = analyzer(
 
 @registry.register_document
 class ExperimentDocument(Document):
-    ugh = Text(
-        required=True, 
-        analyzer=text_analyzer
-    )
     
     class Index:
         # Name of the Elasticsearch index
@@ -73,10 +69,12 @@ class ExperimentDocument(Document):
         model field to ES field logic
         """
         try:
-            type = model_field_class_to_field_class[model_field.__class__]
-            # import ipdb; ipdb.set_trace()
-            return model_field_class_to_field_class[
-                model_field.__class__](attr=field_name)
+            #import ipdb; ipdb.set_trace()
+            field = model_field_class_to_field_class[
+                model_field.__class__](attr=field_name, analyzer=text_analyzer)
+            
+            return field
+        
         except KeyError:
             raise Document.ModelFieldNotMappedError(
                "Cannot convert model field {} "
