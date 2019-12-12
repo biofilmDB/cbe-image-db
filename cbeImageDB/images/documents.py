@@ -65,21 +65,23 @@ class ExperimentDocument(Document):
             'name',
         ]
         
-   @classmethod
-   def to_field(cls, field_name, model_field):
-       """
-       Returns the elasticsearch field instance appropriate for the model
-       field class. This is a good place to hook into if you have more complex
-       model field to ES field logic
-       """
-       try:
-           return model_field_class_to_field_class[
-               model_field.__class__](attr=field_name)
-       except KeyError:
-           raise Document.ModelFieldNotMappedError(
+    @classmethod
+    def to_field(cls, field_name, model_field):
+        """
+        Returns the elasticsearch field instance appropriate for the model
+        field class. This is a good place to hook into if you have more complex
+        model field to ES field logic
+        """
+        try:
+            type = model_field_class_to_field_class[model_field.__class__]
+            # import ipdb; ipdb.set_trace()
+            return model_field_class_to_field_class[
+                model_field.__class__](attr=field_name)
+        except KeyError:
+            raise Document.ModelFieldNotMappedError(
                "Cannot convert model field {} "
                "to an Elasticsearch field!".format(field_name)
-           )
+            )
            
 
 @registry.register_document
