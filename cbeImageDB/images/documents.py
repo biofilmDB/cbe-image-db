@@ -15,7 +15,8 @@ synonym_tokenfilter = token_filter(
     'synonym_tokenfilter',
     'synonym',
     synonyms=[
-        'reactjs, react',  # <-- important
+        'reactjs, react',
+        'time, empty',  # <-- important
     ],
 )
 
@@ -107,3 +108,23 @@ class ImageDocument(Document):
         # Paginate the django queryset used to populate the index with the specified size
         # (by default there is no pagination)
         # queryset_pagination = 5000
+    
+    @classmethod
+    def to_field(cls, field_name, model_field):
+        """
+        Returns the elasticsearch field instance appropriate for the model
+        field class. This is a good place to hook into if you have more complex
+        model field to ES field logic
+        """
+        try:
+            #import ipdb; ipdb.set_trace()
+            field = model_field_class_to_field_class[
+                model_field.__class__](attr=field_name, analyzer=text_analyzer)
+            
+            return field
+        
+        except KeyError:
+            raise Document.ModelFieldNotMappedError(
+               "Cannot convert model field {} "
+               "to an Elasticsearch field!".format(field_name)
+            )
