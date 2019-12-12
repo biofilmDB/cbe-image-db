@@ -64,9 +64,23 @@ class ExperimentDocument(Document):
         fields = [
             'name',
         ]
-
-
-   
+        
+   @classmethod
+   def to_field(cls, field_name, model_field):
+       """
+       Returns the elasticsearch field instance appropriate for the model
+       field class. This is a good place to hook into if you have more complex
+       model field to ES field logic
+       """
+       try:
+           return model_field_class_to_field_class[
+               model_field.__class__](attr=field_name)
+       except KeyError:
+           raise Document.ModelFieldNotMappedError(
+               "Cannot convert model field {} "
+               "to an Elasticsearch field!".format(field_name)
+           )
+           
 
 @registry.register_document
 class ImageDocument(Document):
@@ -93,52 +107,3 @@ class ImageDocument(Document):
         # Paginate the django queryset used to populate the index with the specified size
         # (by default there is no pagination)
         # queryset_pagination = 5000
-
-
-
-from elasticsearch_dsl import (
-    DocType,
-    Text,
-    Index,
-    analyzer,
-    Keyword,
-    token_filter,
-)
-from django.conf import settings
-
-
-#index = Index(settings.ES_INDEX)
-#index.settings(**settings.ES_INDEX_SETTINGS)
-
-
-synonym_tokenfilter = token_filter(
-    'synonym_tokenfilter',
-    'synonym',
-    synonyms=[
-        'reactjs, react',  # <-- important
-    ],
-)
-
-text_analyzer = analyzer(
-    'text_analyzer',
-    tokenizer='standard',
-    filter=[
-        # The ORDER is important here.
-        'standard',
-        'lowercase',
-        'stop',
-        synonym_tokenfilter,
-        # Note! 'snowball' comes after 'synonym_tokenfilter'
-        'snowball',
-    ],
-    char_filter=['html_strip']
-)
-
-class BlogItemDoc(DocType):
-    title = Text(
-        required=True, 
-        analyzer=text_analyzer
-    )
-    text = Text(analyzer=text_analyzer)
-
-#index.doc_type(BlogItemDoc)
