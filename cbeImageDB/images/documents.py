@@ -14,10 +14,7 @@ from .models import Image, Experiment
 synonym_tokenfilter = token_filter(
     'synonym_tokenfilter',
     'synonym',
-    synonyms=[
-        'reactjs, react',
-        'time, empty',  # <-- important
-    ],
+    synonym_path=settings.SYNONYM_FILE,
 )
 
 text_analyzer = analyzer(
