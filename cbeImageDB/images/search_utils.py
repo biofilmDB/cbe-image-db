@@ -3,6 +3,9 @@ from datetime import datetime
 
 
 def get_objectives():
+    '''Gets all the possible objectives from the MicroscopeSettings
+    and returns them as a list.'''
+    # Get a list of all objectives used
     query = MicroscopeSettings.objects.all()
     objectives = []
     for ms in query:
@@ -10,7 +13,9 @@ def get_objectives():
 
     objectives = list(set(objectives))
     obj_string = []
+    # Add an x to the end 63x
     for o in objectives:
+        # Can be in both string or int format
         if o.is_integer():
             obj_string.append(str(int(o)) + 'x')
         else:
@@ -19,6 +24,7 @@ def get_objectives():
 
 
 def month_string_to_int(month):
+    '''Converts month word to integer'''
     months = ['January', 'Febuary', 'March', 'April', 'May', 'June',
               'July', 'August', 'September', 'October', 'November',
               'December']
@@ -28,6 +34,7 @@ def month_string_to_int(month):
 
 
 def get_year_list():
+    '''Returns only the years that images were taken in.'''
     years = []
     for i in Image.objects.all():
         years.append(i.date_taken.year)
@@ -36,6 +43,7 @@ def get_year_list():
 
 
 def get_organism_list():
+    '''Returns a list of organisms only used in images.'''
     organisms = []
     for i in Experiment.objects.all():
         for o in i.organism.all():
@@ -45,6 +53,8 @@ def get_organism_list():
 
 
 def get_html_image_list(image, features=[]):
+    '''Returns a list of features about the image in the format (feature_name, 
+    feature). If no features are passed in, all known features are returned.'''
     # get the associated experiment
     e = image.experiment
     organism_list = ', '.join(str(o) for o in e.organism.all())
@@ -92,6 +102,8 @@ def get_html_image_list(image, features=[]):
                   'get_html_image_list()'))
 
     li_new = []
+    # Split each list item on the :
+    # So you can bold the descriptor (first element) in the html
     for f in li:
         f_list = f.split(': ')
         li_new.append([(f_list[0] + ': '), ': '.join(f_list[1:])])
@@ -100,8 +112,11 @@ def get_html_image_list(image, features=[]):
 
 
 def get_html_experiment_list(experiment):
+    '''Returns list of features about the experiment in the format 
+    (feature_name, feature).'''
     organism_list = ', '.join(str(o) for o in experiment.organism.all())
     lab_list = ', '.join(str(l) for l in experiment.lab.all())
+    # Get list of all the asociated images
     images = experiment.image_set.all()
     dated = experiment.image_set.filter(release_date__lte=datetime.now())
     li = ['Name: {}'.format(experiment.name),
@@ -113,6 +128,9 @@ def get_html_experiment_list(experiment):
           'Total Images: {}'.format(len(images)),
           'Total Viewable Images: {}'.format(len(dated))
           ]
+
+    # split them on the descriptor and description so the descriptor
+    # can be bolded in html (name, some_experiment_name)
     li_new = []
     for f in li:
         f_list = f.split(': ')
@@ -121,8 +139,12 @@ def get_html_experiment_list(experiment):
     return li_new
 
 
-# Method to standardize image templates and printing information out
 def get_html_image_dict(image, features=[]):
+    '''Returns a dictionary of image information that can be used on the 
+    html pages to populate it with image information. It returns
+    thumb, details, pk, release_date.'''
+    # All images should have a large_thumb, but sometimes during testing
+    # there were errors and they didn't
     try:
         url = image.large_thumb.url
     except ValueError:
@@ -137,11 +159,14 @@ def get_html_image_dict(image, features=[]):
 
 
 def get_success_context(experiment, image):
+    '''Returns a dictonary with experiment and image information to render
+    a one-time success upload page.'''
     success = {}
     success['experiment'] = str(experiment)
     success['experiment_pk'] = experiment.id
     e = get_html_experiment_list(experiment)
     success['get_experiment_details'] = e
+    # create list of select features for image details
     feat = ['microscope setting', 'imager', 'date taken',
             'date uploaded']
     success['get_image_details'] = [get_html_image_dict(image, feat)]
