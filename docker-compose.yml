@@ -18,3 +18,14 @@ services:
     - discovery.type=single-node
     ports:
     - 9200:9200
+
+  web:
+    build: .
+    command: python manage.py runserver 127.0.0.1:8000
+    volumes:
+    - .:/code
+    ports:
+    - "8000:8000"
+    depends_on:
+    - postgres-db
+    - elasticsearch-db
