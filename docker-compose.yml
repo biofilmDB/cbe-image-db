@@ -21,7 +21,7 @@ services:
 
   web:
     build: .
-    command: python cbeImageDB/manage.py runserver 0.0.0.0:8000
+    command: ./startup.sh
     volumes:
     - .:/code
     ports:
