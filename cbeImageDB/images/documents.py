@@ -14,7 +14,8 @@ from .models import Image, Experiment
 synonym_tokenfilter = token_filter(
     'synonym_tokenfilter',
     'synonym',
-    synonym_path=settings.SYNONYM_FILE,
+    synonyms=['empty, time'],
+    # synonyms_path=settings.SYNONYM_FILE,
 )
 
 text_analyzer = analyzer(
@@ -43,7 +44,7 @@ html_strip = analyzer(
 
 @registry.register_document
 class ExperimentDocument(Document):
-    
+   
     class Index:
         # Name of the Elasticsearch index
         name = 'experiment_names'
@@ -78,7 +79,10 @@ class ExperimentDocument(Document):
                "Cannot convert model field {} "
                "to an Elasticsearch field!".format(field_name)
             )
-           
+    
+    # def update(self, thing, refresh=None,action='index', **kwargs): 
+    # context = super().get_context_data(**kwargs)
+
 
 @registry.register_document
 class ImageDocument(Document):
