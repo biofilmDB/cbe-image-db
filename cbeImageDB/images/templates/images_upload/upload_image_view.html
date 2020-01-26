@@ -6,8 +6,8 @@
     <form action = "" method="POST" enctype="multipart/form-data">
         <div>
             {% csrf_token %}
-            {{ forms.image_form.as_p }}
             {{ forms.experiment_form.as_p }}
+            {{ forms.image_form.as_p }}
             <input type="submit" value="Submit" />
         </div>
     </form>
