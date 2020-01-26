@@ -21,6 +21,8 @@ class Command(BaseCommand):
         mm.create_vesssels()
         print('\n#### Initializing Growth Substratum ####')
         mm.create_substratum()
+        print('\n#### Initializing Labs ####')
+        mm.create_labs()
 
         if not options['noorganisms']:
             print('\n#### Initializing Organisms ####')

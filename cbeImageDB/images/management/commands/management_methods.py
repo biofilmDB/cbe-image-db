@@ -22,6 +22,13 @@ def create_vesssels():
     print('Created Vessel: other')
 
 
+def create_labs():
+    with open('labs.txt') as f:
+        for line in f:
+            Lab.objects.create(name=line.strip())
+            print('Created Lab: {}'.format(line.strip()))
+
+
 def create_organisms():
     csv = pandas.read_csv('organisms/organisms.csv', sep='|')
 
