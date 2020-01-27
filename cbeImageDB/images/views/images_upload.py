@@ -6,6 +6,7 @@ from images import search_utils as su
 from multi_form_view import MultiFormView
 from django.template.loader import render_to_string
 from django.db import transaction
+from decouple import config
 
 
 # Render image so users can't return to the page if the release
@@ -42,6 +43,12 @@ class UploadImageView(TemplateNames, MultiFormView):
             rendered = render_upload_success(self, image, experiment)
         return HttpResponse(rendered)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['support_name'] = config('SUPPORT_NAME')
+        context['support_email'] = config('SUPPORT_EMAIL')
+        return context
+
 
 class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
                                   genViews.CreateView):
@@ -57,7 +64,7 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
         image.large_thumb.save(name=image.document.name,
                                content=image.document)
         image.save()
-        
+
         # Render the results page
         experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
         rendered = render_upload_success(self, image, experiment)
