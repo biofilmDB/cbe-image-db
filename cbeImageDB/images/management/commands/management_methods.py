@@ -39,7 +39,6 @@ def create_organisms():
 
         Organism.objects.create(storid=row[0], ncbi_id=row[1],
                                 name=row[2])
-    Organism.objects.create(storid=000, ncbi_id='None', name='Other')
 
 
 def create_microscope_medium():
