@@ -3,10 +3,12 @@
 {% block content %}
     <h1> Upload an Image </h1>	
     <p> If the option you need for lab or organism is not present please email 
-        {# TODO: Figure out how to hyper link email, mailto failed #}
-        {{ support_name }} at <b>{{ support_email }}</b> with what information is missing and what value 
-        you need. You will not be able to upload your image until you do so. 
-        You may select the other option if __________ or _____ are not present. </p>
+    {{ support_name }} at 
+    <a href='mailto:{{ support_email }}?subject=Missing Information from Image Database'>
+    {{ support_email }}</a> with what information is missing and what value 
+    you need. You will not be able to upload your image until you do so. You 
+    may select the other option if __________ or _____ are not present.</p>
+    
     <form action = "" method="POST" enctype="multipart/form-data">
         <div>
             {% csrf_token %}
