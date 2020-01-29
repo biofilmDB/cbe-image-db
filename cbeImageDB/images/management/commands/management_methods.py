@@ -8,7 +8,7 @@ def create_substratum():
     GrowthSubstratum.objects.get_or_create(name='other')
     print('Created GrowthSubstratum: other')
     try:
-        with open('substratum2.txt') as f:
+        with open('substratum.txt') as f:
             for line in f:
                 GrowthSubstratum.objects.get_or_create(name=line.strip())
                 print('Created GrowthSubstratum: {}'.format(line.strip()))
@@ -22,7 +22,7 @@ def create_vesssels():
     Vessel.objects.get_or_create(name="other")
     print('Created Vessel: other')
     try:
-        with open('vessels2.txt') as f:
+        with open('vessels.txt') as f:
             for line in f:
                 Vessel.objects.get_or_create(name=line.strip())
                 print('Created Vessel: {}'.format(line.strip()))
@@ -32,7 +32,7 @@ def create_vesssels():
 
 def create_labs():
     try:
-        with open('labs2.txt') as f:
+        with open('labs.txt') as f:
             for line in f:
                 Lab.objects.get_or_create(name=line.strip())
                 print('Created Lab: {}'.format(line.strip()))
@@ -42,7 +42,7 @@ def create_labs():
 
 def create_organisms():
     try:
-        csv = pandas.read_csv('organisms/organisms2.csv', sep='|')
+        csv = pandas.read_csv('organisms/organisms.csv', sep='|')
 
         print('Total number of organisms to add: {}'.format(len(csv)))
         for index, row in csv.iterrows():
