@@ -7,25 +7,25 @@ from images.models import GrowthSubstratum, Organism
 def create_substratum():
     with open('substratum.txt') as f:
         for line in f:
-            GrowthSubstratum.objects.create(name=line.strip())
+            GrowthSubstratum.objects.get_or_create(name=line.strip())
             print('Created GrowthSubstratum: {}'.format(line.strip()))
-    GrowthSubstratum.objects.create(name='other')
+    GrowthSubstratum.objects.get_or_create(name='other')
     print('Created GrowthSubstratum: other')
 
 
 def create_vesssels():
     with open('vessels.txt') as f:
         for line in f:
-            Vessel.objects.create(name=line.strip())
+            Vessel.objects.get_or_create(name=line.strip())
             print('Created Vessel: {}'.format(line.strip()))
-    Vessel.objects.create(name="other")
+    Vessel.objects.get_or_create(name="other")
     print('Created Vessel: other')
 
 
 def create_labs():
     with open('labs.txt') as f:
         for line in f:
-            Lab.objects.create(name=line.strip())
+            Lab.objects.get_or_create(name=line.strip())
             print('Created Lab: {}'.format(line.strip()))
 
 
@@ -37,17 +37,16 @@ def create_organisms():
         if index % 5000 == 0 and index != 0:
             print('Added organism number: {}'.format(index))
 
-        Organism.objects.create(storid=row[0], ncbi_id=row[1],
-                                name=row[2])
+        Organism.objects.get_or_create(storid=row[0], ncbi_id=row[1],
+                                       name=row[2])
 
 
 def create_microscope_medium():
     mediums = ['air', 'water', 'oil', 'glycerin', 'dry']
     medium_list = []
     for med in mediums:
-        m = ObjectiveMedium(name=med)
-        m.save()
-        medium_list.append(m)
+        m = ObjectiveMedium.objects.get_or_create(name=med)
+        medium_list.append(m[0])
     return medium_list
 
 
@@ -57,9 +56,8 @@ def create_microscopes():
               'Epifluorescent Microscope', 'Nikon Steroscope', 'Bio-Raman']
     microscope_list = []
     for scope in scopes:
-        m = Microscope(name=scope)
-        m.save()
-        microscope_list.append(m)
+        m = Microscope.objects.get_or_create(name=scope)
+        microscope_list.append(m[0])
     return microscope_list
 
 
@@ -77,41 +75,36 @@ def create_microscope_settings():
               (5, 1, 0), (6, 10, 0), (6, 50, 0), (6, 60, 1), (6, 100, 0)]
 
     for combo in combos:
-        ms = MicroscopeSettings(microscope=microscope_list[combo[0]],
-                                objective=float(combo[1]),
-                                medium=medium_list[combo[2]])
-        ms.save()
-        print('Added: {}'.format(ms))
+        ms = MicroscopeSettings.objects.get_or_create(microscope=microscope_list[combo[0]],
+                                                      objective=float(combo[1]),
+                                                      medium=medium_list[combo[2]])
+        print('Added: {}'.format(ms[0]))
 
 
 def create_test_labs():
-    tl1 = Lab(name='test lab 1')
-    tl1.save()
-
-    tl2 = Lab(name='test lab 2')
-    tl2.save()
+    Lab.objects.get_or_create(name='test lab 1')
+    Lab.objects.get_or_create(name='test lab 2')
 
 
 def create_test_imager():
-    Imager(name='Jane Doe').save()
+    Imager.objects.get_or_create(name='Jane Doe')
 
 
 def create_test_microscope_objects():
-    med = ObjectiveMedium(name="Plasma (Test)")
-    med.save()
-    mic = Microscope(name='Test Scope')
-    mic.save()
-    MicroscopeSettings(microscope=mic, objective=63, medium=med).save()
+    med = ObjectiveMedium.objects.get_or_create(name="Plasma (Test)")
+    mic = Microscope.objects.get_or_create(name='Test Scope')
+    MicroscopeSettings.objects.get_or_create(microscope=mic[0], objective=63,
+                                             medium=med[0])
 
 
 def create_test_organism():
-    Organism.objects.create(name='Fluffy Stuff (Test organism)',
-                            storid='123', ncbi_id='ncbi25')
-    Organism.objects.create(name='Squishy Goo (Test organism)',
-                            storid='567', ncbi_id='ncbi66')
+    Organism.objects.get_or_create(name='Fluffy Stuff (Test organism)',
+                                   storid='123', ncbi_id='ncbi25')
+    Organism.objects.get_or_create(name='Squishy Goo (Test organism)',
+                                   storid='567', ncbi_id='ncbi66')
 
 
 def create_test_experiment_objects():
-    Project.objects.create(name='Test Exploration of Mystical Bacteria')
-    Vessel.objects.create(name='Test Reactor A')
-    GrowthSubstratum.objects.create(name='Dimond (Test)')
+    Project.objects.get_or_create(name='Test Exploration of Mystical Bacteria')
+    Vessel.objects.get_or_create(name='Test Reactor A')
+    GrowthSubstratum.objects.get_or_create(name='Dimond (Test)')
