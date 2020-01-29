@@ -5,41 +5,55 @@ from images.models import GrowthSubstratum, Organism
 
 
 def create_substratum():
-    with open('substratum.txt') as f:
-        for line in f:
-            GrowthSubstratum.objects.get_or_create(name=line.strip())
-            print('Created GrowthSubstratum: {}'.format(line.strip()))
     GrowthSubstratum.objects.get_or_create(name='other')
     print('Created GrowthSubstratum: other')
+    try:
+        with open('substratum2.txt') as f:
+            for line in f:
+                GrowthSubstratum.objects.get_or_create(name=line.strip())
+                print('Created GrowthSubstratum: {}'.format(line.strip()))
+    except FileNotFoundError:
+        print('Not loading substratum. Please create a file substratum.txt')
+        return False
+    return True
 
 
 def create_vesssels():
-    with open('vessels.txt') as f:
-        for line in f:
-            Vessel.objects.get_or_create(name=line.strip())
-            print('Created Vessel: {}'.format(line.strip()))
     Vessel.objects.get_or_create(name="other")
     print('Created Vessel: other')
-
+    try:
+        with open('vessels2.txt') as f:
+            for line in f:
+                Vessel.objects.get_or_create(name=line.strip())
+                print('Created Vessel: {}'.format(line.strip()))
+    except FileNotFoundError:
+        return False
+    return True
 
 def create_labs():
-    with open('labs.txt') as f:
-        for line in f:
-            Lab.objects.get_or_create(name=line.strip())
-            print('Created Lab: {}'.format(line.strip()))
-
+    try:
+        with open('labs2.txt') as f:
+            for line in f:
+                Lab.objects.get_or_create(name=line.strip())
+                print('Created Lab: {}'.format(line.strip()))
+    except FileNotFoundError:
+        return False
+    return True
 
 def create_organisms():
-    csv = pandas.read_csv('organisms/organisms.csv', sep='|')
+    try:
+        csv = pandas.read_csv('organisms/organisms2.csv', sep='|')
 
-    print('Total number of organisms to add: {}'.format(len(csv)))
-    for index, row in csv.iterrows():
-        if index % 5000 == 0 and index != 0:
-            print('Added organism number: {}'.format(index))
+        print('Total number of organisms to add: {}'.format(len(csv)))
+        for index, row in csv.iterrows():
+            if index % 5000 == 0 and index != 0:
+                print('Added organism number: {}'.format(index))
 
-        Organism.objects.get_or_create(storid=row[0], ncbi_id=row[1],
-                                       name=row[2])
-
+            Organism.objects.get_or_create(storid=row[0], ncbi_id=row[1],
+                                           name=row[2])
+    except FileNotFoundError:
+        return False
+    return True
 
 def create_microscope_medium():
     mediums = ['air', 'water', 'oil', 'glycerin', 'dry']

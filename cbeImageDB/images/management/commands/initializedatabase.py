@@ -14,20 +14,31 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        # TODO: Create labs, growth medium, substratum
         print('\n#### Initializing Microscope Settings ####')
-        mm.create_microscope_settings()
+        ms = mm.create_microscope_settings()
         print('\n#### Initializing Vessels ####')
-        mm.create_vesssels()
+        v = mm.create_vesssels()
         print('\n#### Initializing Growth Substratum ####')
-        mm.create_substratum()
+        s = mm.create_substratum()
         print('\n#### Initializing Labs ####')
-        mm.create_labs()
+        l = mm.create_labs()
 
         if not options['noorganisms']:
             print('\n#### Initializing Organisms ####')
             print('This may take awhile')
-            mm.create_organisms()
+            o = mm.create_organisms()
+            if not o:
+                print('No organisms file. Please run organisms/parse_ncbi.py ',
+                      'to create the organisms list')
         else:
             print('\n#### Not Initializing Organisms ####')
             print('They can be created later by running populateorganisms')
+        if not v:
+            print('Vessels not created, please add vessels.txt file to create ',
+                  'vessels')
+        if not s:
+            print('Substratum not created, please add a substratum.txt file ',
+                  'to create substratum.')
+        if not l:
+            print('Labs not created, please add a labs.txt file to create labs')
+
