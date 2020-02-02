@@ -1,8 +1,20 @@
 from django import forms
 from .models import Image, Lab, Imager, Microscope, ObjectiveMedium, Organism, Experiment
 from .models import Project, GrowthSubstratum, Vessel
+from images import help_texts as ht
 from dal import autocomplete
 
+
+def popover_html2(label, content):
+    return label + ' <a tabindex="0" role="button" data-toggle="popover" data-html="true" \
+            data-trigger="hover" data-placement="auto" data-content="{}"> \
+            <span class="glyphicon glyphicon-info-sign"></span></a>'.format(content)
+
+def popover_html(label, content):
+
+    html = ' <a data-toggle="tooltip" title="{}">'.format(content)
+    html += '<span class="glyphicon glyphicon-info-sign"></span></a>'
+    return label + html
 
 class CreateExperimentForm(forms.ModelForm):
 
@@ -11,7 +23,7 @@ class CreateExperimentForm(forms.ModelForm):
         fields = ['name', 'project', 'lab', 'organism', 'vessel',
                   'substratum',]
         labels = {
-            'name': 'Experiment Name',
+            'name': popover_html('Experiment Name', ht.experiment_name),
         }
         help_texts = {
             'name': 'Name this experiment so you can search it later',
