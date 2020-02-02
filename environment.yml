@@ -4,26 +4,28 @@ channels:
 dependencies:
   - ca-certificates=2019.5.15=0
   - certifi=2019.6.16=py37_0
-  - libedit=3.1.20181209
-  - libffi=3.2.1
-  # - libgcc-ng
-  # - libstdcxx-ng
-  - ncurses=6.1
-  - openssl=1.1.1c
+  - libcxx=4.0.1=hcfea43d_1
+  - libcxxabi=4.0.1=hcfea43d_1
+  - libedit=3.1.20181209=hb402a30_0
+  - libffi=3.2.1=h475c297_4
+  - ncurses=6.1=h0a44026_1
+  - openssl=1.1.1c=h1de35cc_1
   - pip=19.1.1=py37_0
-  - python=3.7.3
-  - readline=7.0
-  - sqlite=3.28.0
-  - tk=8.6.8
+  - python=3.7.3=h359304d_0
+  - readline=7.0=h1de35cc_5
+  - sqlite=3.28.0=ha441bb4_0
+  - tk=8.6.8=ha441bb4_0
   - wheel=0.33.4=py37_0
-  - xz=5.2.4
-  - zlib=1.2.11
+  - xz=5.2.4=h1de35cc_4
+  - zlib=1.2.11=h1de35cc_3
   - pip:
+    - appnope==0.1.0
     - backcall==0.1.0
     - decorator==4.4.0
     - django==2.2.2
     - django-admin-views==0.8.0
     - django-autocomplete-light==3.3.5
+    - django-crispy-forms==1.8.1
     - django-elasticsearch-dsl==6.4.2
     - django-multi-form-view==2.0.1
     - django-template-names==0.2.1
@@ -54,5 +56,5 @@ dependencies:
     - traitlets==4.3.2
     - urllib3==1.25.3
     - wcwidth==0.1.7
-prefix: /home/britney/.miniconda3/envs/cbe-image
+prefix: /Users/britney/opt/anaconda3/envs/cbe-image
 

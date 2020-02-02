@@ -5,6 +5,7 @@ decorator==4.4.0
 Django==2.2.2
 django-admin-views==0.8.0
 django-autocomplete-light==3.3.5
+django-crispy-forms==1.8.1
 django-elasticsearch-dsl==6.4.2
 django-multi-form-view==2.0.1
 django-template-names==0.2.1
