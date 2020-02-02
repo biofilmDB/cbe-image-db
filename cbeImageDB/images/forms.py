@@ -24,9 +24,11 @@ class CreateExperimentForm(forms.ModelForm):
                   'substratum',]
         labels = {
             'name': popover_html('Experiment Name', ht.experiment_name),
-        }
-        help_texts = {
-            'name': 'Name this experiment so you can search it later',
+            'project': popover_html('Project', ht.experiment_project),
+            'lab': popover_html('Lab(s)', ht.experiment_lab),
+            'organism': popover_html('Organism(s)', ht.experiment_organism),
+            'vessel': popover_html('Vessel', ht.experiment_vessel),
+            'substratum': popover_html('Substratum', ht.experiment_substratum),
         }
         widgets = {
             'lab':
