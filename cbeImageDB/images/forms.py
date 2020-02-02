@@ -13,8 +13,8 @@ def popover_html2(label, content):
 def popover_html(label, content):
 
     html = ' <a data-toggle="tooltip" title="{}">'.format(content)
-    html += '<span class="glyphicon glyphicon-info-sign"></span></a>'
-    return label + html
+    html += '<span class="glyphicon glyphicon-info-sign"></span></a> '
+    return html + label
 
 class CreateExperimentForm(forms.ModelForm):
 
