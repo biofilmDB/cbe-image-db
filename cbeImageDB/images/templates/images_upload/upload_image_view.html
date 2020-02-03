@@ -13,7 +13,9 @@
     <form action = "" method="POST" enctype="multipart/form-data">
         <div>
             {% csrf_token %}
+            <h3> Experiment Specific Information </h3>
             {{ forms.experiment_form|crispy }}
+            <h3> Image Specific Information </h3>
             {{ forms.image_form|crispy }}
             <input type="submit" value="Submit" />
         </div>
