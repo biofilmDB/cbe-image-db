@@ -1,6 +1,7 @@
 {% extends 'images/base.html' %}
 {% load static %}
 {% block content %}
+{% load crispy_forms_tags %} 
     <h1> Upload an Image </h1>	
     <p> If the option you need for lab or organism is not present please email 
     {{ support_name }} at 
@@ -12,8 +13,10 @@
     <form action = "" method="POST" enctype="multipart/form-data">
         <div>
             {% csrf_token %}
-            {{ forms.experiment_form.as_p }}
-            {{ forms.image_form.as_p }}
+            <h3> Experiment Specific Information </h3>
+            {{ forms.experiment_form|crispy }}
+            <h3> Image Specific Information </h3>
+            {{ forms.image_form|crispy }}
             <input type="submit" value="Submit" />
         </div>
     </form>

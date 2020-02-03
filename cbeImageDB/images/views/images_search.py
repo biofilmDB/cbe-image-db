@@ -8,6 +8,10 @@ from datetime import datetime
 from images.documents import ImageDocument, ExperimentDocument
 
 
+# ##### pagination number for search results views
+paginate_by_number = 40
+
+
 def get_description_search_qs(request, qs):
     exist = False
     try:
@@ -61,7 +65,7 @@ class GeneralSearchResultsView(genViews.ListView):
     model = models.Image
     context_object_name = 'image_list'
     template_name = 'images_search/image_search_results.html'
-    paginate_by = 5
+    paginate_by = paginate_by_number
     features = []
 
     def get_queryset(self):
@@ -149,7 +153,7 @@ class AttributeSearchResultsView(genViews.ListView):
     model = models.Image
     context_object_name = 'image_list'
     template_name = 'images_search/image_search_results.html'
-    paginate_by = 5
+    paginate_by = paginate_by_number
     features = []
 
     def get_queryset(self):

@@ -1,8 +1,19 @@
 from django import forms
 from .models import Image, Lab, Imager, Microscope, ObjectiveMedium, Organism, Experiment
 from .models import Project, GrowthSubstratum, Vessel
+from images import help_texts as ht
 from dal import autocomplete
 
+
+def popover_html2(label, content):
+    return label + ' <a tabindex="0" role="button" data-toggle="popover" data-html="true" \
+            data-trigger="hover" data-placement="auto" data-content="{}"> \
+            <span class="glyphicon glyphicon-info-sign"></span></a>'.format(content)
+
+def popover_html(label, content):
+    html = ' <a data-toggle="tooltip" title="{}">'.format(content)
+    html += '<span class="glyphicon glyphicon-info-sign"></span></a> '
+    return html + label
 
 class CreateExperimentForm(forms.ModelForm):
 
@@ -11,10 +22,15 @@ class CreateExperimentForm(forms.ModelForm):
         fields = ['name', 'project', 'lab', 'organism', 'vessel',
                   'substratum',]
         labels = {
-            'name': 'Experiment Name',
+            'name': popover_html('Experiment Name', ht.experiment_name),
+            'project': popover_html('Project', ht.experiment_project),
+            'lab': popover_html('Lab(s)', ht.experiment_lab),
+            'organism': popover_html('Organism(s)', ht.experiment_organism),
+            'vessel': popover_html('Vessel', ht.experiment_vessel),
+            'substratum': popover_html('Substratum', ht.experiment_substratum),
         }
         help_texts = {
-            'name': 'Name this experiment so you can search it later',
+            'name': '(500 character max)',
         }
         widgets = {
             'lab':
@@ -38,10 +54,22 @@ class UploadFileForm(forms.ModelForm):
                   'microscope_setting', 'brief_description',
                   'path_to_raw_data']
 
+        labels = {
+            'document': popover_html('Image File', ht.image_document),
+            'date_taken': popover_html('Date Taken', ht.image_date_taken),
+            'release_date': popover_html("Can't be used before",
+                                         ht.image_release_date),
+            'imager': popover_html('Imager', ht.image_imager),
+            'microscope_setting': popover_html('Microscope Settings',
+                                               ht.image_microscope_setting),
+            'brief_description': popover_html('Brief Description',
+                                              ht.image_breif_description),
+            'path_to_raw_data': popover_html('Raw Data Location',
+                                             ht.image_raw_data_location),
+        }
         help_texts = {
-            'brief_description': 'General overview (1000 character max)',
-            'path_to_raw_data': 'Optional path to location of raw image data \
-                                (500 character max)',
+            'brief_description': '(1000 character max)',
+            'path_to_raw_data': '(500 character max)',
         }
 
         widgets = {
