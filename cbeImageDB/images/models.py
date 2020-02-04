@@ -6,9 +6,9 @@ from django.urls import reverse
 
 
 class Organism(models.Model):
-    name = models.CharField(db_index=True, max_length=1000)
-    ncbi_id = models.CharField(max_length=100)
-    storid = models.IntegerField()
+    name = models.CharField(db_index=True, max_length=1000, unique=True)
+    ncbi_id = models.CharField(max_length=100, unique=True)
+    storid = models.IntegerField(unique=True)
 
     def __str__(self):
         return self.name
@@ -20,14 +20,14 @@ class Organism(models.Model):
 
 
 class Microscope(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class ObjectiveMedium(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.name
@@ -38,6 +38,9 @@ class MicroscopeSettings(models.Model):
     objective = models.FloatField()
     medium = models.ForeignKey(ObjectiveMedium, on_delete=models.PROTECT)
 
+    class Meta:
+        unique_together = ('microscope', 'objective', 'medium',)
+
     def __str__(self):
         if self.objective.is_integer():
             obj = int(self.objective)
@@ -47,14 +50,14 @@ class MicroscopeSettings(models.Model):
 
 
 class Lab(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
             return self.name
 
 
 class Imager(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -85,21 +88,21 @@ def large_thumb_directory_path(instance, filename):
 
 
 class GrowthSubstratum(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Vessel(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
 
     def __str__(self):
         return self.name
@@ -109,7 +112,7 @@ class Project(models.Model):
 
 
 class Experiment(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, unique=True)
     project = models.ForeignKey(Project, on_delete=models.PROTECT)
     lab = models.ManyToManyField(Lab, through='ProtectLab')
     organism = models.ManyToManyField(Organism, through='ProtectOrganism')
@@ -143,8 +146,6 @@ class Image(models.Model):
                                     default=date.today)
     date_uploaded = models.DateField(("Date uploaded"), default=date.today)
     document = models.ImageField(upload_to=imager_directory_path)
-    # TODO: Does this blong here or in image?
-    # Leave in image now for simpler refactoring
     brief_description = models.CharField(max_length=1000)
     path_to_raw_data = models.CharField(max_length=500, blank=True, null=True)
     medium_thumb = ThumbnailerImageField(upload_to=medium_thumb_directory_path,
