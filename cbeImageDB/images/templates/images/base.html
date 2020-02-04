@@ -14,7 +14,16 @@
               margin-top: 0;
               font-family: Arial, Helvetica, sans-serif;
             }
-        
+            
+            .banner {
+                background-color: #8E0083;
+                overflow: hidden;
+                margin-left: 0;
+            }
+            .banner p {
+                color: white;
+            }
+
             .topnav {
               margin-left: 0;
               overflow: hidden;
@@ -62,6 +71,12 @@
     {# Navigation Menu #}
     <header>
        
+        <div class="banner">
+            <p align="center"> <font size=6> Warning: This is a beta version. 
+                Data may be deleted at any time.</font> </p>
+            <p align="center"> If you have comments or concernts please contact _TODO_. </p>
+        </div>
+        
         <div class="topnav">
             {% if user.is_superuser %}
                 <a class="navbar-brand" href="/admin/">Admin</a>
