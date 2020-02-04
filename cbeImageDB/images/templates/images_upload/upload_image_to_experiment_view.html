@@ -1,6 +1,7 @@
 {% extends 'images/base.html' %}
 {% load images_extra %}
 {% load static %}
+{% load crispy_forms_tags %} 
 
 {% block content %}
 <h1> Upload another Image </h1>	
@@ -12,7 +13,7 @@
 <form action = "" method="POST" enctype="multipart/form-data">
     <div>
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <input type="submit" value="Submit" />
     </div>
 </form>
