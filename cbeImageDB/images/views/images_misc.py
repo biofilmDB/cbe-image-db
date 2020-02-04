@@ -1,4 +1,4 @@
-from images import forms, models
+from images import forms, models, help_texts as ht
 import django.views.generic as genViews
 from template_names import TemplateNames
 from images import search_utils as su
@@ -10,7 +10,11 @@ from django.shortcuts import get_object_or_404
 
 
 class AboutSite(TemplateNames, genViews.TemplateView):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['help_text_experiment'] = ht.experiment_name
+        context['help_text_project'] = ht.experiment_project
+        return context
 
 
 class ExperimentDetailsView(TemplateNames, genViews.ListView):

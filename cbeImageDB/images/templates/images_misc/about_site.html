@@ -2,28 +2,35 @@
 {% block content %}
 <h1 align="center"> About the CBE Image Database </h1>
 <h2 align="center"> About </h2>
-<p> The image database is designed to be a storage location for biofilm images to help with organization of and loss of data. It allows users to upload and search biofilm images. It keeps track of such things as the associated labs, organism, and microscope used. </p>
+<p> The image database is designed to be a storage location for biofilm images to help with organization of and loss of data. It allows users to upload and search biofilm images based on a set of attributes. These attributes consist of things such as the associated labs, organisms, and microscope settings used. </p>
+<p> Images are classified under experiments and projects. Experiments are meant for a round of imaging using the same sample, while projects are more for the larger picture. There can be many images to an experiment and many experiments to a project. </p>
 
-<h2 align="center"> Setup </h2>
-<h4> Projects </h4>
-<p> A project is the overall, larger project that the image fits into. (TODO: Add a better description) </p>
+
+<h2 align="center"> Components </h2>
+<h4> Project </h4>
+<p> {{ help_text_project }}</p>
 
 <h4> Experiment </h4>
-<p> An experiment is all the images that are taken on the same set of samples. Experiments must be named when a user first uploads an image. These can later be searched under the tab “Search Experiments”. {# TODO: Add hyperlink? #} Images can also be uploaded to an existing experiment by selecting it from the search page. </p>
+<p> {{ help_text_experiment }} </p>
 
-<h4> Imagers </h4>
-<p>An imager is the person who is taking the image. If an imagers name is not on the upload image page, it can be added by selecting create name in the autocomplete box.</p>
+<h4> Image </h4>
+<p> TODO: Describe an image </p>
 
+<h2 align="center"> Features </h2>
 <h4> Uploading Images </h4>
-<p>When a user first uploads an image, a new experiment is created under a specific project. An experiment is designed to hold only images relating to the a single experiment. If a user is taking images for multiple experiments, they should use the upload image tab when moving onto a new experiment. A user can upload multiple images to a given experiment. If the user saves the url, they can later upload images to the same experiment. Clicking on an image will show the user more information about a specific image. </p>
+<p>When a user first uploads an image, a new experiment is created under a specific project. An experiment is designed to hold only images relating to the a single experiment. If a user is taking images from multiple different samples, they should use the upload image tab when moving onto a new sample. A user can upload multiple images to a given experiment. </p>
 
 <h4> Searching </h4>
-<p> Users can either search by individual attributes or a more general search as well as by the terms that appear in the image descriptions. If nothing is entered in the search, all images with appropriate release dates (TODO: wording?) in the database will be given as a result. Clicking on the image on the search results page will bring the user to a page a details page showing all the images information.</p>
+<p> Users can either search by individual attributes {# TODO: Hyperlinks? #}  or a more general search as well as by the terms that appear in the image descriptions. If nothing is entered in the search, all images in the database will be shown as a result. Clicking on the image on the search results page will bring the user to a page a details page showing all the images information.</p>
+
+<p> Please note, images that appear in search results will have a release date of the current date or lower. No images with a release date in the future can only be viewed by admin. </p>
+
 
 {% if user.is_superuser %}
 <h4> Admin </h4>
 <p> Admin are able to create new growth mediums, growth substratums, labs, microscope settings, objective mediums, organisms, projects, and vessels. To upload a new image, admin must use the upload image page on the main website.  A link to modify image information can be found on the details page for that image. </p>
 <p>Admin are able to search all images regardless of their release date. Regular users only have access to images that have a release date equal or less than the current day. Admin are also able to view the associated experiments with images from the image details page. </p>
+
 {% endif %}
 
 {% endblock %}
