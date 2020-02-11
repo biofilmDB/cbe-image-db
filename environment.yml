@@ -13,6 +13,7 @@ dependencies:
   - pip=19.1.1
   - python=3.7.3
   - readline=7.0
+  - sqlite=3.28.0
   - tk=8.6.8
   - wheel=0.33.4
   - xz=5.2.4
