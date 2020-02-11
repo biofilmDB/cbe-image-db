@@ -31,7 +31,14 @@ RUN apt-get install -y curl grep sed dpkg && \
     dpkg -i tini.deb && \
     rm tini.deb
 
+
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
+
+# Add repository for packages for postgres to function
+RUN echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/apt/sources.list.d/pgdg.list
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O post-key.asc && apt-key add post-key.asc
+RUN apt-get install -y libpq-dev
+
 RUN apt-get clean
 
 CMD [ "/bin/bash" ]
