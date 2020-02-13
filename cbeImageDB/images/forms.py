@@ -55,9 +55,9 @@ class UploadFileForm(forms.ModelForm):
                   'path_to_raw_data']
 
         labels = {
-            'document': popover_html('Image File', ht.image_document),
-            'date_taken': popover_html('Date Taken', ht.image_date_taken),
-            'release_date': popover_html("Can't be used before",
+            'document': 'Image File',
+            'date_taken': 'Date Image Taken',
+            'release_date': popover_html("Release Date",
                                          ht.image_release_date),
             'imager': popover_html('Imager', ht.image_imager),
             'microscope_setting': popover_html('Microscope Settings',
