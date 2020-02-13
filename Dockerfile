@@ -1,13 +1,15 @@
 # TODO: Put a version number
 FROM phusion/passenger-customizable
 
-# Make and copy over files
-RUN mkdir /code
-WORKDIR /code
-COPY environment.yml /code/
+# Set correct environment variables.
+ENV HOME /root
+
+# Use baseimage-docker's init process.
+CMD ["/sbin/my_init"]
 
 #   Python support.
 RUN /pd_build/python.sh
+# End passanger intilization code
 
 # Run code from Dockerfile for continuumio/anaconda
 # Changed from anaconda2 to anaconda3 in the second run command
@@ -31,20 +33,28 @@ RUN apt-get install -y curl grep sed dpkg && \
     dpkg -i tini.deb && \
     rm tini.deb
 
-
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 
 # Add repository for packages for postgres to function
-RUN echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/apt/sources.list.d/pgdg.list
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O post-key.asc && apt-key add post-key.asc
-RUN apt-get install -y libpq-dev
+RUN echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/apt/sources.list.d/pgdg.list && \
+	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O post-key.asc && \ 
+	apt-key add post-key.asc && \
+	apt-get install -y libpq-dev
 
-RUN apt-get clean
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # CMD [ "/bin/bash" ]
 
+# Copy over the environment.yml file
+# Make and copy over files
+RUN mkdir /code
+WORKDIR /code
+COPY environment.yml /code/
+
 # Create and activate the conda environment
-RUN conda env create -f environment.yml
+
 # Pull the environment name out of the environment.yml
-RUN echo "source activate $(head -1 environment.yml | cut -d' ' -f2)" > ~/.bashrc
+RUN conda env create -f environment.yml && \
+	echo "source activate $(head -1 environment.yml | cut -d' ' -f2)" > ~/.bashrc
 ENV PATH /opt/conda/envs/$(head -1 environment.yml | cut -d' ' -f2)/bin:$PATH
