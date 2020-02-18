@@ -3,6 +3,7 @@ FROM phusion/passenger-customizable
 
 # Set correct environment variables.
 ENV HOME /root
+COPY startup.sh .
 
 # Use baseimage-docker's init process.
 CMD ["/sbin/my_init"]
@@ -11,8 +12,8 @@ CMD ["/sbin/my_init"]
 RUN /pd_build/python.sh
 # End passanger intilization code
 
-# Run code from Dockerfile for continuumio/anaconda
-# Changed from anaconda2 to anaconda3 in the second run command
+# Dockerfile for miniconda2, changed to miniconda3
+# https://hub.docker.com/r/continuumio/miniconda/dockerfile
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
 
@@ -20,9 +21,9 @@ RUN apt-get update --fix-missing && apt-get install -y wget bzip2 ca-certificate
     libglib2.0-0 libxext6 libsm6 libxrender1 \
     git mercurial subversion
 
-RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh -O ~/anaconda.sh && \
-    /bin/bash ~/anaconda.sh -b -p /opt/conda && \
-    rm ~/anaconda.sh && \
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "conda activate base" >> ~/.bashrc
@@ -31,9 +32,13 @@ RUN apt-get install -y curl grep sed dpkg && \
     TINI_VERSION=`curl https://github.com/krallin/tini/releases/latest | grep -o "/v.*\"" | sed 's:^..\(.*\).$:\1:'` && \
     curl -L "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini_${TINI_VERSION}.deb" > tini.deb && \
     dpkg -i tini.deb && \
-    rm tini.deb
+    rm tini.deb && \
+    apt-get clean
 
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
+CMD [ "/bin/bash" ]
+
+# End of miniconda docker file
 
 # Add repository for packages for postgres to function
 RUN echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/apt/sources.list.d/pgdg.list && \
