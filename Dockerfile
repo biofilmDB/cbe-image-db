@@ -3,10 +3,9 @@ FROM phusion/passenger-customizable
 
 # Set correct environment variables.
 ENV HOME /root
-COPY startup.sh .
 
 # Use baseimage-docker's init process.
-CMD ["/sbin/my_init"]
+#CMD ["/sbin/my_init"]
 
 #   Python support.
 RUN /pd_build/python.sh
@@ -35,8 +34,8 @@ RUN apt-get install -y curl grep sed dpkg && \
     rm tini.deb && \
     apt-get clean
 
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
-CMD [ "/bin/bash" ]
+#ENTRYPOINT [ "/usr/bin/tini", "--" ]
+#CMD [ "/bin/bash" ]
 
 # End of miniconda docker file
 
@@ -49,15 +48,19 @@ RUN echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/a
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# CMD [ "/bin/bash" ]
-
 # Copy over the environment.yml file
 # Make and copy over files
+RUN rm -f /etc/service/nginx/down
+#RUN rm -f /etc/service/nginx/run
+RUN rm /etc/nginx/sites-enabled/default
 RUN mkdir /home/app/webapp/
-COPY * /home/app/webapp/
+COPY --chown=app:app * /home/app/webapp/
+#COPY * /home/app/webapp/
+ADD webapp.conf /etc/nginx/sites-enabled/webapp.conf
 
 # Make var for environment.yml file so don't have to change it everywhere
 ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
+
 
 # Create and activate the conda environment
 # Pull the environment name out of the environment.yml
@@ -66,4 +69,6 @@ RUN conda env create -f $CONDA_ENV_FILE && \
 ENV PATH /opt/conda/envs/$(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)/bin:$PATH
 
 
+
+WORKDIR /home/app/webapp/cbeImageDB
 
