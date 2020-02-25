@@ -77,25 +77,25 @@ ADD webapp.conf /etc/nginx/sites-enabled/webapp.conf
 
 # (1) *****Trying to change who owns the directory****** (no help)
 RUN mkdir /home/app/webapp/
-#COPY --chown=app:app cbeImageDB /home/app/webapp/
+COPY --chown=app:app cbeImageDB /home/app/webapp/
 #COPY cbeImageDB /home/app/webapp/
 
 # Make var for environment.yml file so don't have to change it everywhere
-#COPY environment.yml /home/app/webapp/environment.yml
-#ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
+COPY environment.yml /home/app/webapp/environment.yml
+ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
 
 # (2) ****** Trying: Make the app run from the root home (no help)
-RUN mkdir /root/webapp
-COPY cbeImageDB/ /root/webapp/
+#RUN mkdir /root/webapp
+#COPY cbeImageDB/ /root/webapp/
 
 # Make var for environment.yml file so don't have to change it everywhere
-COPY environment.yml /root/webapp/environment.yml
-ENV CONDA_ENV_FILE /root/webapp/environment.yml
+#COPY environment.yml /root/webapp/environment.yml
+#ENV CONDA_ENV_FILE /root/webapp/environment.yml
 
 
 # (6) Moved this before activating the environment. Long shot???
-WORKDIR /root/webapp/
-#WORKDIR /home/app/webapp/
+#WORKDIR /root/webapp/
+WORKDIR /home/app/webapp/
 
 
 RUN conda env update --name base --file $CONDA_ENV_FILE
