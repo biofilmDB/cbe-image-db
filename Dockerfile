@@ -21,13 +21,13 @@ FROM phusion/passenger-customizable
 # Set correct environment variables.
 ENV HOME /root
 
-
 # Use baseimage-docker's init process.
-CMD ["/sbin/my_init"]
+#CMD ["/sbin/my_init"]
 
 #   Python support.
 RUN /pd_build/python.sh
 # End passanger intilization code
+
 
 # Dockerfile for miniconda2, changed to miniconda3
 # https://hub.docker.com/r/continuumio/miniconda/dockerfile
@@ -53,9 +53,11 @@ RUN apt-get install -y curl grep sed dpkg && \
     apt-get clean
 
 # (4) ********* Let's bring these back in?
+# Cleans up the container, getting rid of zombie processes
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 
 # End of miniconda docker file
+
 
 # Add repository for packages for postgres to function
 RUN echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/apt/sources.list.d/pgdg.list && \
@@ -96,16 +98,7 @@ WORKDIR /root/webapp/
 #WORKDIR /home/app/webapp/
 
 
-# Create and activate the conda environment
-# Pull the environment name out of the environment.yml
-# (3) ************ Make this add to bashrc not rewrite it
-#RUN conda env create -f $CONDA_ENV_FILE && \
-#	echo "source activate $(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)" >> ~/.bashrc
-#ENV PATH /opt/conda/envs/$(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)/bin:$PATH
-
 RUN conda env update --name base --file $CONDA_ENV_FILE
 
 
-# (5) ***** Will this make it so my environment is activated?
-#CMD [ "/bin/bash" ]
 
