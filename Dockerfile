@@ -15,6 +15,7 @@
 
 
 # TODO: Put a version number
+# TODO: Switch back to app user in /home/app/webapp
 FROM phusion/passenger-customizable
 
 # Set correct environment variables.
@@ -22,7 +23,7 @@ ENV HOME /root
 
 
 # Use baseimage-docker's init process.
-#CMD ["/sbin/my_init"]
+CMD ["/sbin/my_init"]
 
 #   Python support.
 RUN /pd_build/python.sh
@@ -53,7 +54,6 @@ RUN apt-get install -y curl grep sed dpkg && \
 
 # (4) ********* Let's bring these back in?
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
-CMD [ "/bin/bash" ]
 
 # End of miniconda docker file
 
@@ -68,6 +68,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy over the environment.yml file
 # Make and copy over files
+# TODO: Does getting rid of this break anything?
 RUN rm -f /etc/service/nginx/down
 RUN rm /etc/nginx/sites-enabled/default
 ADD webapp.conf /etc/nginx/sites-enabled/webapp.conf
