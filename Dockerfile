@@ -4,6 +4,7 @@ FROM phusion/passenger-customizable
 # Set correct environment variables.
 ENV HOME /root
 
+
 # Use baseimage-docker's init process.
 #CMD ["/sbin/my_init"]
 
@@ -51,14 +52,18 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Copy over the environment.yml file
 # Make and copy over files
 RUN rm -f /etc/service/nginx/down
-#RUN rm -f /etc/service/nginx/run
 RUN rm /etc/nginx/sites-enabled/default
 RUN mkdir /home/app/webapp/
-COPY --chown=app:app * /home/app/webapp/
-#COPY * /home/app/webapp/
+COPY --chown=app:app cbeImageDB /home/app/webapp/
+#RUN mkdir /root/webapp
+#COPY cbeImageDB/ /root/webapp/
 ADD webapp.conf /etc/nginx/sites-enabled/webapp.conf
 
 # Make var for environment.yml file so don't have to change it everywhere
+#COPY environment.yml /root/webapp/environment.yml
+#ENV CONDA_ENV_FILE /root/webapp/environment.yml
+
+COPY environment.yml /home/app/webapp/environment.yml
 ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
 
 
@@ -70,5 +75,9 @@ ENV PATH /opt/conda/envs/$(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)/bin:$PATH
 
 
 
-WORKDIR /home/app/webapp/cbeImageDB
+#WORKDIR /root/webapp/
+WORKDIR /home/app/webapp/
+
+
+CMD ["source ~/.bashrc"]
 
