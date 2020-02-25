@@ -1,5 +1,6 @@
 # Works passenger start is finding the Passengerfile.json and running on port 8000 like it says. The conda environment is running when using docker run and bash. Both times the user is root found by running "id -u -n"
 # Fails, wsgi file cannot find the django module
+# Changing the owner of the /home/app/webapp did not help
 
 # TODO: Put a version number
 FROM phusion/passenger-customizable
@@ -57,7 +58,10 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN rm -f /etc/service/nginx/down
 RUN rm /etc/nginx/sites-enabled/default
 RUN mkdir /home/app/webapp/
-COPY --chown=app:app cbeImageDB /home/app/webapp/
+
+# *****Trying to change who owns the directory******
+#COPY --chown=app:app cbeImageDB /home/app/webapp/
+COPY cbeImageDB /home/app/webapp/
 #RUN mkdir /root/webapp
 #COPY cbeImageDB/ /root/webapp/
 ADD webapp.conf /etc/nginx/sites-enabled/webapp.conf
