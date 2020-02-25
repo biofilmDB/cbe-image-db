@@ -13,7 +13,7 @@ ENV HOME /root
 
 
 # Use baseimage-docker's init process.
-#CMD ["/sbin/my_init"]
+CMD ["/sbin/my_init"]
 
 #   Python support.
 RUN /pd_build/python.sh
