@@ -98,12 +98,11 @@ WORKDIR /root/webapp/
 # Create and activate the conda environment
 # Pull the environment name out of the environment.yml
 # (3) ************ Make this add to bashrc not rewrite it
-RUN conda env create -f $CONDA_ENV_FILE && \
-	echo "source activate $(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)" >> ~/.bashrc
-ENV PATH /opt/conda/envs/$(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)/bin:$PATH
+#RUN conda env create -f $CONDA_ENV_FILE && \
+#	echo "source activate $(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)" >> ~/.bashrc
+#ENV PATH /opt/conda/envs/$(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)/bin:$PATH
 
-
-
+RUN conda env update --name base --file $CONDA_ENV_FILE
 
 
 # (5) ***** Will this make it so my environment is activated?
