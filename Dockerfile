@@ -5,10 +5,14 @@
 # (3) Tried changing > to >> to append to bashrc not overwrite and nothing changed
 # (4) Nopeeeee
 
-* (5) NOPE, my environment was not activated: TROUBLESHOOTING
+# (5) NOPE, my environment was not activated: TROUBLESHOOTING
 # * echo $CONDA_DEFAULT_ENV in docker-compose showed that base is running
 # * bash -it in docker-compose showed (cbe-image) root@96915aa1ef36:~/webapp# exit
 # * conda info --envs shows cbe-image exists, but not that it's active...
+
+# (6) The conda environmenmt was still not activated...
+
+
 
 # TODO: Put a version number
 FROM phusion/passenger-customizable
@@ -86,6 +90,9 @@ COPY environment.yml /root/webapp/environment.yml
 ENV CONDA_ENV_FILE /root/webapp/environment.yml
 
 
+# (6) Moved this before activating the environment. Long shot???
+WORKDIR /root/webapp/
+#WORKDIR /home/app/webapp/
 
 
 # Create and activate the conda environment
@@ -97,10 +104,8 @@ ENV PATH /opt/conda/envs/$(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)/bin:$PATH
 
 
 
-WORKDIR /root/webapp/
-#WORKDIR /home/app/webapp/
 
 
 # (5) ***** Will this make it so my environment is activated?
-CMD [ "/bin/bash" ]
+#CMD [ "/bin/bash" ]
 
