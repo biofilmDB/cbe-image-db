@@ -1,3 +1,6 @@
+# Works passenger start is finding the Passengerfile.json and running on port 8000 like it says. The conda environment is running when using docker run and bash. Both times the user is root found by running "id -u -n"
+# Fails, wsgi file cannot find the django module
+
 # TODO: Put a version number
 FROM phusion/passenger-customizable
 
