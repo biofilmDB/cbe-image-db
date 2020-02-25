@@ -1,21 +1,4 @@
-# Works passenger start is finding the Passengerfile.json and running on port 8000 like it says. The conda environment is running when using docker run and bash. Both times the user is root found by running "id -u -n"
-# Fails, wsgi file cannot find the django module
-# (1) Changing the owner of the /home/app/webapp did not help
-# (2) Chaning location to /root/webapp did not help either, running source activate cbe-image && passanger start gave errors with the source command. Running conda activate cbe-image && passenger export gives errors that we can't run that conda command
-# (3) Tried changing > to >> to append to bashrc not overwrite and nothing changed
-# (4) Nopeeeee
-
-# (5) NOPE, my environment was not activated: TROUBLESHOOTING
-# * echo $CONDA_DEFAULT_ENV in docker-compose showed that base is running
-# * bash -it in docker-compose showed (cbe-image) root@96915aa1ef36:~/webapp# exit
-# * conda info --envs shows cbe-image exists, but not that it's active...
-
-# (6) The conda environmenmt was still not activated...
-
-
-
 # TODO: Put a version number
-# TODO: Switch back to app user in /home/app/webapp
 FROM phusion/passenger-customizable
 
 # Set correct environment variables.
@@ -52,7 +35,6 @@ RUN apt-get install -y curl grep sed dpkg && \
     rm tini.deb && \
     apt-get clean
 
-# (4) ********* Let's bring these back in?
 # Cleans up the container, getting rid of zombie processes
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 
@@ -68,37 +50,17 @@ RUN echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/a
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Copy over the environment.yml file
-# Make and copy over files
-# TODO: Does getting rid of this break anything?
-RUN rm -f /etc/service/nginx/down
-RUN rm /etc/nginx/sites-enabled/default
-ADD webapp.conf /etc/nginx/sites-enabled/webapp.conf
-
-# (1) *****Trying to change who owns the directory****** (no help)
+# Copy over necessary files for app to run
 RUN mkdir /home/app/webapp/
 COPY --chown=app:app cbeImageDB /home/app/webapp/
-#COPY cbeImageDB /home/app/webapp/
 
-# Make var for environment.yml file so don't have to change it everywhere
-COPY environment.yml /home/app/webapp/environment.yml
+# Copy over the environment.yml file and extend base environment with cbe-image
 ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
-
-# (2) ****** Trying: Make the app run from the root home (no help)
-#RUN mkdir /root/webapp
-#COPY cbeImageDB/ /root/webapp/
-
-# Make var for environment.yml file so don't have to change it everywhere
-#COPY environment.yml /root/webapp/environment.yml
-#ENV CONDA_ENV_FILE /root/webapp/environment.yml
-
-
-# (6) Moved this before activating the environment. Long shot???
-#WORKDIR /root/webapp/
-WORKDIR /home/app/webapp/
-
-
+COPY environment.yml $CONDA_ENV_FILE
 RUN conda env update --name base --file $CONDA_ENV_FILE
 
+WORKDIR /home/app/webapp/
 
-
+# Make initial static files
+RUN mkdir /home/app/webapp/tmp/
+RUN python manage.py collectstatic
