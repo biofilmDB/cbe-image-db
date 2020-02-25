@@ -3,6 +3,7 @@
 # (1) Changing the owner of the /home/app/webapp did not help
 # (2) Chaning location to /root/webapp did not help either, running source activate cbe-image && passanger start gave errors with the source command. Running conda activate cbe-image && passenger export gives errors that we can't run that conda command
 # (3) Tried changing > to >> to append to bashrc not overwrite and nothing changed
+# (4) Nopeeeee
 
 # TODO: Put a version number
 FROM phusion/passenger-customizable
@@ -41,8 +42,9 @@ RUN apt-get install -y curl grep sed dpkg && \
     rm tini.deb && \
     apt-get clean
 
-#ENTRYPOINT [ "/usr/bin/tini", "--" ]
-#CMD [ "/bin/bash" ]
+# (4) ********* Let's bring these back in?
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+CMD [ "/bin/bash" ]
 
 # End of miniconda docker file
 
