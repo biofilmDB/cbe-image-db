@@ -2,6 +2,7 @@
 # Fails, wsgi file cannot find the django module
 # (1) Changing the owner of the /home/app/webapp did not help
 # (2) Chaning location to /root/webapp did not help either, running source activate cbe-image && passanger start gave errors with the source command. Running conda activate cbe-image && passenger export gives errors that we can't run that conda command
+# (3) Tried changing > to >> to append to bashrc not overwrite and nothing changed
 
 # TODO: Put a version number
 FROM phusion/passenger-customizable
@@ -81,8 +82,9 @@ ENV CONDA_ENV_FILE /root/webapp/environment.yml
 
 # Create and activate the conda environment
 # Pull the environment name out of the environment.yml
+# (3) ************ Make this add to bashrc not rewrite it
 RUN conda env create -f $CONDA_ENV_FILE && \
-	echo "source activate $(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)" > ~/.bashrc
+	echo "source activate $(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)" >> ~/.bashrc
 ENV PATH /opt/conda/envs/$(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)/bin:$PATH
 
 
