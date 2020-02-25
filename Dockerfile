@@ -1,6 +1,7 @@
 # Works passenger start is finding the Passengerfile.json and running on port 8000 like it says. The conda environment is running when using docker run and bash. Both times the user is root found by running "id -u -n"
 # Fails, wsgi file cannot find the django module
-# Changing the owner of the /home/app/webapp did not help
+# (1) Changing the owner of the /home/app/webapp did not help
+# (2) Chaning location to /root/webapp did not help either, running source activate cbe-image && passanger start gave errors with the source command. Running conda activate cbe-image && passenger export gives errors that we can't run that conda command
 
 # TODO: Put a version number
 FROM phusion/passenger-customizable
@@ -57,21 +58,25 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Make and copy over files
 RUN rm -f /etc/service/nginx/down
 RUN rm /etc/nginx/sites-enabled/default
-RUN mkdir /home/app/webapp/
-
-# *****Trying to change who owns the directory******
-#COPY --chown=app:app cbeImageDB /home/app/webapp/
-COPY cbeImageDB /home/app/webapp/
-#RUN mkdir /root/webapp
-#COPY cbeImageDB/ /root/webapp/
 ADD webapp.conf /etc/nginx/sites-enabled/webapp.conf
 
-# Make var for environment.yml file so don't have to change it everywhere
-#COPY environment.yml /root/webapp/environment.yml
-#ENV CONDA_ENV_FILE /root/webapp/environment.yml
+# (1) *****Trying to change who owns the directory****** (no help)
+RUN mkdir /home/app/webapp/
+#COPY --chown=app:app cbeImageDB /home/app/webapp/
+#COPY cbeImageDB /home/app/webapp/
 
-COPY environment.yml /home/app/webapp/environment.yml
-ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
+# Make var for environment.yml file so don't have to change it everywhere
+#COPY environment.yml /home/app/webapp/environment.yml
+#ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
+
+# (2) ****** Trying: Make the app run from the root home (no help)
+RUN mkdir /root/webapp
+COPY cbeImageDB/ /root/webapp/
+
+# Make var for environment.yml file so don't have to change it everywhere
+COPY environment.yml /root/webapp/environment.yml
+ENV CONDA_ENV_FILE /root/webapp/environment.yml
+
 
 
 # Create and activate the conda environment
@@ -82,8 +87,8 @@ ENV PATH /opt/conda/envs/$(head -1 $CONDA_ENV_FILE | cut -d' ' -f2)/bin:$PATH
 
 
 
-#WORKDIR /root/webapp/
-WORKDIR /home/app/webapp/
+WORKDIR /root/webapp/
+#WORKDIR /home/app/webapp/
 
 
 CMD ["source ~/.bashrc"]
