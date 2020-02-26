@@ -61,7 +61,3 @@ COPY environment.yml $CONDA_ENV_FILE
 RUN conda env update --name base --file $CONDA_ENV_FILE
 
 WORKDIR /home/app/webapp/
-
-# Make initial static files
-RUN mkdir /home/app/webapp/tmp/
-RUN python manage.py collectstatic
