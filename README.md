@@ -46,3 +46,12 @@ take awhile.** The first time I ran it, it took three days.
 If you do not need to add all the organisms, either add 
 organisms using the shell or run the adding organisms to add
 some organisms, then hit ^C to stop the program.
+
+### Deployment
+1. Clone the repository into the location it is to be run
+2. Run docker-compose up from the cbe-image-db directory to start docker
+3. Initialize the database by running
+```
+docker exec -it [web_container_name] ./init.sh
+```
+4. 
