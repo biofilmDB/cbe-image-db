@@ -61,3 +61,6 @@ COPY environment.yml $CONDA_ENV_FILE
 RUN conda env update --name base --file $CONDA_ENV_FILE
 
 WORKDIR /home/app/webapp/
+
+# Give init.sh permission to run
+RUN chmod +x init.sh
