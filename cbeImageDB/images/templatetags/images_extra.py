@@ -1,7 +1,16 @@
 from urllib.parse import urlencode
 from django import template
+from decouple import config
 
 register = template.Library()
+
+@register.simple_tag
+def get_developer_email(**kwargs):
+    return config('DEVELOPER_EMAIL')
+
+@register.simple_tag
+def get_developer_name(**kwargs):
+    return config('DEVELOPER_NAME')
 
 @register.simple_tag(takes_context=True)
 def url_replace(context, **kwargs):
