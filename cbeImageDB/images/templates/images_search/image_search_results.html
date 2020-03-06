@@ -5,6 +5,7 @@
 <div id='template-content>
 {% block content %}
 <h1> Search Results </h1>
+<p> Click on an image to view more information about that image. </p>
 
     {% if image_list %}
     <ul>
@@ -12,9 +13,6 @@
             {% for info in image.details %} 
                 <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
             {% endfor %}
-            {% if user.is_superuser %}
-                <li> <b>Release Date: </b>{{ image.release_date }} </li>
-            {% endif %}
             </br>
             <a href="{% url 'images:image_details' pk=image.pk %}">
             <img src="{{ image.thumb }}" alt="Cannot show image, an error occured" ></a>
