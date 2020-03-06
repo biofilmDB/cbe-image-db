@@ -13,15 +13,17 @@ manage=manage.py
 echo "***** Collecting static files in STATIC_ROOT *****"
 python $manage collectstatic
 
+##### Commenting out organism stuff, because of RAM issues in docker #####
+echo -e "\n***** organisms.txt needs to have already been copied over"
 # Download ncbi taxonomy from PURL link on page:
 # http://www.obofoundry.org/ontology/ncbitaxon.html
-echo -e "\n***** Downloading NCBI taxonomy *****"
-curl -L http://purl.obolibrary.org/obo/ncbitaxon.owl > organisms/ncbitaxon.owl
-
-# Make organism file
-echo -e "\n***** Creating organism files *****"
-python organisms/parse_ncbi.py organisms/ncbitaxon.owl
-rm organisms/bad-organisms.csv
+#echo -e "\n***** Downloading NCBI taxonomy *****"
+#curl -L http://purl.obolibrary.org/obo/ncbitaxon.owl > organisms/ncbitaxon.owl
+#
+## Make organism file
+#echo -e "\n***** Creating organism files *****"
+#python organisms/parse_ncbi.py organisms/ncbitaxon.owl
+#rm organisms/bad-organisms.csv
 
 # Make the migrations
 echo -e "\n***** Migrating *****"
