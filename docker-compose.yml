@@ -21,9 +21,7 @@ services:
 
   web:
     build: .
-    command: ./startup.sh
-    volumes:
-    - .:/code
+    command: passenger start
     ports:
     - "8000:8000"
     depends_on:

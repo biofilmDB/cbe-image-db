@@ -1,7 +1,9 @@
 import owlready2
 import sys
+import os
 
-output_file_name = 'organisms.csv'
+base_loc = os.path.dirname(os.path.abspath(__file__))
+output_file_name = os.path.join(base_loc, 'organisms.csv')
 
 if len(sys.argv) <= 1:
     print('*******************************************************************')
@@ -68,10 +70,12 @@ print('len bad: {}'.format(len(bad)))
 with open(output_file_name, 'w') as f:
     f.write('\n'.join(l2))
 
-with open('organisms.csv', 'w') as f:
+with open(output_file_name, 'w') as f:
     f.write('\n'.join(good))
 
-with open('bad-{}'.format(output_file_name), 'w') as f:
+split_dot = output_file_name.split('.')
+bad_file_name = '.'.join(split_dot[:-1]) + '-bad.' + split_dot[-1]
+with open(bad_file_name, 'w') as f:
     f.write('\n'.join(bad))
 
 print('Wrote output to file {}'.format(output_file_name))
