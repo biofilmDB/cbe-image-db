@@ -20,8 +20,6 @@ services:
     - 9200:9200
 
   web:
-    env_file: 
-    - cbeImageDB/.env
     image: cbe_web
     command: passenger start
     ports:
