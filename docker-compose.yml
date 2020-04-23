@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.4'
 
 services:
 
@@ -20,7 +20,13 @@ services:
     - 9200:9200
 
   web:
-    image: cbe_web
+    build:
+      # I'm not sure what this is doing,
+      # but it will not run without it
+      context: .
+      dockerfile: ./Dockerfile
+      network: host
+    #image: cbe_web
     command: passenger start
     ports:
     - "80:8000"
