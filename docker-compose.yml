@@ -6,9 +6,9 @@ services:
     image: postgres:11.6-alpine
     # restart: always (?)
     environment:
-    - POSTGRES_PASSWORD=cbe_password
-    - POSTGRES_USER=cbe_user
-    - POSTGRES_DB=cbe_images
+    - POSTGRES_PASSWORD=${DB_PASS}
+    - POSTGRES_USER=${DB_USER}
+    - POSTGRES_DB=${DB_NAME}
     ports:
     - 5432:5432
 
