@@ -5,6 +5,7 @@ services:
   postgres-db:
     image: postgres:11.6-alpine
     # restart: always (?)
+    #network_mode: host
     environment:
     - POSTGRES_PASSWORD=${DB_PASS}
     - POSTGRES_USER=${DB_USER}
@@ -14,6 +15,7 @@ services:
 
   elasticsearch-db:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    #network_mode: host
     environment: 
     - discovery.type=single-node
     ports:
@@ -26,7 +28,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
       network: host
-    #image: cbe_web
+    #network_mode: host
     command: passenger start
     ports:
     - "80:8000"
