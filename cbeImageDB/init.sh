@@ -1,18 +1,6 @@
 #!/bin/bash
 
 # Will run all commands needed to start up database
-# Make STATIC_ROOT directory
-STATIC_ROOT=$(grep STATIC_ROOT .env | xargs)
-IFS='=' read -ra STATIC_ROOT <<< "$STATIC_ROOT"
-STATIC_ROOT=${STATIC_ROOT[1]}
-
-echo "Making STATIC_ROOT directory: $STATIC_ROOT"
-mkdir $STATIC_ROOT
-
-manage=manage.py
-echo "***** Collecting static files in STATIC_ROOT *****"
-python $manage collectstatic
-
 ##### Commenting out organism stuff, because of RAM issues in docker #####
 echo -e "\n***** organisms.txt needs to have already been copied over"
 # Download ncbi taxonomy from PURL link on page:
