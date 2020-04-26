@@ -13,6 +13,8 @@ services:
     # sure it's not set to localhost
     environment:
     - DB_HOST=postgres-db
+    - MEDIA_ROOT=/home/app/webapp/files
+    - STATIC_ROOT=/home/app/webapp/static
     ports:
     - "80:8000"
     depends_on:
