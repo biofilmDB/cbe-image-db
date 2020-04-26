@@ -13,6 +13,7 @@ services:
     # sure it's not set to localhost
     environment:
     - DB_HOST=postgres-db
+    - ELASTICSEARCH_HOST=elasticsearch-db
     - MEDIA_ROOT=/home/app/webapp/files
     - STATIC_ROOT=/home/app/webapp/static
     ports:
