@@ -60,6 +60,10 @@ ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
 COPY environment.yml $CONDA_ENV_FILE
 RUN conda env update --name base --file $CONDA_ENV_FILE
 
+# Make files directory
+RUN mkdir /home/app/webapp/files
+# Make static file dir and create static files
+RUN export STATIC_ROOT=/home/app/webapp/static && mkdir /home/app/webapp/static && python /home/app/webapp/manage.py collectstatic
 WORKDIR /home/app/webapp/
 
 # Give init.sh permission to run
