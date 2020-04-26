@@ -13,9 +13,11 @@ services:
     # sure it's not set to localhost
     environment:
     - DB_HOST=postgres-db
-    - ELASTICSEARCH_HOST=elasticsearch-db
+    - ELASTIC_HOST=elasticsearch-db
     - MEDIA_ROOT=/home/app/webapp/files
     - STATIC_ROOT=/home/app/webapp/static
+    volumes:
+    - "${MOUNT_MEDIA_ROOT}:/home/app/webapp/files"
     ports:
     - "80:8000"
     depends_on:
