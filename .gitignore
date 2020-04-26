@@ -1,1 +1,8 @@
 *.owl
+*.env
+.passenger
+# Ignore initiation files
+cbeImageDB/organisms/organisms-bad.csv
+cbeImageDB/organisms/organisms.csv
+cbeImageDB/synonyms.txt
+cbeImageDB/labs.txt
