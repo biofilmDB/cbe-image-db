@@ -7,13 +7,13 @@ services:
       context: .
       dockerfile: ./Dockerfile
       network: host
-    #network_mode: host
+    network_mode: host
     command: passenger start
     # This may need to change, but make 
     # sure it's not set to localhost
     environment:
-    - DB_HOST=postgres-db
-    - ELASTIC_HOST=elasticsearch-db
+    - DB_HOST=localhost
+    - ELASTIC_HOST=localhost
     - MEDIA_ROOT=/home/app/webapp/files
     - STATIC_ROOT=/home/app/webapp/static
     volumes:
