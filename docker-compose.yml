@@ -12,6 +12,8 @@ services:
     - POSTGRES_DB=${DB_NAME}
     ports:
     - 5432:5432
+    volumes:
+    - "${MOUNT_DB}:/var/lib/postgresql/data"
 
   elasticsearch-db:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
@@ -21,17 +23,3 @@ services:
     ports:
     - 9200:9200
 
-  web:
-    build:
-      # I'm not sure what this is doing,
-      # but it will not run without it
-      context: .
-      dockerfile: ./Dockerfile
-      network: host
-    #network_mode: host
-    command: passenger start
-    ports:
-    - "80:8000"
-    depends_on:
-    - postgres-db
-    - elasticsearch-db
