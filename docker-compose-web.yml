@@ -9,8 +9,10 @@ services:
       network: host
     network_mode: host
     command: passenger start
-    # This may need to change, but make 
-    # sure it's not set to localhost
+    # Inlcude environment file so don't have to
+    # enter the container to modify variables
+    env_file:
+    - cbeImageDB/.env
     environment:
     - DB_HOST=localhost
     - ELASTIC_HOST=localhost
