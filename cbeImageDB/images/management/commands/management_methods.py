@@ -49,8 +49,7 @@ def create_organisms():
             if index % 5000 == 0 and index != 0:
                 print('Added organism number: {}'.format(index))
 
-            Organism.objects.get_or_create(storid=row[0], ncbi_id=row[1],
-                                           name=row[2])
+            Organism.objects.get_or_create(ncbi_id=row[0], name=row[1])
     except FileNotFoundError:
         return False
     return True
@@ -113,9 +112,9 @@ def create_test_microscope_objects():
 
 def create_test_organism():
     Organism.objects.get_or_create(name='Fluffy Stuff (Test organism)',
-                                   storid='123', ncbi_id='ncbi25')
+                                   ncbi_id='ncbi25')
     Organism.objects.get_or_create(name='Squishy Goo (Test organism)',
-                                   storid='567', ncbi_id='ncbi66')
+                                   ncbi_id='ncbi66')
 
 
 def create_test_experiment_objects():
