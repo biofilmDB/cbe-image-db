@@ -2,6 +2,40 @@
 ## About
 
 ## Setup
+### Setting Up the CBE Machine
+1. Clone the repository
+```
+git clone https://github.com/biofilmDB/cbe-image-db.git
+```
+
+2. Create the .env file from the sample files 
+3. Copy over the intiliztion files
+```
+scp -r init_files braid@cbeimagedb.msu.montana.edu:/home/braid/cbe-image-db
+```
+
+4. Create the organisms file (must be done on local machine because docker 
+can't make it)
+```
+python cbeImageDB/organisms/parse_ncbi.py /path/to/ncbitaxon.owl
+```
+
+5. Copy organisms.csv to server machine
+```
+scp organisms.csv braid@cbeimagedb.msu.montana.edu/home/braid/cbe-image-db/cbeImageDB/organisms
+```
+
+6. Create and run the docker containers from cbeImageDB project folder
+```
+docker-compose -f ../docker-compose.yml -f ../docker-compose-web.yml up
+```
+
+7. Initiate the database
+```
+docker exec -it _container id_ ./init.sh
+```
+
+
 ### Creating the database
 The database is running using Postgresql.
 1. Install postgresql
