@@ -2,7 +2,7 @@
 
 # Will run all commands needed to start up database
 ##### Commenting out organism stuff, because of RAM issues in docker #####
-echo -e "\n***** organisms.txt needs to have already been copied over"
+#echo -e "\n***** organisms.txt needs to have already been copied over"
 # Download ncbi taxonomy from PURL link on page:
 # http://www.obofoundry.org/ontology/ncbitaxon.html
 #echo -e "\n***** Downloading NCBI taxonomy *****"
@@ -13,9 +13,12 @@ echo -e "\n***** organisms.txt needs to have already been copied over"
 #python organisms/parse_ncbi.py organisms/ncbitaxon.owl
 #rm organisms/bad-organisms.csv
 
-# Make the migrations
-echo -e "\n***** Migrating *****"
-python $manage migrate
+# defining location of manage.py
+manage=manage.py
+
+# Make the migrations (on startup of web container)
+# echo -e "\n***** Migrating *****"
+# python $manage migrate
 
 # Initialize the database
 echo -e "\n***** Initialize the database *****"
