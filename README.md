@@ -11,7 +11,7 @@ git clone https://github.com/biofilmDB/cbe-image-db.git
 
 2. Create the .env file from the sample files
 3. Create the directory(s) to store the database and image files
-4. Copy over the intiliztion files
+4. Copy over the initialization files
 ```
 scp -r init_files braid@cbeimagedb.msu.montana.edu:/home/braid/cbe-image-db
 ```
@@ -67,11 +67,11 @@ The database is running using Postgresql.
 1. Clone the repository
 2. Create the conda envrionment:
     conda env create environment.yml
-3. Make a copy of the cbeImageDB/.env.samle named .env to store your local environment variables
+3. Make a copy of the cbeImageDB/.env.sample named .env to store your local environment variables
 
 ### Getting the organisms
 1. Download the [ncbi taxonomy owl file](http://www.obofoundry.org/ontology/ncbitaxon.html)
-2. In side the organisms folder run the following script:
+2. Inside the organisms folder run the following script:
     python parse_ncbi.py ncbi\_owl\_file\_name
 This will output the organisms into a file caled 'organisms.txt'.
 This script may take a few minutes. Some organisms are removed
