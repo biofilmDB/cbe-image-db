@@ -41,10 +41,10 @@ for sco in sub_cell_org:
 print('Found {} nodes with has_rank ending in species'.format(len(leafs)))
 
 # get the names of the nodes
-l2 = ['{} | {} | {}'.format(x.storid, x.name, x.label[0]) for x in leafs]
+l2 = ['{} | {}'.format(x.name, x.label[0]) for x in leafs]
 print('Made a list of name and label for each leaf')
 
-good = ['storid | ncbi_id | organism_name']
+good = ['ncbi_id | organism_name']
 bad = []
 
 for x in l2:

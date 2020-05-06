@@ -8,7 +8,6 @@ from django.urls import reverse
 class Organism(models.Model):
     name = models.CharField(db_index=True, max_length=1000, unique=True)
     ncbi_id = models.CharField(max_length=100, unique=True)
-    storid = models.IntegerField(unique=True)
 
     def __str__(self):
         return self.name
