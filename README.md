@@ -2,6 +2,7 @@
 ## About
 
 ## Setup
+_all commands are run from cbe-image-db/cbeImageDB_
 ### Setting Up the CBE Machine
 1. Clone the repository
 ```
@@ -9,32 +10,45 @@ git clone https://github.com/biofilmDB/cbe-image-db.git
 ```
 
 2. Create the .env file from the sample files 
-3. Copy over the intiliztion files
+3. Create the directory(s) to store the database and image files
+4. Copy over the intiliztion files
 ```
 scp -r init_files braid@cbeimagedb.msu.montana.edu:/home/braid/cbe-image-db
 ```
 
-4. Create the organisms file (must be done on local machine because docker 
+5. Create the organisms file (must be done on local machine because docker 
 can't make it)
 ```
 python cbeImageDB/organisms/parse_ncbi.py /path/to/ncbitaxon.owl
 ```
 
-5. Copy organisms.csv to server machine
+6. Copy organisms.csv to server machine
 ```
 scp organisms.csv braid@cbeimagedb.msu.montana.edu/home/braid/cbe-image-db/cbeImageDB/organisms
 ```
 
-6. Create and run the docker containers from cbeImageDB project folder
+7. Create and run the docker containers from cbeImageDB project folder
 ```
 docker-compose -f ../docker-compose.yml -f ../docker-compose-web.yml up
 ```
 
-7. Initiate the database
+8. Initiate the database
 ```
 docker exec -it _container id_ ./init.sh
 ```
 
+### Deploying Updates
+1. Pull the updates from GitHub
+2. Rebuild the docker container
+```
+docker-compose -f ../docker-compose.yml -f ../docker-compose-web.yml build
+```
+
+3. Restart the docker container
+```
+docker-compose -f ../docker-compose.yml -f ../docker-compose-web.yml up
+```
+ 
 
 ### Creating the database
 The database is running using Postgresql.
