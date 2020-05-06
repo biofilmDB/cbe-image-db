@@ -88,7 +88,7 @@ management command:
 2. To populate with actual data run
 1. To populate the database with information run:
     python manage.py initializedatabase
-If you do not want to initialize the organisms add --noorganisms
+If you do not want to initialize the organisms add `--noorganisms` flag
 to the end of the command. **Initializing the organisms will
 take awhile.** The first time I ran it, it took three days.
 If you do not need to add all the organisms, either add
