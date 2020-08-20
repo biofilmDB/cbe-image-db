@@ -64,6 +64,10 @@
                 float: center;
                 width: 75%; 
             }
+            .template-content-class {
+                padding: 30px;
+                padding-top: 0px;
+            }
         </style>
         <title></title>
     </head>
@@ -92,7 +96,7 @@
         </div>
     </header>
     {# The Document Body #}
-    <div id="template-content">
+    <div id="template-content", class="template-content-class">
         {% block content %}
             if you see this, something is wrong!
         {% endblock content %}
