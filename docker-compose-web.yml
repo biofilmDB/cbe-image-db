@@ -1,4 +1,6 @@
-version: '3.4'  
+version: '3.4' 
+# There are differences for mac computers, because docker cannot use the host
+# network on a mac, the differences are documented below
 services:
   web:
     build:
@@ -7,21 +9,21 @@ services:
       context: .
       dockerfile: ./Dockerfile
       network: host
-    network_mode: host
+    network_mode: host  # comment this out for use on mac
     command: bash -c "python manage.py migrate && passenger start"
     # Inlcude environment file so don't have to
     # enter the container to modify variables
     env_file:
     - cbeImageDB/.env
     environment:
-    - DB_HOST=localhost
-    - ELASTIC_HOST=localhost
+    - DB_HOST=localhost  # postgres-db for mac
+    - ELASTIC_HOST=localhost  # elasticsearch-db for mac
     - MEDIA_ROOT=/home/app/webapp/files
     - STATIC_ROOT=/home/app/webapp/static
     volumes:
     - "${MOUNT_MEDIA_ROOT}:/home/app/webapp/files"
     ports:
-    - "80:80"
+    - "8000:80"
     depends_on:
     - postgres-db
     - elasticsearch-db
