@@ -8,4 +8,4 @@ docker-compose -f ../docker-compose.yml -f ../docker-compose-web.yml build
 echo -e "\n\033[1;34mStopping all docker containers\033[0m"
 docker-compose stop
 echo -e "\n\033[1;34mRestarting docker\033[0m"
-docker-compose -f ../docker-compose.yml -f ../docker-compose-web.yml up
+docker-compose -f ../docker-compose.yml -f ../docker-compose-web.yml up -d
