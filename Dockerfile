@@ -55,6 +55,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir /home/app/webapp/
 COPY --chown=app:app cbeImageDB /home/app/webapp/
 
+# Copy over wait-for-it.sh 
+COPY wait-for-it.sh /home/app/webapp/wait-for-it.sh
+
 # Copy over the environment.yml file and extend base environment with cbe-image
 ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
 COPY environment.yml $CONDA_ENV_FILE
