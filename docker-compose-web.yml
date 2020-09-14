@@ -16,14 +16,14 @@ services:
     env_file:
     - cbeImageDB/.env
     environment:
-    - DB_HOST=localhost  # postgres-db for mac
-    - ELASTIC_HOST=localhost  # elasticsearch-db for mac
+    - DB_HOST=localhost  # postgres-db for mac, localhost cbe
+    - ELASTIC_HOST=localhost  # elasticsearch-db for mac, localhost cbe
     - MEDIA_ROOT=/home/app/webapp/files
     - STATIC_ROOT=/home/app/webapp/static
     volumes:
     - "${MOUNT_MEDIA_ROOT}:/home/app/webapp/files"
     ports:
-    - "8000:80"
+    - "80:80"  # 8000 for mac, 80 for cbe
     depends_on:
     - postgres-db
     - elasticsearch-db
