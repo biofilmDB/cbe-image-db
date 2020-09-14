@@ -10,14 +10,15 @@ services:
       dockerfile: ./Dockerfile
       network: host
     network_mode: host  # comment this out for use on mac
-    command: bash -c "python manage.py migrate && passenger start"
+    # Change localhost to postgres-db here for mac
+    command: bash -c "./wait-for-it.sh localhost:5432 -- python manage.py migrate && passenger start"
     # Inlcude environment file so don't have to
     # enter the container to modify variables
     env_file:
     - cbeImageDB/.env
     environment:
-    - DB_HOST=localhost  # postgres-db for mac, localhost cbe
-    - ELASTIC_HOST=localhost  # elasticsearch-db for mac, localhost cbe
+    - DB_HOST=localhost # postgres-db #for mac, localhost cbe
+    - ELASTIC_HOST=localhost # elasticsearch-db #for mac, localhost cbe
     - MEDIA_ROOT=/home/app/webapp/files
     - STATIC_ROOT=/home/app/webapp/static
     volumes:
