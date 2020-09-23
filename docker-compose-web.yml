@@ -17,8 +17,8 @@ services:
     env_file:
     - cbeImageDB/.env
     environment:
-    - DB_HOST=localhost # postgres-db #for mac, localhost cbe
-    - ELASTIC_HOST=localhost # elasticsearch-db #for mac, localhost cbe
+    # These are set here so user doesn't have to know the file structure of
+    # the docker containers
     - MEDIA_ROOT=/home/app/webapp/files
     - STATIC_ROOT=/home/app/webapp/static
     volumes:
