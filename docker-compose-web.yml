@@ -9,8 +9,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
       network: host
-    network_mode: host  # comment this out for use on mac
-    # Change localhost to postgres-db here for mac
+    network_mode: host  # NOTE: comment this out for mac
     command: bash -c "./wait-for-it.sh ${DB_HOST}:5432 -- python manage.py migrate && passenger start"
     # Inlcude environment file so don't have to
     # enter the container to modify variables
@@ -24,7 +23,7 @@ services:
     volumes:
     - "${MOUNT_MEDIA_ROOT}:/home/app/webapp/files"
     ports:
-    - "${LOCAL_WEB_PORT}:80"  # 8000 for mac, 80 for cbe
+    - "${LOCAL_WEB_PORT}:80"
     depends_on:
     - postgres-db
     - elasticsearch-db
