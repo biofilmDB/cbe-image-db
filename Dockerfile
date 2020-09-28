@@ -58,13 +58,13 @@ RUN mkdir /home/app/webapp/
 RUN wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh >> /home/app/webapp/wait-for-it.sh 
 RUN chmod +x /home/app/webapp/wait-for-it.sh
 
-# Copy over necessary files for app to run
-COPY --chown=app:app cbeImageDB /home/app/webapp/
-
 # Copy over the environment.yml file and extend base environment with cbe-image
 ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
 COPY environment.yml $CONDA_ENV_FILE
 RUN conda env update --name base --file $CONDA_ENV_FILE
+
+# Copy over necessary files for app to run
+COPY --chown=app:app cbeImageDB /home/app/webapp/
 
 # Make files directory
 RUN mkdir /home/app/webapp/files
