@@ -51,12 +51,15 @@ RUN echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/a
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Copy over necessary files for app to run
+# Make webapp directory
 RUN mkdir /home/app/webapp/
-COPY --chown=app:app cbeImageDB /home/app/webapp/
 
-# Copy over wait-for-it.sh 
-COPY wait-for-it.sh /home/app/webapp/wait-for-it.sh
+# download wait-for-it.sh
+RUN wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh >> /home/app/webapp/wait-for-it.sh 
+RUN chmod +x /home/app/webapp/wait-for-it.sh
+
+# Copy over necessary files for app to run
+COPY --chown=app:app cbeImageDB /home/app/webapp/
 
 # Copy over the environment.yml file and extend base environment with cbe-image
 ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
