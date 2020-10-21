@@ -6,10 +6,10 @@
 <p>Your image has been successfully uploaded to experiment 
 <b>{{ experiment_name }}</b>. Please not you will not be 
 able to return to this page. To view the image details go
-<a href={% url 'images:experiment_details' experiment=experiment_pk %}>
-here</a> or to see the experiment details and associated 
-images go <a href={% url 'images:image_details' 
-pk= image.pk %}>here</a> </p>
+<a href={% url 'images:image_details' pk=image_pk %}>here</a>
+or to see the experiment details and associated images go 
+<a href={% url 'images:experiment_details' experiment=experiment_pk %}>here</a> 
+</p>
 <p>The following features pertaining to this experiment are:</p>
 
 <ul>
