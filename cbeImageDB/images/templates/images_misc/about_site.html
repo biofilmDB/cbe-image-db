@@ -1,5 +1,6 @@
 {% extends 'images/base.html' %}
 {% block content %}
+{% load static %}
 <h2 align="center"> <b> **Testing for the CBE Seminar** </b> </h2>
 If you'd like to test the database prior to the CBE seminar on Thrusday, October
 15th, please feel free to upload any random image. The values on the upload page
@@ -21,8 +22,21 @@ larger picture. There can be many images to an experiment and many experiments
 to a project. </p>
 
 <h2 align="center"> Data Model </h2>
+<img src="{% static "images/data-model.png" %}" alt="Data model image"
+width=50% height="auto" align="left" style=”margin: 0px 5px 5px 5px;/>
+<p> A data model shows how the different objects {# TODO: Correct word #} are
+related to each other.
+In the diagram to the left, there are three objects represented: project,
+experiment, and image.
+The arrows show relationships between them.
+</p>
 <h4> Project </h4>
-<p> {{ help_text_project }}</p>
+{#<p> {{ help_text_project }}</p>#}
+<p>The project encompasses a related set of images and experiments, such as all
+the images associated with a paper.
+The project only has one attribute, the name.
+Users are able to create new projects, by clicking "Create &#60project_name>"
+while uploading an image.</p>
 
 <h4> Experiment </h4>
 <p> {{ help_text_experiment }} </p>
@@ -38,7 +52,6 @@ user can upload multiple images to a given experiment. </p>
 <h4> Searching </h4>
 <p> Users can either search by <a href={% url 'images:attribute_search'%} 
 >individual attributes</a>
-{# TODO: Hyperlinks? #}
 or by <a href={% url 'images:general_search'%}>general search</a> as well as by 
 the terms that appear in the image descriptions. {# This feel unclear #}
 In the attribute search, the values for each attribute are broken down into
