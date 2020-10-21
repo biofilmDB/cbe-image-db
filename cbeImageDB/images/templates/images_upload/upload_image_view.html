@@ -8,13 +8,21 @@
     <a href='mailto:{{ support_email }}?subject=Missing Information from Image Database'>
     {{ support_email }}</a> with what information is missing and what value(s) 
     you need. You will not be able to upload your image until you do so. You 
-    may select the other option if the substratum or vessel you need are not present.
-    You may add an imager or project by typing the name in the box and selecting 
-    create.Fields with an * are required. </p> 
+    may select the other option if the substratum or vessel you need are not
+    present.
+    You may add an imager or project by typing the name in the box and selecting
+    create. Fields with an * are required. </p> 
+    
+    <h2> Experiment Name Note </h2>
+    The experiment name must be unique. For now, the names are listed below,
+    so please pick a name that is not listed. I know this is a pain and it
+    will be changed to something simpler soon. Thanks for your patients.
+    
     <form action = "" method="POST" enctype="multipart/form-data">
         <div>
             {% csrf_token %}
             <h3> Experiment Specific Information </h3>
+            <p><b>Taken experiment names: {{ experiment_names }}</b></p>
             {{ forms.experiment_form|crispy }}
             <h3> Image Specific Information </h3>
             {{ forms.image_form|crispy }}

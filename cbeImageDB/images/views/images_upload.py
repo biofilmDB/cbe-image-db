@@ -48,6 +48,11 @@ class UploadImageView(TemplateNames, MultiFormView):
         context = super().get_context_data(**kwargs)
         context['support_name'] = config('SUPPORT_NAME')
         context['support_email'] = config('SUPPORT_EMAIL')
+        
+        # NOTE: This is entered because the experiment name is a pain
+        exp = list(models.Experiment.objects.all().order_by('name'))
+        context['experiment_names'] = ', '.join([e.name for e in exp])
+
         return context
 
 
