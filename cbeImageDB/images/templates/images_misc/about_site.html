@@ -20,7 +20,7 @@ for a round of imaging using the same sample, while projects are more for the
 larger picture. There can be many images to an experiment and many experiments
 to a project. </p>
 
-<h2 align="center"> Components </h2>
+<h2 align="center"> Data Model </h2>
 <h4> Project </h4>
 <p> {{ help_text_project }}</p>
 
@@ -31,15 +31,21 @@ to a project. </p>
 <h4> Uploading Images </h4>
 <p>When a user first uploads an image, a new experiment is created under a
 specific project. An experiment is designed to hold only images relating to
-the a single experiment. If a user is taking images from multiple different
+a single experiment. If a user is taking images from multiple different
 samples, they should use the upload image tab when moving onto a new sample. A
 user can upload multiple images to a given experiment. </p>
 
 <h4> Searching </h4>
-<p> Users can either search by individual attributes {# TODO: Hyperlinks? #}
-or a more general search as well as by the terms that appear in the image
-descriptions. If nothing is entered in the search, all images in the database
-will be shown as a result. Clicking on the image on the search results page
+<p> Users can either search by <a href={% url 'images:attribute_search'%} 
+>individual attributes</a>
+{# TODO: Hyperlinks? #}
+or by <a href={% url 'images:general_search'%}>general search</a> as well as by 
+the terms that appear in the image descriptions. {# This feel unclear #}
+In the attribute search, the values for each attribute are broken down into
+their own search field.
+In the general search, all the attributes are combined into one search field.
+If nothing is entered in the search, all images in the database
+will be shown. Clicking on the image on the search results page
 will bring the user to a page a details page showing all the images
 information.</p>
 <p> Please note, images that appear in search results will have a release date
