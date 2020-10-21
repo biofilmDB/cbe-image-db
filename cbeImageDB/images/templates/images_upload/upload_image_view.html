@@ -3,7 +3,8 @@
 {% block content %}
 {% load crispy_forms_tags %} 
     <h1> Upload an Image </h1>	
-    <p> If the option you need for microscope settings, lab, or organism is not present please email 
+    <p> If the option you need for microscope settings, lab, or organism is not 
+    present please email 
     {{ support_name }} at 
     <a href='mailto:{{ support_email }}?subject=Missing Information from Image Database'>
     {{ support_email }}</a> with what information is missing and what value(s) 
@@ -15,8 +16,9 @@
     
     <h2> Experiment Name Note </h2>
     The experiment name must be unique. For now, the names are listed below,
-    so please pick a name that is not listed. I know this is a pain and it
-    will be changed to something simpler soon. Thanks for your patients.
+    so please pick a name that is not listed.
+    I apologize for the inconvenience and this issue will be solved shortly.
+    Thanks for your patients.
     
     <form action = "" method="POST" enctype="multipart/form-data">
         <div>
