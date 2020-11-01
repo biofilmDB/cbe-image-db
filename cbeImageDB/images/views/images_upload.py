@@ -7,6 +7,7 @@ from multi_form_view import MultiFormView
 from django.template.loader import render_to_string
 from django.db import transaction
 from decouple import config
+from django.http import JsonResponse
 
 
 # Render image so users can't return to the page if the release
@@ -25,7 +26,18 @@ class PickExperimentView(TemplateNames, genViews.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # get all experiments to use in the html for the names and attributes
-        context['experiments'] = models.Experiment.objects.order_by('name')
+        context['names'] = models.Experiment.objects.order_by('name')
+        # get queryset of experiments ordered by name
+        exps = models.Experiment.objects.order_by('name')
+        exps_dict = {}  # make dictionary to store all experiments in
+        # got through each exp, get info and add to dictionary
+        # i will be how the javascript will index each experiment
+        for i,e in enumerate(exps):
+            li = su.get_html_experiment_list(e)
+            # ints must be strings for js to be happy
+            exps_dict[str(i)] = li
+        # turn to string and replace ' with " for proper json formatting
+        context['experiments'] = str(exps_dict).replace("'", '"')
         return context
 
 

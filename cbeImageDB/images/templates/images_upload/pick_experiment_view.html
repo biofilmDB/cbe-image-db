@@ -5,9 +5,9 @@
 <h2>What Can JavaScript Do?</h2>
 
 <form action="result.php" method="post" id="demoForm" class="demoForm">
-	<select name="names" size="3">
-	  {% for exp in experiments %}
-	  	<option value="{{ exp.pk }}"> {{ exp.name }} </option>
+	<select name="names" size="3" autofocus>
+	  {% for name in names %}
+	  	<option value="{{ forloop.counter }}"> {{ name }} </option>
 	  {% endfor %}
 	</select>
     
@@ -19,7 +19,7 @@
 <ul>
   <li> </li>
 </ul>
-
+<p> {{ experiments }} </p>
 <p id="demo">JavaScript can change HTML content.</p>
 
 <button type="button" onclick='document.getElementById("demo").innerHTML = "Hello JavaScript!"'>Click Me!</button>
@@ -27,20 +27,28 @@
 
 <script type="text/javascript">
 // make a list of all the experiments
-// doesn't work
-var experiments = [{% for x in experiments %}'{{ x|safe|escapejs }}',{% endfor %}];
-//var experiments = ['a', 'b']
+var names = [{% for x in names %}'{{ x|safe|escapejs }}',{% endfor %}];
+var json_string = '{{ experiments|safe|escapejs}}';
+var json_data = JSON.parse(json_string);
 // anonymous function assigned to onchange event of controlling select list
 document.forms['demoForm'].elements['names'].onchange = function() {
     var form = document.forms['demoForm'];
     // this changes the stuff on load, but it doesn't change it dynamically
 	var sel = form.elements['names'];
 	document.getElementById("metadata").innerHTML = sel.value;
-	document.getElementById("exp_name").innerHTML = experiments[0];
+	document.getElementById("exp_name").innerHTML = json_string;//names[sel.value-1];
+	//var experiment = json_data[sel.value-1]
+	//var html = "grrrr";
+	/*
+	for (i=0; i<eperiment.length; i++) {
+		exp = "<li><b>" + experiment[i][0] + ": </b>" + experiment[i][1] + "</li>";
+		html += exp;
+	}*/
+	//document.getElementById("exp_name").innerHTML = html;
 }; 
 
 // Not sure if this will be needed
-/*
+
 window.onload = function() {
     var form = document.forms['demoForm'];
     
@@ -48,7 +56,7 @@ window.onload = function() {
     var sel = form.elements['names'];
     sel.selectedIndex = 0;
     
-}; */
+}; 
 	
 
 </script>
