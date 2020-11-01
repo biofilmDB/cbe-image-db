@@ -33,9 +33,9 @@ class PickExperimentView(TemplateNames, genViews.TemplateView):
         # got through each exp, get info and add to dictionary
         # i will be how the javascript will index each experiment
         for i,e in enumerate(exps):
-            li = su.get_html_experiment_list(e)
+            edict = su.get_experiment_info_dict(e)
             # ints must be strings for js to be happy
-            exps_dict[str(i)] = li
+            exps_dict[str(i)] = edict
         # turn to string and replace ' with " for proper json formatting
         context['experiments'] = str(exps_dict).replace("'", '"')
         return context

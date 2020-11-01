@@ -110,7 +110,23 @@ def get_html_image_list(image, features=[]):
 
     return li_new
 
-
+def get_experiment_info_dict(experiment):
+    '''Returns list of features about the experiment in the format 
+    (feature_name, feature).'''
+    organism_list = ', '.join(str(o) for o in experiment.organism.all())
+    lab_list = ', '.join(str(l) for l in experiment.lab.all())
+    # Get list of all the asociated images
+    images = experiment.image_set.all()
+    dated = experiment.image_set.filter(release_date__lte=datetime.now())
+    edict = {'name': experiment.name, 'project': experiment.project.name,
+             'lab': lab_list, 'organism': organism_list,
+             'vessel': experiment.vessel.name,
+             'growth substriatum': experiment.substratum.name,
+             'total images': str(len(images)),
+             'total viewable images': str(len(dated))}
+    return edict
+    
+    
 def get_html_experiment_list(experiment):
     '''Returns list of features about the experiment in the format 
     (feature_name, feature).'''

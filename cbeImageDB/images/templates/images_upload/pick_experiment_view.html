@@ -13,12 +13,17 @@
     
 </form>
 
-<p id="metadata"> </p>
+<p id="test-metadata"> </p>
 
 <h2 id="exp_name"> </h2>
-<ul>
-  <li> </li>
-</ul>
+
+<div id="metadata">
+	<ul>
+		<li><b>Name</b> <div id="exp-name"> </div></li>
+	</ul>
+
+</div>
+
 <p> {{ experiments }} </p>
 <p id="demo">JavaScript can change HTML content.</p>
 
@@ -28,23 +33,24 @@
 <script type="text/javascript">
 // make a list of all the experiments
 var names = [{% for x in names %}'{{ x|safe|escapejs }}',{% endfor %}];
-var json_string = '{{ experiments|safe|escapejs}}';
+var json_string = unescape('{{ experiments|safe|escapejs}}');
 var json_data = JSON.parse(json_string);
 // anonymous function assigned to onchange event of controlling select list
 document.forms['demoForm'].elements['names'].onchange = function() {
     var form = document.forms['demoForm'];
     // this changes the stuff on load, but it doesn't change it dynamically
 	var sel = form.elements['names'];
-	document.getElementById("metadata").innerHTML = sel.value;
-	document.getElementById("exp_name").innerHTML = json_string;//names[sel.value-1];
-	//var experiment = json_data[sel.value-1]
-	//var html = "grrrr";
-	/*
+	document.getElementById("test-metadata").innerHTML = sel.value;
+	//document.getElementById("exp_name").innerHTML = json_string;//names[sel.value-1];
+	
+	var experiment = json_data[String(sel.value-1)]
+	var html = "<p> grrrr </p>";
+	
 	for (i=0; i<eperiment.length; i++) {
 		exp = "<li><b>" + experiment[i][0] + ": </b>" + experiment[i][1] + "</li>";
 		html += exp;
-	}*/
-	//document.getElementById("exp_name").innerHTML = html;
+	}
+	document.getElementById("metadata").innerHTML = html;
 }; 
 
 // Not sure if this will be needed
