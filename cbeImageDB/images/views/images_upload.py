@@ -21,6 +21,10 @@ def render_upload_success(obj, image, experiment):
     return rendered
 
 
+class PickExperimentView(TemplateNames, genViews.TemplateView):
+    pass
+
+
 class UploadImageView(TemplateNames, MultiFormView):
     """ Allows the user to upload an image file and requests they fill in the
     model fields."""

@@ -5,6 +5,8 @@ from . import views
 app_name = 'images'
 urlpatterns = [
     path('upload-image/', views.UploadImageView.as_view(), name='upload'),
+    path('pick-experiment/', views.PickExperimentView.as_view(),
+         name='pick_experiment'),
     path('experiment-image-upload/<int:pk>/',
          views.UploadImageToExperimentView.as_view(),
          name='upload_image_to_experiment'),
