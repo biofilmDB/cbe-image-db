@@ -22,7 +22,11 @@ def render_upload_success(obj, image, experiment):
 
 
 class PickExperimentView(TemplateNames, genViews.TemplateView):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['experiment_names'] = models.Experiment.objects.order_by('name')
+        context['support_email'] = config('SUPPORT_EMAIL')
+        return context
 
 
 class UploadImageView(TemplateNames, MultiFormView):
