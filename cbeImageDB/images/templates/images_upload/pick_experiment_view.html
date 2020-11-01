@@ -6,17 +6,19 @@
 
 <form action="result.php" method="post" id="demoForm" class="demoForm">
 	<select name="names" size="3">
-	  {% for exp in experiment_names %}
-	  	<option value="{{ exp }}"> {{ exp }} </option>
+	  {% for exp in experiments %}
+	  	<option value="{{ exp.pk }}"> {{ exp.name }} </option>
 	  {% endfor %}
-	  <option value="a"> a </option>
-	  <option value="b"> b </option>
-	  <option value="c"> c </option>
 	</select>
     
 </form>
 
 <p id="metadata"> </p>
+
+<h2 id="exp_name"> </h2>
+<ul>
+  <li> </li>
+</ul>
 
 <p id="demo">JavaScript can change HTML content.</p>
 
@@ -24,14 +26,30 @@
 
 
 <script type="text/javascript">
-
+// make a list of all the experiments
+// doesn't work
+var experiments = [{% for x in experiments %}'{{ x|safe|escapejs }}',{% endfor %}];
+//var experiments = ['a', 'b']
 // anonymous function assigned to onchange event of controlling select list
 document.forms['demoForm'].elements['names'].onchange = function() {
     var form = document.forms['demoForm'];
     // this changes the stuff on load, but it doesn't change it dynamically
 	var sel = form.elements['names'];
 	document.getElementById("metadata").innerHTML = sel.value;
+	document.getElementById("exp_name").innerHTML = experiments[0];
 }; 
+
+// Not sure if this will be needed
+/*
+window.onload = function() {
+    var form = document.forms['demoForm'];
+    
+    // reference to controlling select list
+    var sel = form.elements['names'];
+    sel.selectedIndex = 0;
+    
+}; */
+	
 
 </script>
 
