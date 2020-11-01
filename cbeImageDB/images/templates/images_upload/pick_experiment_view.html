@@ -8,6 +8,54 @@
 
 <button type="button" onclick='document.getElementById("demo").innerHTML = "Hello JavaScript!"'>Click Me!</button>
 
+<select size="3">
+  <option> a </option>
+  <option> b </option>
+  <option> c </option>
+</select>
+
+<form action="#" method="post" id="demoForm" class="demoForm">
+    <fieldset>
+        <legend>Demo: Dynamic Select Box</legend>
+    
+        <select name="category">
+            <option value="js">JavaScripts</option>
+            <option value="php">PHP Scripts</option>
+            <option value="tuts">Tutorials</option> 
+        </select>
+        
+        <select name="choices" id="choices">
+            <!-- populated using JavaScript -->
+        </select>
+    
+    </fieldset>
+</form>
+
+
+<script>
+// object literal holding data for option elements
+var Select_List_Data = {
+
+'choices': { // name of associated select box
+
+// names match option values in controlling select box
+js: {
+text: ['Scrolling Divs', 'Tooltips', 'Rotate Images', 'Scrollers', 'Banner Rotator'],
+value: ['scroll', 'tooltips', 'rotate', 'scrollers', 'banner']
+},
+php: {
+text: ['Random Image', 'Form Class', 'Table Class', 'Order Form'],
+value: ['random', 'form', 'table', 'order']
+},
+tuts: {
+// example without values
+text: ['Iframes', 'PHP to JS', 'Object Literals', 'Initializing JS']
+}
+}    
+};
+</script>
+
+
 {% endblock %}
 
 {% block footer %}
