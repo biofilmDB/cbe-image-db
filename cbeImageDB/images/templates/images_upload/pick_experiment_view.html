@@ -14,6 +14,7 @@
 </form>
 
 <p id="test-metadata"> </p>
+<p id="print"> </p>
 
 <h2 id="exp_name"> </h2>
 
@@ -38,32 +39,9 @@ document.forms['demoForm'].elements['names'].onchange = function() {
     var form = document.forms['demoForm'];
     // this changes the stuff on load, but it doesn't change it dynamically
 	var sel = form.elements['names'];
-	document.getElementById("test-metadata").innerHTML = sel.value;
-	//document.getElementById("exp_name").innerHTML = json_string;//names[sel.value-1];
 	
 	var exp = json_data[String(sel.value-1)];
-	//document.getElementById("exp-name").innerHTML = exp['name'];
-	//document.getElementById("exp-").innerHTML = exp[];
-	// create document fragment to add list to
-	var fragment = document.createDocumentFragment();
-	// for each key, add it to the document
-	var keys = Object.keys(exp);
-	//document.getElementById("exp-name").innerHTML = "cat";//typeof exp[0];
-	
-	var ul = document.getElementById("metadata")
-	ul.innerHTML = "";  // clear what is already there
-	var li;
-	var b;
-	for (var i=0; i < keys.length; i++) {
-		// 
-		li = document.createElement('li');
-		b = document.createElement('b');
-		b.textContent = keys[i];
-		li.appendChild(b);
-		li.textContent = exp[keys[i]];
-		fragment.appendChild(li);
-	}
-	ul.appendChild(fragment);
+	load_exp_info(exp);
 }; 
 
 // Not sure if this will be needed
@@ -74,9 +52,32 @@ window.onload = function() {
     // reference to controlling select list
     var sel = form.elements['names'];
     sel.selectedIndex = 0;
-    
+   	load_exp_info(json_data[0]); 
 }; 
 	
+function load_exp_info(exp) {
+	// create document fragment to add list to
+	var fragment = document.createDocumentFragment();
+	// for each key, add it to the document
+	var keys = Object.keys(exp);
+	//document.getElementById("print").innerHTML = exp;
+	
+	var ul = document.getElementById("metadata")
+	ul.innerHTML = "";  // clear what is already there
+	var li;
+	var b;
+	for (var i=0; i < keys.length; i++) {
+		// 
+		li = document.createElement('li');
+		//b = document.createElement('b');
+		//b.textContent = keys[i];
+		//li.appendChild(b);
+		li.textContent = keys[i] + exp[keys[i]];
+		fragment.appendChild(li);
+	}
+	ul.appendChild(fragment);
+	
+}
 
 </script>
 
