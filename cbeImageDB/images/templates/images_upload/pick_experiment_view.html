@@ -4,21 +4,23 @@
 
 <h1 align="center">Upload an Image: Select an Experiment</h1>
 
-<div id="exp-list">
-	<h2>Experiment List</h2>
-	<form action="result.php" method="post" id="selectForm" class="selectForm">
-		<select name="names" size="10" autofocus>
-		  {% for name in names %}
-			<option value="{{ forloop.counter }}"> {{ name }} </option>
-		  {% endfor %}
-		</select>
-	</form>
+<div class="row">
+<div class="column" align="center">
+<h2>Experiment List</h2>
+<form action="result.php" method="post" id="selectForm" class="selectForm">
+	<select name="names" size="10" autofocus>
+	  {% for name in names %}
+		<option value="{{ forloop.counter }}"> {{ name }} </option>
+	  {% endfor %}
+	</select>
+</form>
 </div>
 
-<div id"exp-metadata">
-	<h2>Associated Metadata</h2>
-	{# Experiment specific metadata will go here #}
-	<ul id="metadata"></ul>
+<div class="column">
+<h2 align="center">Associated Metadata</h2>
+{# Experiment specific metadata will go here #}
+<ul id="metadata"></ul>
+</div>
 </div>
 
 <script type="text/javascript">

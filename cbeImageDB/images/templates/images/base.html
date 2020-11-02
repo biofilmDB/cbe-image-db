@@ -68,36 +68,47 @@
                 padding: 30px;
                 padding-top: 0px;
             }
-        </style>
-        <title></title>
-    </head>
+            {# make two columns on page #}
+            .column {
+                float: left;
+                width: 50%;
+                padding: 10px;
+            }
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+    </style>
+    <title></title>
+</head>
+
+<body>
+{# Navigation Menu #}
+<header>
+   
+    <div class="banner">
+        <p align="center"> <font size=6> Warning: This is a beta version. 
+            Data may be deleted at any time.</font> </p>
+        <p align="center"> If you have comments or concerns please contact
+            {% get_developer_name %} at <a href='mailto:{% get_developer_email %}
+            ?Subject=CBE Image DB Feedback'>{% get_developer_email %}</a></p>
+    </div>
     
-    <body>
-    {# Navigation Menu #}
-    <header>
-       
-        <div class="banner">
-            <p align="center"> <font size=6> Warning: This is a beta version. 
-                Data may be deleted at any time.</font> </p>
-            <p align="center"> If you have comments or concerns please contact
-                {% get_developer_name %} at <a href='mailto:{% get_developer_email %}
-                ?Subject=CBE Image DB Feedback'>{% get_developer_email %}</a></p>
-        </div>
-        
-        <div class="topnav">
-            {% if user.is_superuser %}
-                <a class="navbar-brand" href="/admin/">Admin</a>
-            {% endif %} 
-            <a class="navbar-brand" href="{% url 'about' %}">About</a>
-            <a class="navbar-brand" href="{% url 'images:upload' %}">Upload Image</a>
-            <a class="navbar-brand" href="{% url 'images:attribute_search' %}">Search Attributes</a>
-            <a class="navbar-brand" href={% url 'images:general_search' %}>Search General</a>
-	    <a class="navbar-brand" href={% url 'images:experiment_search' %}> Search Experiments </a>
-        </div>
-    </header>
-    {# The Document Body #}
-    <div id="template-content", class="template-content-class">
-        {% block content %}
+    <div class="topnav">
+        {% if user.is_superuser %}
+            <a class="navbar-brand" href="/admin/">Admin</a>
+        {% endif %} 
+        <a class="navbar-brand" href="{% url 'about' %}">About</a>
+        <a class="navbar-brand" href="{% url 'images:upload' %}">Upload Image</a>
+        <a class="navbar-brand" href="{% url 'images:attribute_search' %}">Search Attributes</a>
+        <a class="navbar-brand" href={% url 'images:general_search' %}>Search General</a>
+    <a class="navbar-brand" href={% url 'images:experiment_search' %}> Search Experiments </a>
+    </div>
+</header>
+{# The Document Body #}
+<div id="template-content", class="template-content-class">
+    {% block content %}
             if you see this, something is wrong!
         {% endblock content %}
     </div>
