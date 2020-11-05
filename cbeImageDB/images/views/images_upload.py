@@ -40,6 +40,10 @@ class PickExperimentView(TemplateNames, genViews.TemplateView):
             # convert list into dictonary
             for l in elist:
                edict[l[0]] = l[1]
+            # add the redirect path for the url as the last entry in the
+            # dictionary
+            edict['View Experiment Details Page'] = reverse('images:experiment_details',
+                                                    args=(e.pk,))
             # ints must be strings for js to be happy
             exps_dict[str(i)] = edict
         # turn to string and replace ' with " for proper json formatting

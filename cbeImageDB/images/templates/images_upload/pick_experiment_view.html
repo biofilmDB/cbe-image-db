@@ -63,7 +63,8 @@ function load_exp_info(exp) {
 	var ul = document.getElementById("metadata")
 	ul.innerHTML = "";  // clear what is already there
 	var b;
-	for (var i=0; i < keys.length; i++) {
+	// subtract one, because last position is the url fragment
+	for (var i=0; i < keys.length-1; i++) {
 		// create an li to hold piece of metadata
 		var li = document.createElement('li');
 		// TODO: Can the key be bold?
@@ -73,6 +74,14 @@ function load_exp_info(exp) {
 		li.textContent = keys[i] + exp[keys[i]];
 		fragment.appendChild(li);
 	}
+	// make the url fragment
+	var li = document.createElement('li')
+	var a = document.createElement('a')
+	var aText = document.createTextNode(keys[keys.length-1])
+	a.setAttribute('href', exp[keys[keys.length-1]])
+	a.appendChild(aText)
+	li.appendChild(a)
+	fragment.appendChild(li)
 	ul.appendChild(fragment);
 }
 </script>
