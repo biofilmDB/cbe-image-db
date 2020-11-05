@@ -8,6 +8,8 @@ from django.template.loader import render_to_string
 from django.db import transaction
 from decouple import config
 from django.http import JsonResponse
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 # Render image so users can't return to the page if the release
@@ -43,6 +45,11 @@ class PickExperimentView(TemplateNames, genViews.TemplateView):
         # turn to string and replace ' with " for proper json formatting
         context['experiments'] = str(exps_dict).replace("'", '"')
         return context
+    
+    def post(self, request, *args, **kwargs):
+        pk = request.POST['names']
+        return HttpResponseRedirect(reverse('images:upload_image_to_experiment',
+                                            args=(int(pk),)))
 
 
 class UploadImageView(TemplateNames, MultiFormView):
