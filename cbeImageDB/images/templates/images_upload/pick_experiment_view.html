@@ -17,7 +17,9 @@
 	</select>
 	<p><input type="submit" value="Upload to Experiment" /></p>
 </form>
-<p><input type="submit" value="Create New Experiment" /></p>
+<form action="{% url "images:upload" %}">
+	<p><input type="submit" value="Create New Experiment" /></p>
+</form>
 </div>
 
 <div class="column">
