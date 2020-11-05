@@ -7,7 +7,9 @@
 <div class="row">
 <div class="column" align="center">
 <h2>Experiment List</h2>
-<form action="" method="post" id="selectForm" class="selectForm">
+<form action="" method="post" id="selectForm" class="selectForm"
+	enctype="multipart/form-data">
+	{% csrf_token %}
 	<select name="names" size="10" autofocus>
 	  {% for name in names %}
 		<option value="{{ forloop.counter }}"> {{ name }} </option>
