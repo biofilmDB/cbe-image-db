@@ -93,22 +93,24 @@
         <p align="center"> If you have comments or concerns please contact
             {% get_developer_name %} at <a href='mailto:{% get_developer_email %}
             ?Subject=CBE Image DB Feedback'>{% get_developer_email %}</a></p>
-    </div>
-    
-    <div class="topnav">
-        {% if user.is_superuser %}
-            <a class="navbar-brand" href="/admin/">Admin</a>
-        {% endif %} 
-        <a class="navbar-brand" href="{% url 'about' %}">About</a>
-        <a class="navbar-brand" href="{% url 'images:pick_experiment' %}">Upload Image</a>
-        <a class="navbar-brand" href="{% url 'images:attribute_search' %}">Search Attributes</a>
-        <a class="navbar-brand" href={% url 'images:general_search' %}>Search General</a>
-    <a class="navbar-brand" href={% url 'images:experiment_search' %}> Search Experiments </a>
-    </div>
-</header>
-{# The Document Body #}
-<div id="template-content", class="template-content-class">
-    {% block content %}
+            <p align="center"> If you would like to leave feedback, click 
+            <a href='https://forms.gle/NjBDfpuRMh5w6L198'><b>here</b></a></p>
+        </div>
+        
+        <div class="topnav">
+            {% if user.is_superuser %}
+                <a class="navbar-brand" href="/admin/">Admin</a>
+            {% endif %} 
+            <a class="navbar-brand" href="{% url 'about' %}">About</a>
+            <a class="navbar-brand" href="{% url 'images:pick_experiment' %}">Upload Image</a>
+            <a class="navbar-brand" href="{% url 'images:attribute_search' %}">Search Attributes</a>
+            <a class="navbar-brand" href={% url 'images:general_search' %}>Search General</a>
+	    <a class="navbar-brand" href={% url 'images:experiment_search' %}> Search Experiments </a>
+        </div>
+    </header>
+    {# The Document Body #}
+    <div id="template-content", class="template-content-class">
+        {% block content %}
             if you see this, something is wrong!
         {% endblock content %}
     </div>
