@@ -24,7 +24,7 @@
         <div>
             {% csrf_token %}
             <h3> Experiment Specific Information </h3>
-            <p id='username_update'></p>
+            <p id='exp_name_update'></p>
             {{ forms.experiment_form|crispy }}
             <h3> Image Specific Information </h3>
             {{ forms.image_form|crispy }}
@@ -47,8 +47,9 @@
 {# This script is to tell the user if their username is taken or not #}
 <script type="text/javascript">
     $("#id_name").change(function() {
-        var username = document.getElementById('id_name').value;
-        document.getElementById("username_update").innerHTML = username;
+        // get the experiment name the user typed in
+        var name = document.getElementById('id_name').value;
+        document.getElementById("exp_name_update").innerHTML = name;
     });
 </script>
 {% endblock %}
