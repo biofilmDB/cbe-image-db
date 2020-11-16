@@ -86,7 +86,9 @@ class UploadImageView(TemplateNames, MultiFormView):
         
         # NOTE: This is entered because the experiment name is a pain
         exp = list(models.Experiment.objects.all().order_by('name'))
-        context['experiment_names'] = ', '.join([e.name for e in exp])
+        # make a dictionary of experiment names so they can be read into 
+        # javascript
+        context['experiment_names'] = str({'names': [e.name for e in exp]}).replace("'", '"')
 
         return context
 
