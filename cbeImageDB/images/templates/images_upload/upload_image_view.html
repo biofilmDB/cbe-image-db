@@ -24,7 +24,6 @@
         <div>
             {% csrf_token %}
             <h3> Experiment Specific Information </h3>
-            <p id='exp_name_update'></p>
             {{ forms.experiment_form|crispy }}
             <h3> Image Specific Information </h3>
             {{ forms.image_form|crispy }}
@@ -57,20 +56,22 @@
         // check if experiment name user typed in is taken
         var taken = false;
         for (var i = 0; i < allExpNames.length-1; i++){
-
+            // compare user name to existing names
             if (name.toLowerCase() == allExpNames[i].toLowerCase()){
                 taken = true;
             }
         }
+        // check if name was taken and give proper message
+        // hint_id_name is the help_text portion of the input field
         var text = 'error';
         if (taken == true) {
             text = name.concat(" is taken. Please type a different name.");
-            document.getElementById("exp_name_update").style.color = '#ff0000';
+            document.getElementById("hint_id_name").style.color = '#ff0000';
         } else {
             text = name.concat(" is not taken. You are good to go.");
-            document.getElementById("exp_name_update").style.color = '#009933';
+            document.getElementById("hint_id_name").style.color = '#009933';
         }
-        document.getElementById("exp_name_update").innerHTML = text;
+        document.getElementById("hint_id_name").innerHTML = text;
 
     });
 </script>
