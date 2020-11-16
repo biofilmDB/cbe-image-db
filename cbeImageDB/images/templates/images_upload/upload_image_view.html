@@ -54,7 +54,24 @@
     $("#id_name").change(function() {
         // get the experiment name the user typed in
         var name = document.getElementById('id_name').value;
-        document.getElementById("exp_name_update").innerHTML = allExpNames;
+        // check if experiment name user typed in is taken
+        var taken = false;
+        for (var i = 0; i < allExpNames.length-1; i++){
+
+            if (name.toLowerCase() == allExpNames[i].toLowerCase()){
+                taken = true;
+            }
+        }
+        var text = 'error';
+        if (taken == true) {
+            text = name.concat(" is taken. Please type a different name.");
+            document.getElementById("exp_name_update").style.color = '#ff0000';
+        } else {
+            text = name.concat(" is not taken. You are good to go.");
+            document.getElementById("exp_name_update").style.color = '#009933';
+        }
+        document.getElementById("exp_name_update").innerHTML = text;
+
     });
 </script>
 {% endblock %}
