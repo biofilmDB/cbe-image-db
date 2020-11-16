@@ -46,10 +46,15 @@
 
 {# This script is to tell the user if their username is taken or not #}
 <script type="text/javascript">
+    // get a list of experiment names
+    var allExpNamesStr = unescape('{{experiment_names|safe|escapejs}}');
+    var allExpNamesJson = JSON.parse(allExpNamesStr);
+    var allExpNames = allExpNamesJson.names;
+
     $("#id_name").change(function() {
         // get the experiment name the user typed in
         var name = document.getElementById('id_name').value;
-        document.getElementById("exp_name_update").innerHTML = name;
+        document.getElementById("exp_name_update").innerHTML = allExpNames;
     });
 </script>
 {% endblock %}
