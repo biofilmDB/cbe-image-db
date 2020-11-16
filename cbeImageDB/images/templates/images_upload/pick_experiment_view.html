@@ -28,7 +28,9 @@
 <ul id="metadata"></ul>
 </div>
 </div>
+{% endblock %}
 
+{% block javascript %}
 <script type="text/javascript">
 // get the experiment information from json object
 var json_string = unescape('{{ experiments|safe|escapejs}}');
