@@ -34,9 +34,18 @@
 {% endblock %}
 
 {% block footer %}
-<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
 
 {{ forms.image_form.media }}
 {{ forms.experiment_form.media }}
 {% endblock %}
 
+
+{% block javascript %}
+{# This script one is for the multi forms portion #}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{# This script is to tell the user if their username is taken or not #}
+<script>
+    
+</script>
+{% endblock %}
