@@ -49,7 +49,7 @@ class PickExperimentView(TemplateNames, genViews.TemplateView):
         # turn to string and replace ' with " for proper json formatting
         context['experiments'] = str(exps_dict).replace("'", '"')
         return context
-    
+
     def post(self, request, *args, **kwargs):
         pk = request.POST['names']
         return HttpResponseRedirect(reverse('images:upload_image_to_experiment',
@@ -83,12 +83,6 @@ class UploadImageView(TemplateNames, MultiFormView):
         context = super().get_context_data(**kwargs)
         context['support_name'] = config('SUPPORT_NAME')
         context['support_email'] = config('SUPPORT_EMAIL')
-        
-        # NOTE: This is entered because the experiment name is a pain
-        exp = list(models.Experiment.objects.all().order_by('name'))
-        # make a dictionary of experiment names so they can be read into 
-        # javascript
-        context['experiment_names'] = str({'names': [e.name for e in exp]}).replace("'", '"')
 
         return context
 

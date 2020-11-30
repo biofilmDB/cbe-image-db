@@ -61,6 +61,9 @@
         if (taken == true) {
             text = name.concat(" is taken. Please type a different name.");
             document.getElementById("hint_id_name").style.color = '#ff0000';
+        } else if (name == '') { 
+            text = "Please enter an experiment name.";
+            document.getElementById("hint_id_name").style.color = '#00138E';
         } else {
             text = name.concat(" is not taken. You are good to go.");
             document.getElementById("hint_id_name").style.color = '#009933';
