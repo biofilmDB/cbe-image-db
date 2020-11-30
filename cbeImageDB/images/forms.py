@@ -1,6 +1,6 @@
 from django import forms
 from .models import Image, Lab, Imager, Microscope, ObjectiveMedium, Organism, Experiment
-from .models import Project, GrowthSubstratum, Vessel
+from .models import Project, GrowthSubstratum, Vessel, MicroscopeSettings
 from images import help_texts as ht
 from dal import autocomplete
 import datetime
@@ -79,14 +79,27 @@ class UploadFileForm(forms.Form):
     image = forms.ImageField(widget=forms.ClearableFileInput(
         attrs={'multiple': True}), required=True, label="Image(s)")
     date_taken = forms.DateField(widget=widgets['date_taken'], 
-                                 initial=datetime.date.today)
+        initial=datetime.date.today, label=labels['date_taken'])
     release_date = forms.DateField(widget=widgets['release_date'],
-                                   initial=datetime.date.today)
+        initial=datetime.date.today, label=labels['release_date'])
+    imager = forms.ModelChoiceField(queryset=Imager.objects.all(), 
+        widget=widgets['imager'], label=labels['imager'])
+    microscope_setting = forms.ModelChoiceField(label=labels['microscope_setting'], 
+        widget=widgets['microscope_setting'],
+        queryset=MicroscopeSettings.objects.all())
+    brief_description = forms.CharField(max_length=1000, 
+        help_text=help_texts['brief_description'],
+        label=labels['brief_description'])
+    path_to_raw_data = forms.CharField(max_length=500,
+        help_text=help_texts['path_to_raw_data'],
+        label=labels['path_to_raw_data'])
+
 
     field_order = ['image', 'date_taken', 'release_date', 'imager', 
                    'microscope_setting', 'brief_description', 
                    'path_to_raw_data']
-    
+   
+
 class ExperimentSearchForm(forms.Form):
     experiment_name = forms.CharField()
 
