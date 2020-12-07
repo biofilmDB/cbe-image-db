@@ -86,7 +86,7 @@ class UploadFileForm(forms.Form):
         initial=datetime.date.today, label=labels['release_date'])
     imager = forms.ModelChoiceField(queryset=Imager.objects.all(), 
         widget=widgets['imager'], label=labels['imager'])
-    microscope_setting = forms.ModelChoiceField(label=labels['microscope_setting'], 
+    microscope_settings = forms.ModelChoiceField(label=labels['microscope_setting'], 
         widget=widgets['microscope_setting'],
         queryset=MicroscopeSettings.objects.all())
     brief_description = forms.CharField(max_length=1000, 
@@ -98,7 +98,7 @@ class UploadFileForm(forms.Form):
 
 
     field_order = ['image', 'date_taken', 'release_date', 'imager', 
-                   'microscope_setting', 'brief_description', 
+                   'microscope_settings', 'brief_description', 
                    'path_to_raw_data']
   
     # TODO: Is it better to send in the form or to get it from self?
@@ -106,18 +106,41 @@ class UploadFileForm(forms.Form):
         # validate and clean the form
         self.is_valid()
         data = self.cleaned_data
+        # get the foreign keys
+        exp = Experiment.objects.get(pk=experiment_pk)
+        #imager = Imager.objects.get(pk=data['imager'])
+        #ms = MicroscopeSettings.objects.get(pk=data['microscope_settings'])
         
-        # for each image
         images = []
-        # for each TemporaryUploadedFile
+        # for each TemporaryUploadedFile (the image)
         for tuf in files:
             # assign the attributes to it and save the model
             name = tuf.name
             path = default_storage.save(name,  ContentFile(tuf.read()))
             images.append(path)
-        return '<h1>' + ', '.join(images) + '</h1>'
-        return '<h1>' + ', '.join(data.keys()) + '</h1>'
+            image = Image(experiment=exp, imager=data['imager'],
+                          microscope_setting=data['microscope_settings'],
+                          date_taken=data['date_taken'],
+                          release_date=data['release_date'],
+                          brief_description=data['brief_description'])
+            # if path_to_raw_data exists add it, otherwise don't
+            # this should be a string and if it is empty, it will be false
+            if data['path_to_raw_data']:
+               image.path_to_raw_data = data['path_to_raw_data'] 
+            
+            # save the image 
+            image.document.save(name=name, content=tuf)
+            image.medium_thumb.save(name=image.document.name,
+                                    content=image.document)
+            image.large_thumb.save(name=image.document.name,
+                                   content=image.document)
+            
+            # save the model
+            image.save()
+            images.append(image)
 
+        return images
+        
 
 class ExperimentSearchForm(forms.Form):
     experiment_name = forms.CharField()
