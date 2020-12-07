@@ -90,7 +90,7 @@ class UploadFileForm(forms.Form):
     brief_description = forms.CharField(max_length=1000, 
         help_text=help_texts['brief_description'],
         label=labels['brief_description'])
-    path_to_raw_data = forms.CharField(max_length=500,
+    path_to_raw_data = forms.CharField(max_length=500, required=False,
         help_text=help_texts['path_to_raw_data'],
         label=labels['path_to_raw_data'])
 
@@ -98,7 +98,14 @@ class UploadFileForm(forms.Form):
     field_order = ['image', 'date_taken', 'release_date', 'imager', 
                    'microscope_setting', 'brief_description', 
                    'path_to_raw_data']
-   
+  
+    # TODO: Is it better to send in the form or to get it from self?
+    def make_image_models(self, form, experiment_pk):
+        # for each image
+    
+        # assign the attributes to it and save the model
+        pass
+
 
 class ExperimentSearchForm(forms.Form):
     experiment_name = forms.CharField()
