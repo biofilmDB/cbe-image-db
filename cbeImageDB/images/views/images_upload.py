@@ -66,16 +66,20 @@ class UploadImageView(TemplateNames, MultiFormView):
     }
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        forms = self.form_classes(request.POST)
+        #form = self.form_class(request.POST)
         files = request.FILES.getlist('image')
-        images = form.make_image_models(self.kwargs['pk'], files)
+        import pdb; pdb.set_trace()
+        #images = form.make_image_models(self.kwargs['pk'], files)
 
-        experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
+        rendered = 'hahaha'
+        #experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
         # TODO: Add other images
-        rendered = render_upload_success(self, images[0], experiment)
+        #rendered = render_upload_success(self, images[0], experiment)
         return HttpResponse(rendered)
 
 
+    '''
     def forms_valid(self, forms):
         with transaction.atomic():
             experiment = forms['experiment_form'].save()
@@ -90,9 +94,15 @@ class UploadImageView(TemplateNames, MultiFormView):
             # Render the results page
             rendered = render_upload_success(self, image, experiment)
         return HttpResponse(rendered)
+    '''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # make a dictionary of experiment names so they can be read into
+        # javascript
+        exp = list(models.Experiment.objects.all().order_by('name'))
+        context['experiment_names'] = str({'names': [e.name for e in exp]}).replace("'", '"')
+
         context['support_name'] = config('SUPPORT_NAME')
         context['support_email'] = config('SUPPORT_EMAIL')
 
