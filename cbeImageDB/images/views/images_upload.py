@@ -96,8 +96,9 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        text = form.make_image_models(self.kwargs['pk'])
-
+        files = request.FILES.getlist('image')
+        text = '<h1> please work!!!! </h1>'
+        text = form.make_image_models(self.kwargs['pk'], files)
 
         return HttpResponse(text)
 

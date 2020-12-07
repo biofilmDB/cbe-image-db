@@ -100,13 +100,17 @@ class UploadFileForm(forms.Form):
                    'path_to_raw_data']
   
     # TODO: Is it better to send in the form or to get it from self?
-    def make_image_models(self, experiment_pk):
+    def make_image_models(self, experiment_pk, files):
+        # validate and clean the form
         self.is_valid()
         data = self.cleaned_data
-        # for each image
         
-        # assign the attributes to it and save the model
-        return '<h1>' + data['brief_description'] + '</h1>'
+        # for each image
+        #files = data['image']
+        #for f in files:
+        #    # assign the attributes to it and save the model
+       
+        return '<h1>' + ', '.join(data.keys()) + '</h1>'
 
 
 class ExperimentSearchForm(forms.Form):
