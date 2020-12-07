@@ -116,8 +116,7 @@ class UploadFileForm(forms.Form):
         for tuf in files:
             # assign the attributes to it and save the model
             name = tuf.name
-            path = default_storage.save(name,  ContentFile(tuf.read()))
-            images.append(path)
+            #path = default_storage.save(name,  ContentFile(tuf.read()))
             image = Image(experiment=exp, imager=data['imager'],
                           microscope_setting=data['microscope_settings'],
                           date_taken=data['date_taken'],
@@ -138,7 +137,7 @@ class UploadFileForm(forms.Form):
             # save the model
             image.save()
             images.append(image)
-
+        # return a list of the images models that were added
         return images
         
 
