@@ -4,6 +4,8 @@ from .models import Project, GrowthSubstratum, Vessel, MicroscopeSettings
 from images import help_texts as ht
 from dal import autocomplete
 import datetime
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 
 def popover_html2(label, content):
@@ -106,10 +108,14 @@ class UploadFileForm(forms.Form):
         data = self.cleaned_data
         
         # for each image
-        #files = data['image']
-        #for f in files:
-        #    # assign the attributes to it and save the model
-       
+        images = []
+        # for each TemporaryUploadedFile
+        for tuf in files:
+            # assign the attributes to it and save the model
+            name = tuf.name
+            path = default_storage.save(name,  ContentFile(tuf.read()))
+            images.append(path)
+        return '<h1>' + ', '.join(images) + '</h1>'
         return '<h1>' + ', '.join(data.keys()) + '</h1>'
 
 
