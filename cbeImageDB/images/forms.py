@@ -6,6 +6,8 @@ from dal import autocomplete
 import datetime
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.db import transaction
+
 
 
 def popover_html2(label, content):
@@ -113,29 +115,30 @@ class UploadFileForm(forms.Form):
         
         images = []
         # for each TemporaryUploadedFile (the image)
-        for tuf in files:
-            # assign the attributes to it and save the model
-            name = tuf.name
-            #path = default_storage.save(name,  ContentFile(tuf.read()))
-            image = Image(experiment=exp, imager=data['imager'],
-                          microscope_setting=data['microscope_settings'],
-                          date_taken=data['date_taken'],
-                          release_date=data['release_date'],
-                          brief_description=data['brief_description'])
-            # if path_to_raw_data exists add it, otherwise don't
-            # this should be a string and if it is empty, it will be false
-            if data['path_to_raw_data']:
-               image.path_to_raw_data = data['path_to_raw_data'] 
-            
-            # save the image 
-            image.document.save(name=name, content=tuf)
-            image.medium_thumb.save(name=image.document.name,
-                                    content=image.document)
-            image.large_thumb.save(name=image.document.name,
-                                   content=image.document)
-            
-            # save the model
-            image.save()
+        with transaction.atomic():
+            for tuf in files:
+                # assign the attributes to it and save the model
+                name = tuf.name
+                #path = default_storage.save(name,  ContentFile(tuf.read()))
+                image = Image(experiment=exp, imager=data['imager'],
+                              microscope_setting=data['microscope_settings'],
+                              date_taken=data['date_taken'],
+                              release_date=data['release_date'],
+                              brief_description=data['brief_description'])
+                # if path_to_raw_data exists add it, otherwise don't
+                # this should be a string and if it is empty, it will be false
+                if data['path_to_raw_data']:
+                   image.path_to_raw_data = data['path_to_raw_data'] 
+                
+                # save the image 
+                image.document.save(name=name, content=tuf)
+                image.medium_thumb.save(name=image.document.name,
+                                        content=image.document)
+                image.large_thumb.save(name=image.document.name,
+                                       content=image.document)
+                
+                # save the model
+                image.save()
             images.append(image)
         # return a list of the images models that were added
         return images
