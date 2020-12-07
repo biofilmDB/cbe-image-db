@@ -1,6 +1,7 @@
 from images import forms, models
 from django.http import HttpResponse  # , Redirect
 import django.views.generic as genViews
+from django.views.generic.edit import FormView
 from template_names import TemplateNames
 from images import search_utils as su
 from multi_form_view import MultiFormView
@@ -88,12 +89,22 @@ class UploadImageView(TemplateNames, MultiFormView):
 
 
 class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
-                                  genViews.CreateView):
+                                  FormView):
     model = models.Experiment
     form_class = forms.UploadFileForm
     # success_url = reverse_lazy('images:upload')
 
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        text = form.make_image_models(self.kwargs['pk'])
+
+
+        return HttpResponse(text)
+
+
+    '''
     def form_valid(self, form):
+        text = form.make_image_models(form, self.kwargs['pk'])
         image = form.save(commit=False)
         image.experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
         image.medium_thumb.save(name=image.document.name,
@@ -106,6 +117,8 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
         experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
         rendered = render_upload_success(self, image, experiment)
         return HttpResponse(rendered)
+        returnHttpResponse(text)
+        '''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
