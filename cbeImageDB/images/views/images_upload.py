@@ -100,26 +100,9 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
         images = form.make_image_models(self.kwargs['pk'], files)
 
         experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
+        # TODO: Add other images
         rendered = render_upload_success(self, images[0], experiment)
         return HttpResponse(rendered)
-
-    '''
-    def form_valid(self, form):
-        text = form.make_image_models(form, self.kwargs['pk'])
-        image = form.save(commit=False)
-        image.experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
-        image.medium_thumb.save(name=image.document.name,
-                                content=image.document)
-        image.large_thumb.save(name=image.document.name,
-                               content=image.document)
-        image.save()
-
-        # Render the results page
-        experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
-        rendered = render_upload_success(self, image, experiment)
-        return HttpResponse(rendered)
-        returnHttpResponse(text)
-        '''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
