@@ -156,6 +156,11 @@ class Image(models.Model):
 
     def __str__(self):
         return str(self.document.name)
+    
+    def save(self, *args, **kwargs):
+        # TODO: Put thumb saving logic here so it's unform and easier
+        #img = self.document
+        super().save(*args, **kwargs)  # Call the "real" save() method.
 
 
 @receiver(models.signals.post_delete, sender=Image)
