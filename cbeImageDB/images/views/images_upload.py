@@ -65,6 +65,17 @@ class UploadImageView(TemplateNames, MultiFormView):
         'experiment_form': forms.CreateExperimentForm,
     }
 
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        files = request.FILES.getlist('image')
+        images = form.make_image_models(self.kwargs['pk'], files)
+
+        experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
+        # TODO: Add other images
+        rendered = render_upload_success(self, images[0], experiment)
+        return HttpResponse(rendered)
+
+
     def forms_valid(self, forms):
         with transaction.atomic():
             experiment = forms['experiment_form'].save()
@@ -98,6 +109,9 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
         form = self.form_class(request.POST)
         files = request.FILES.getlist('image')
         images = form.make_image_models(self.kwargs['pk'], files)
+        if isinstance(images, bool):
+            # TODO: DO SOMETHING WITH THIS
+            return HttpResponse('<h1> NOTHING uploaded </h1>')
 
         experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
         # TODO: Add other images
