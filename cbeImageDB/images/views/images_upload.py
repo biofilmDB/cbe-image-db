@@ -97,11 +97,11 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         files = request.FILES.getlist('image')
-        text = '<h1> please work!!!! </h1>'
-        text = form.make_image_models(self.kwargs['pk'], files)
+        images = form.make_image_models(self.kwargs['pk'], files)
 
-        return HttpResponse(text)
-
+        experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
+        rendered = render_upload_success(self, images[0], experiment)
+        return HttpResponse(rendered)
 
     '''
     def form_valid(self, form):
