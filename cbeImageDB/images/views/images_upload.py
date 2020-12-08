@@ -100,15 +100,15 @@ class UploadImageView(TemplateNames, MultiFormView):
     '''
     def forms_valid(self, forms):
         files = self.request.FILES.getlist('image')
-        #try:
-        with transaction.atomic():
-            #experiment = forms['experiment_form'].save()
-            #experiment.save()
-            image = forms['image_form']
-            print(image.make_image_models(8, files))
-        #except Exception as e:
-        #    print(e)
-        #    return HttpResponse('ERROR {}'.format(e))
+        try:
+            with transaction.atomic():
+                #experiment = forms['experiment_form'].save()
+                #experiment.save()
+                image = forms['image_form']
+                print(image.make_image_models(8, files))
+        except Exception as e:
+            print(e)
+            return HttpResponse('ERROR {}'.format(e))
         rendered = 'hhh'
         return HttpResponse(rendered)
 
@@ -151,10 +151,11 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         files = request.FILES.getlist('image')
-        images = form.make_image_models(self.kwargs['pk'], files)
-        if isinstance(images, bool):
-            # TODO: DO SOMETHING WITH THIS
-            return HttpResponse('<h1> NOTHING uploaded </h1>')
+        try:
+            images = form.make_image_models(self.kwargs['pk'], files)
+        except Exception as e:
+            print(e)
+            return HttpResponse('<h1>NOTHING uploaded error: {}</h1>'.format(e))
 
         experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
         # TODO: Add other images
