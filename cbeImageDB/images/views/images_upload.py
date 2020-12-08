@@ -65,69 +65,20 @@ class UploadImageView(TemplateNames, MultiFormView):
         'experiment_form': forms.CreateExperimentForm,
     }
 
-    '''
-    def post(self, request, *args, **kwargs):
-        #form = self.form_class(request.POST)
-        # get all the image files
-        files = request.FILES.getlist('image')
-        # get all the fields in the image form
-        image_fields = self.form_classes['image_form'].declared_fields.keys()
-        #images = form.make_image_models(self.kwargs['pk'], files)
-
-        # get the forms
-        forms = self.get_forms()
-        experiment_form = forms['experiment_form']
-        image_form = forms['image_form']
-        try:
-            with transaction.atomic():
-                experiment_form.is_valid()
-                import pdb; pdb.set_trace()
-                #experiment = experiment_form.save()
-                images = image_form.make_image_models(experiment.pk, files)
-        except Exception as e:
-            print(e)
-            return HttpResponse('ERROR')
-
-
-
-        rendered = 'hahaha'
-        #rendered = self.form_classes['image_form'].declared_fields.keys()
-        #rendered = ', '.join(rendered)
-        #experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
-        # TODO: Add other images
-        #rendered = render_upload_success(self, images[0], experiment)
-        return HttpResponse(rendered)
-    '''
     def forms_valid(self, forms):
+        # TODO: Render an output
         files = self.request.FILES.getlist('image')
         try:
             with transaction.atomic():
-                #experiment = forms['experiment_form'].save()
-                #experiment.save()
+                experiment = forms['experiment_form'].save()
+                experiment.save()
                 image = forms['image_form']
-                print(image.make_image_models(8, files))
+                images = image.make_image_models(experiment.pk, files)
         except Exception as e:
             print(e)
             return HttpResponse('ERROR {}'.format(e))
         rendered = 'hhh'
         return HttpResponse(rendered)
-
-    '''
-    def forms_valid(self, forms):
-        with transaction.atomic():
-            experiment = forms['experiment_form'].save()
-            experiment.save()
-            image = forms['image_form'].save(commit=False)
-            image.experiment = experiment
-            image.medium_thumb.save(name=image.document.name,
-                                    content=image.document)
-            image.large_thumb.save(name=image.document.name,
-                                   content=image.document)
-            image.save()
-            # Render the results page
-            rendered = render_upload_success(self, image, experiment)
-        return HttpResponse(rendered)
-    '''
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
