@@ -99,9 +99,8 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
     form_class = forms.UploadFileForm
     # success_url = reverse_lazy('images:upload')
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        files = request.FILES.getlist('image')
+    def form_valid(self, form):
+        files = self.request.FILES.getlist('image')
         try:
             images = form.make_image_models(self.kwargs['pk'], files)
         except Exception as e:
