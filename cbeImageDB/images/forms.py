@@ -103,15 +103,12 @@ class UploadFileForm(forms.Form):
                    'microscope_settings', 'brief_description', 
                    'path_to_raw_data']
   
-    # TODO: Is it better to send in the form or to get it from self?
     def make_image_models(self, experiment_pk, files):
         # validate and clean the form
         self.is_valid()
         data = self.cleaned_data
         # get the foreign keys
         exp = Experiment.objects.get(pk=experiment_pk)
-        #imager = Imager.objects.get(pk=data['imager'])
-        #ms = MicroscopeSettings.objects.get(pk=data['microscope_settings'])
         
         images = []
         # for each TemporaryUploadedFile (the image)
@@ -126,7 +123,7 @@ class UploadFileForm(forms.Form):
                                   release_date=data['release_date'],
                                   brief_description=data['brief_description'])
                     # if path_to_raw_data exists add it, otherwise don't
-                    # this should be a string and if it is empty, it will be false
+                    # this should be a string and if empty, it will be false
                     if data['path_to_raw_data']:
                        image.path_to_raw_data = data['path_to_raw_data'] 
                     
@@ -142,9 +139,10 @@ class UploadFileForm(forms.Form):
                     images.append(image)
                 # return a list of the images models that were added
                 return images
-        except IntegrityError:
+        
+        except Exception as e:
+            # raise an error if this does not upload
             raise
-            #return False
         
 
 class ExperimentSearchForm(forms.Form):
