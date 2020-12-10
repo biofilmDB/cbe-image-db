@@ -144,6 +144,42 @@ class UploadFileForm(forms.Form):
             # raise an error if this does not upload
             raise
         
+class UpdateImageForm(forms.ModelForm):
+
+    class Meta:
+        model = Image
+        fields = ['document', 'date_taken', 'release_date', 'imager',
+                  'microscope_setting', 'brief_description',
+                  'path_to_raw_data']
+
+        labels = {
+            'document': 'Image File',
+            'date_taken': 'Date Image Taken',
+            'release_date': popover_html("Release Date",
+                                         ht.image_release_date),
+            'imager': popover_html('Imager', ht.image_imager),
+            'microscope_setting': popover_html('Microscope Settings',
+                                               ht.image_microscope_setting),
+            'brief_description': popover_html('Brief Description',
+                                              ht.image_breif_description),
+            'path_to_raw_data': popover_html('Raw Data Location',
+                                             ht.image_raw_data_location),
+        }
+        help_texts = {
+            'brief_description': '(1000 character max)',
+            'path_to_raw_data': '(500 character max)',
+        }
+
+        widgets = {
+            'imager':
+            autocomplete.ModelSelect2(url='/images/add-imager-autocomplete/'),
+            'microscope_setting':
+            autocomplete.ModelSelect2(url='/images/microscope-setting-autocomplete/'),
+            'date_taken':
+            forms.SelectDateWidget(),
+            'release_date':
+            forms.SelectDateWidget(),
+        }
 
 class ExperimentSearchForm(forms.Form):
     experiment_name = forms.CharField()

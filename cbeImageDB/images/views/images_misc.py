@@ -78,7 +78,7 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
 
 class UpdateImageView(TemplateNames, genViews.UpdateView):
     model = models.Image
-    form_class = forms.UploadFileForm
+    form_class = forms.UpdateImageForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
