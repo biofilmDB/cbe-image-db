@@ -18,6 +18,9 @@ urlpatterns = [
          name='image_details'),
     path('update-image/<int:pk>/', views.UpdateImageView.as_view(),
          name='update_image'),
+    path('edit-uploaded-images/<list_image_pks>', 
+         views.MultipleImageUpdateView.as_view(), 
+         name='update_uploaded_images'),
 
     # Searching and results urls
     path('general-search/', views.GeneralSearchView.as_view(),

@@ -97,3 +97,12 @@ class UpdateImageView(TemplateNames, genViews.UpdateView):
         image.save()
         return HttpResponseRedirect(reverse('images:image_details',
                                             args=(image.id,)))
+
+
+class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        image_pks = self.request.POST.getlist('list_image_pks')
+        return context
+     
+    
