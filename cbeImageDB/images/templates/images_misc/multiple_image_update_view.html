@@ -8,8 +8,18 @@
 24 hours using this link.
 Please save this url if you wish to edit your images in the future.</p>
 
+{% for exp in experiments %}
+    <h2> {{ exp.name }} </h2>
     <ul>
-        {% for image in image_info %}
+    {% for info in exp.experiment_details %}
+        <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>        
+    {% endfor %}
+    <li> <a href="{% url 'images:experiment_details' experiment=exp.pk %}">
+    View experiment details page</a>
+    </ul>
+    <h3> Images </h3>
+    <ul>
+        {% for image in exp.image_info %}
             <a href="{% url 'images:image_details' pk=image.pk %}">
             <img src="{{ image.thumb }}" alt="Cannot show image, an error occured" ></a>
             {% for info in image.details %} 
@@ -21,6 +31,5 @@ Please save this url if you wish to edit your images in the future.</p>
             </br>
         {% endfor %}
     </u>
-
-
+{% endfor %}
 {% endblock %}

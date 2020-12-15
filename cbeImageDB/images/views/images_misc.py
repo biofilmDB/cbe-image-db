@@ -113,7 +113,8 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
             except Exception as e:
                 print(e)
                 errors.append(ips)
-
+        
+        by_experiment = {}
         info = []
         for pk in image_pks:
             # get image or error
@@ -132,11 +133,24 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
                         'release date', 'raw data path']
             idict = {'details': su.get_html_image_list(img, features), 'pk': pk, 
                      'thumb': img.medium_thumb.url}
-            info.append(idict)
+            
+            # sort it by experiment in case more than one appear here
+            epk = img.experiment.pk
+            if epk not in by_experiment.keys():
+                by_experiment[epk] = {'pk': epk, 'image_info': [],
+                    'name': img.experiment.name, 'experiment_details': 
+                    su.get_html_experiment_list(img.experiment)}
+            
+            else:
+                by_experiment[epk]['image_info'].append(idict)
+        
+        list_exps = []
+        for key in by_experiment.keys():
+            list_exps.append(by_experiment[key])
 
         # make context variable
-        context['image_info'] = info
-
+        
+        context['experiments'] = list_exps
         return context
      
     
