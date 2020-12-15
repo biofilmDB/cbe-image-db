@@ -102,15 +102,41 @@ class UpdateImageView(TemplateNames, genViews.UpdateView):
 class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        image_pks = self.kwargs['list_image_pks']
+        errors = []
+        image_pks_str = self.kwargs['list_image_pks']
+        # convert string into list of numbers
+        image_pks_str = image_pks_str.replace('[', '').replace(']', '')
+        image_pks = []
+        for ips in image_pks_str.split(', '):
+            try:
+                image_pks.append(int(ips))
+            except Exception as e:
+                print(e)
+                errors.append(ips)
+
+        info = []
         for pk in image_pks:
             # get image or error
+            img = models.Image.objects.filter(id=pk)
+            # if img is empty list append pk onto errors
+            if len(img) == 0:
+                errors.append(pk)
+                continue
+            else:
+                # image exists, take first and only one in query 
+                img = img[0]
 
             # get display information for image
+            features = ['imager', 'description', 'microscope setting',
+                        'file name', 'date taken', 'date uploaded', 
+                        'release date', 'raw data path']
+            idict = {'details': su.get_html_image_list(img, features), 'pk': pk, 
+                     'thumb': img.medium_thumb.url}
+            info.append(idict)
 
-            # add neccessary dates
+        # make context variable
+        context['image_info'] = info
 
-            pass
         return context
      
     

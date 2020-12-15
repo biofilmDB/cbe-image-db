@@ -8,6 +8,19 @@
 24 hours using this link.
 Please save this url if you wish to edit your images in the future.</p>
 
+    <ul>
+        {% for image in image_info %}
+            <a href="{% url 'images:image_details' pk=image.pk %}">
+            <img src="{{ image.thumb }}" alt="Cannot show image, an error occured" ></a>
+            {% for info in image.details %} 
+                <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
+            {% endfor %}
+            </br>
+            </br>
+            </br>
+            </br>
+        {% endfor %}
+    </u>
 
 
 {% endblock %}
