@@ -68,6 +68,7 @@ class UploadImageView(TemplateNames, MultiFormView):
     def forms_valid(self, forms):
         # TODO: Render an output
         files = self.request.FILES.getlist('image')
+        images = []
         try:
             with transaction.atomic():
                 experiment = forms['experiment_form'].save()
@@ -77,8 +78,11 @@ class UploadImageView(TemplateNames, MultiFormView):
         except Exception as e:
             print(e)
             return HttpResponse('ERROR {}'.format(e))
-        rendered = 'hhh'
-        return HttpResponse(rendered)
+        pks = []
+        for image in images:
+            pks.append(image.pk)
+        return HttpResponseRedirect(reverse('images:update_uploaded_images',
+                                            args=(pks,)))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
