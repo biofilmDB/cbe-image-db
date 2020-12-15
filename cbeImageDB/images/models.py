@@ -1,6 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
-from datetime import date
+from datetime import date, timedelta
 from easy_thumbnails.fields import ThumbnailerImageField
 from django.urls import reverse
 
@@ -157,6 +157,15 @@ class Image(models.Model):
     def __str__(self):
         return str(self.document.name)
     
+    @property
+    def is_editable(self):
+        # Get today's date
+        today = date.today()
+        # get the date for tomorrow
+        tomorrow = today + timedelta(days=1)
+        # less than or equal to, so it'll be editable tomorrow as well
+        return self.date_uploaded <= tomorrow
+
     #def save(self, *args, **kwargs):
     #    # TODO: Put thumb saving logic here so it's unform and easier
     #    self.medium_thumb.save(name=self.document.name,
