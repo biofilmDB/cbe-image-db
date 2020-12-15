@@ -102,7 +102,15 @@ class UpdateImageView(TemplateNames, genViews.UpdateView):
 class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        image_pks = self.request.POST.getlist('list_image_pks')
+        image_pks = self.kwargs['list_image_pks']
+        for pk in image_pks:
+            # get image or error
+
+            # get display information for image
+
+            # add neccessary dates
+
+            pass
         return context
      
     
