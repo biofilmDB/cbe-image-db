@@ -115,7 +115,6 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
                 errors.append(ips)
         
         by_experiment = {}
-        info = []
         for pk in image_pks:
             # get image or error
             img = models.Image.objects.filter(id=pk)
@@ -136,13 +135,14 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
             
             # sort it by experiment in case more than one appear here
             epk = img.experiment.pk
+            # if the experiment doesn't exist, create new information for it
             if epk not in by_experiment.keys():
                 by_experiment[epk] = {'pk': epk, 'image_info': [],
                     'name': img.experiment.name, 'experiment_details': 
                     su.get_html_experiment_list(img.experiment)}
             
-            else:
-                by_experiment[epk]['image_info'].append(idict)
+            # add image info to correct experiment
+            by_experiment[epk]['image_info'].append(idict)
         
         # make variable to store the error images
         context['errors'] = errors
