@@ -144,6 +144,10 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
             else:
                 by_experiment[epk]['image_info'].append(idict)
         
+        # make variable to store the error images
+        context['errors'] = errors
+
+        # convert experiment dict to a list
         list_exps = []
         for key in by_experiment.keys():
             list_exps.append(by_experiment[key])
@@ -151,6 +155,7 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
         # make context variable
         
         context['experiments'] = list_exps
+
         return context
      
     

@@ -8,6 +8,15 @@
 24 hours using this link.
 Please save this url if you wish to edit your images in the future.</p>
 
+{% if errors %}
+<h2> There were errors finding images with the following ids: <h2>
+<ul>
+    {% for error in errors %}
+    <li> {{ error }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 {% for exp in experiments %}
     <h2> {{ exp.name }} </h2>
     <ul>
