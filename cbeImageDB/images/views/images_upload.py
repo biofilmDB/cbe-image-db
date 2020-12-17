@@ -126,7 +126,5 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
         context = super().get_context_data(**kwargs)
         # get the image
         e = kwargs['object']
-        # TODO: Not sure what this is doing. Is it needed?
-        # images = e.image_set.all()
         context['get_experiment_details'] = su.get_html_experiment_list(e)
         return context
