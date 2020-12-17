@@ -168,7 +168,8 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
             if epk not in by_experiment.keys():
                 by_experiment[epk] = {'pk': epk, 'image_info': [],
                     'name': img.experiment.name, 'experiment_details': 
-                    su.get_html_experiment_list(img.experiment)}
+                    su.get_html_experiment_list(img.experiment), 'editable':
+                    img.experiment.is_editable}
             
             # add image info to correct experiment
             by_experiment[epk]['image_info'].append(idict)
