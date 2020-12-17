@@ -23,8 +23,9 @@ Please save this url if you wish to edit your images in the future.</p>
     {% for info in exp.experiment_details %}
         <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>        
     {% endfor %}
-    <li> <a href="{% url 'images:experiment_details' experiment=exp.pk %}">
-    View experiment details page</a>
+    <a href="{% url 'images:experiment_details' experiment=exp.pk %}"
+    class="button">
+    View Experiment Details Page</a>
     </ul>
     <h3> Images </h3>
     <ul>
