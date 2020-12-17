@@ -35,8 +35,15 @@
         <input type="submit" value="Update">
     </form>
 {% else %}
-    <h1> Error </h1>
-    <p> You do not have permission to view this page </p>
+    <h1> Image Not Editable </h1>
+    <p>The allowed time to update or delete this image has passed.
+    The upload date for this image is {{ image.date_uploaded }}.
+    If you need to edit this image, please contanct an admin and have them
+    edit the image with id {{ image.pk }}.
+    Click <a href="{% url 'images:image_details' pk=image.pk %}">here</a> to
+    view the image details.
+    </p>
+
 {% endif %}
 
 {% endblock %}
