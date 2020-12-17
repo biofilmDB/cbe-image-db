@@ -66,7 +66,6 @@ class UploadImageView(TemplateNames, MultiFormView):
     }
 
     def forms_valid(self, forms):
-        # TODO: Render an output
         files = self.request.FILES.getlist('image')
         images = []
         try:
@@ -77,6 +76,8 @@ class UploadImageView(TemplateNames, MultiFormView):
                 images = image.make_image_models(experiment.pk, files)
         except Exception as e:
             print(e)
+            # TODO: Redirect to an error page of some kind
+            # pop up error box and redirect to upload page?
             return HttpResponse('ERROR {}'.format(e))
         pks = []
         for image in images:
@@ -105,16 +106,21 @@ class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
 
     def form_valid(self, form):
         files = self.request.FILES.getlist('image')
+        images = []
         try:
             images = form.make_image_models(self.kwargs['pk'], files)
         except Exception as e:
             print(e)
+            # TODO: Redirect to an error page of some kind
+            # pop up error box and redirect to upload page?
             return HttpResponse('<h1>NOTHING uploaded error: {}</h1>'.format(e))
 
         experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
-        # TODO: Add other images
-        rendered = render_upload_success(self, images[0], experiment)
-        return HttpResponse(rendered)
+        pks = []
+        for image in images:
+            pks.append(image.pk)
+        return HttpResponseRedirect(reverse('images:update_uploaded_images',
+                                            args=(pks,)))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
