@@ -118,11 +118,20 @@ class Experiment(models.Model):
     organism = models.ManyToManyField(Organism, through='ProtectOrganism')
     vessel = models.ForeignKey(Vessel, on_delete=models.PROTECT)
     substratum = models.ForeignKey(GrowthSubstratum, on_delete=models.PROTECT)
-    # TODO: Does this belong here or in image?
-    # brief_description = models.CharField(max_length=1000)
 
     def __str__(self):
         return self.name
+    
+    @property
+    def is_editable(self):
+        # Get today's date
+        today = date.today()
+        # get the date for tomorrow
+        tomorrow = today + timedelta(days=1)
+        yesterday = today - timedelta(days=1)
+        # less than or equal to, so it'll be editable tomorrow as well
+        # include yesterday to put a lower limit on it
+        return yesterday < self.date_created <= tomorrow
 
 
 # TODO: Is cascade correct for experiments?
