@@ -76,6 +76,23 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
         return context
 
 
+class UpdateExperimentView(TemplateNames, genViews.UpdateView):
+    model = models.Experiment
+    form_class = forms.CreateExperimentForm
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        image = models.Image.objects.get(id=self.kwargs['pk'])
+        e = image.experiment
+        context['experiment_data'] = su.get_html_experiment_list(e)
+        return context
+
+    def form_valid(self, form):
+        experiment = form.save()
+        return HttpResponseRedirect(reverse('images:experiment_details',
+                                            args=(experiment.id,)))
+
+
 class UpdateImageView(TemplateNames, genViews.UpdateView):
     model = models.Image
     form_class = forms.UpdateImageForm

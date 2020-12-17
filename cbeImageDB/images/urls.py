@@ -14,6 +14,8 @@ urlpatterns = [
     # Misc views
     path('experiment/<experiment>/', views.ExperimentDetailsView.as_view(),
          name='experiment_details'),
+    path('update-experiment/<int:pk>', views.UpdateExperimentView.as_view(),
+        name='update_experiment'),
     path('image/<int:pk>/', views.ImageDetailsView.as_view(),
          name='image_details'),
     path('update-image/<int:pk>/', views.UpdateImageView.as_view(),
