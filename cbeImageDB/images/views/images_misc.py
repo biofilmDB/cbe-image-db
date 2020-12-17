@@ -131,7 +131,7 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
                         'file name', 'date taken', 'date uploaded', 
                         'release date', 'raw data path']
             idict = {'details': su.get_html_image_list(img, features), 'pk': pk, 
-                     'thumb': img.medium_thumb.url}
+                     'thumb': img.medium_thumb.url, 'editable': img.is_editable}
             
             # sort it by experiment in case more than one appear here
             epk = img.experiment.pk

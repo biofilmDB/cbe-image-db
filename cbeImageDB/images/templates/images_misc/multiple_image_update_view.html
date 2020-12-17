@@ -34,8 +34,14 @@ Please save this url if you wish to edit your images in the future.</p>
             {% for info in image.details %} 
                 <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
             {% endfor %}
-            <a href="{% url 'images:update_image' pk=image.pk %}" 
-                class="button">Edit Image</a>
+            {% if image.editable %}
+                <b>Edit: </b>
+                <a href="{% url 'images:update_image' pk=image.pk %}" 
+                    class="button">Edit Image</a>
+            {% else %}
+                <li> <b>Edit:</b> This image is unable to be edited. Please 
+                contact an admin to edit image with id {{ image.pk }}. </li>
+            {% endif %}
             </br>
             </br>
             </br>
