@@ -3,6 +3,16 @@
 import datetime
 from django.db import migrations, models
 
+# Since the default date is today, this method will make the dates sometime in
+# the past so that existing experiments cannot be updated once the migration
+# is ran
+def backdate_experiments(apps, schema_editor):
+    # Friday the 13th in October during the year 2020...
+    date = datetime.datetime(2020, 10, 13)
+    Experiment = apps.get_model('images', 'Experiment')
+    for exp in Experiment.objects.all():
+        exp.date_created = date
+        exp.save()
 
 class Migration(migrations.Migration):
 
@@ -16,4 +26,5 @@ class Migration(migrations.Migration):
             name='date_created',
             field=models.DateField(default=datetime.date.today, verbose_name='Date created'),
         ),
+        migrations.RunPython(backdate_experiments),
     ]
