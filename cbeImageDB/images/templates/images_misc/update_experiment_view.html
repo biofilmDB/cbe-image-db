@@ -22,13 +22,38 @@
     
     {# All users will see this content if date uploaded correct #}
     <p> You are updating information for the experiment with the id 
-    {{ experiment.id }} and the name {{ experiment.name }}</p>
+    {{ experiment.id }} and the name {{ experiment.name }}.
+    <b>All images under this experiment will be affected if the experimental
+    attributes are changed.</b></p>
     
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
         <input type="submit" value="Update">
     </form>
+
+    <h2> Affected Images </h2>
+    <p><b>NOTE: If you change attributes of this experiment, it will change
+    the values for the following images as well.</b></p>
+    
+    {% for image in get_image_details %}
+      <ul>
+        {% for info in image.details %}
+          <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
+        {% endfor %}
+
+      </br>
+      <a href="{% url 'images:image_details' pk=image.pk %}">
+      <img src="{{ image.thumb }}"
+           alt="An error occured while loading the image" />
+      </a>
+      </ul>
+      </br>
+      </br>
+      
+    {% endfor %}
+  
+
 {% else %}
     <h1> Experiment Not Editable </h1>
     <p>The allowed time to update or delete this image has passed.

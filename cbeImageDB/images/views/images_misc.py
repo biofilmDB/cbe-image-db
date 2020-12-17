@@ -82,9 +82,21 @@ class UpdateExperimentView(TemplateNames, genViews.UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        image = models.Image.objects.get(id=self.kwargs['pk'])
-        e = image.experiment
-        context['experiment_data'] = su.get_html_experiment_list(e)
+        # get the experiment and all images associated with it
+        # NOTE: Not worrying about the release date here, because this page
+        # should only be viewable within 24 hours of an experiment creation for
+        # general users
+        e = get_object_or_404(models.Experiment, pk=self.kwargs['pk'])
+        images = e.image_set.all()
+
+        context['get_image_details'] = []
+        # Make dictionarys for each image
+        for image in images:
+            t = su.get_html_image_dict(image, ['microscope setting', 'imager',
+                                               'date taken', 'date uploaded',
+                                               'release date'])
+            context['get_image_details'].append(t)
+
         return context
 
     def form_valid(self, form):
