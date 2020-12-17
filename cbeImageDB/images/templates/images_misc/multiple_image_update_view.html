@@ -24,7 +24,7 @@ Please save this url if you wish to edit your images in the future.</p>
         <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>        
     {% endfor %}
     <a href="{% url 'images:experiment_details' experiment=exp.pk %}"
-    class="button">
+    class="button", target="_blank">
     View Experiment Details Page</a>
     </ul>
     <h3> Images </h3>
@@ -38,7 +38,7 @@ Please save this url if you wish to edit your images in the future.</p>
             {% if image.editable %}
                 <b>Edit: </b>
                 <a href="{% url 'images:update_image' pk=image.pk %}" 
-                    class="button">Edit Image</a>
+                    class="button", target="_blank">Edit Image</a>
             {% else %}
                 <li> <b>Edit:</b> This image is unable to be edited. Please 
                 contact an admin to edit image with id {{ image.pk }}. </li>
