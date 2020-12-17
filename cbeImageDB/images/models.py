@@ -163,8 +163,10 @@ class Image(models.Model):
         today = date.today()
         # get the date for tomorrow
         tomorrow = today + timedelta(days=1)
+        yesterday = today - timedelta(days=1)
         # less than or equal to, so it'll be editable tomorrow as well
-        return self.date_uploaded <= tomorrow
+        # include yesterday to put a lower limit on it
+        return yesterday < self.date_uploaded <= tomorrow
 
     #def save(self, *args, **kwargs):
     #    # TODO: Put thumb saving logic here so it's unform and easier
