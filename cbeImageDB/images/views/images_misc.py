@@ -191,5 +191,7 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
    
 class DeleteImageView(TemplateNames, genViews.DeleteView):
     model = models.Image
+    
+    # need to use the method because using success_url = blah causes errors
     def get_success_url(self):
         return reverse('images:pick_experiment')
