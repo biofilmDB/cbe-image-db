@@ -188,4 +188,8 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
 
         return context
      
-    
+   
+class DeleteImageView(TemplateNames, genViews.DeleteView):
+    model = models.Image
+    def get_success_url(self):
+        return reverse('images:pick_experiment')
