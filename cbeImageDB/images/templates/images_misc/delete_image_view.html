@@ -11,10 +11,6 @@
     {% for info in get_image_details %}
         <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
     {% endfor %}
-    <li> <a href={% url 'images:experiment_details' experiment=image.experiment.pk %}> Upload/view </a> other images associated with experiment </li>
-    {% if user.is_superuser %}
-        <li> <a href={% url 'images:update_image' pk=image.pk %}> Update image information </a> </li>
-    {% endif %}
 
 </ul>
 </br>
