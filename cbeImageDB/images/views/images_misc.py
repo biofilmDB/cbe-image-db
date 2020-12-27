@@ -195,3 +195,25 @@ class DeleteImageView(TemplateNames, genViews.DeleteView):
     # need to use the method because using success_url = blah causes errors
     def get_success_url(self):
         return reverse('images:pick_experiment')
+
+    def get_object(self):
+        try:
+            img = models.Image.objects.get(pk=self.kwargs['pk'])
+        except models.Image.DoesNotExist:
+            error = "Image with id: {} does not exist.".format(
+                self.kwargs['pk'])
+            raise Http404(error)
+        rd = img.release_date
+        if rd > date.today() and not self.request.user.is_superuser:
+                error = "You do not have permission to view this image due to \
+                         its release date."
+                raise PermissionDenied(error)
+        else:
+            return img
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # get the image
+        image = kwargs['object']
+        context['get_image_details'] = su.get_html_image_list(image)
+        return context
