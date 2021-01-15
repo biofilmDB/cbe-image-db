@@ -218,5 +218,6 @@ class DeleteImageView(TemplateNames, genViews.DeleteView):
         context = super().get_context_data(**kwargs)
         # get the image
         image = kwargs['object']
-        context['get_image_details'] = su.get_html_image_list(image)
+        context['image_details'] = su.image_details_to_html(image,
+            image.large_thumb.url)
         return context
