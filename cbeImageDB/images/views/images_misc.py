@@ -16,7 +16,9 @@ class AboutSite(TemplateNames, genViews.TemplateView):
         context['help_text_project'] = ht.experiment_project
         return context
 
-
+###############################################################################
+# DETAIL VIEWS # DETAIL VIEWS # DETAIL VIEWS # DETAIL VIEWS # DETAIL VIEWS # DET
+###############################################################################
 class ExperimentDetailsView(TemplateNames, genViews.ListView):
     model = models.Image
     context_object_name = 'image_obj_list'
@@ -76,6 +78,9 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
         return context
 
 
+###############################################################################
+# UPDATE VIEWS # UPDATE VIEWS # UPDATE VIEWS # UPDATE VIEWS # UPDATE VIEWS # UPD
+###############################################################################
 class UpdateExperimentView(TemplateNames, genViews.UpdateView):
     model = models.Experiment
     form_class = forms.CreateExperimentForm
@@ -245,6 +250,9 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
         return context
      
    
+###############################################################################
+# DELETE VIEWS # DELETE VIEWS # DELETE VIEWS # DELETE VIEWS # DELETE VIEWS# DELE
+###############################################################################
 class DeleteImageView(TemplateNames, genViews.DeleteView):
     model = models.Image
     
