@@ -37,23 +37,8 @@ attributes are changed.</b></p>
 will change
 the values for the following images as well.</b></p>
 
-{% for image in get_image_details %}
-  <ul>
-    {% for info in image.details %}
-      <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
-    {% endfor %}
-
-  </br>
-  <a href="{% url 'images:image_details' pk=image.pk %}">
-  <img src="{{ image.thumb }}"
-       alt="An error occured while loading the image" />
-  </a>
-  </ul>
-  </br>
-  </br>
-  
-{% endfor %}
-
+<!-- Use html string to get description of images -->
+{{ image_description_html | safe }}
 
 {% endblock %}
 

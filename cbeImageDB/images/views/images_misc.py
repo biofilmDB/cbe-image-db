@@ -121,15 +121,19 @@ class UpdateExperimentView(TemplateNames, genViews.UpdateView):
         # general users
         e = get_object_or_404(models.Experiment, pk=self.kwargs['pk'])
         images = e.image_set.all()
+        
+        # only get information for these features
+        feats = ['microscope setting', 'imager', 'date taken', 'date uploaded',
+                 'release date']
 
-        context['get_image_details'] = []
-        # Make dictionarys for each image
-        for image in images:
-            t = su.get_html_image_dict(image, ['microscope setting', 'imager',
-                                               'date taken', 'date uploaded',
-                                               'release date'])
-            context['get_image_details'].append(t)
-
+        # Get an html string of descriptions for all images
+        image_description_html = ''
+        for img in images:
+            image_description_html += su.image_details_to_html(img, 
+                img.medium_thumb.url, feats)
+            image_description_html += "</br></br></br>"
+        context['image_description_html'] = image_description_html
+        
         return context
 
     def form_valid(self, form):
