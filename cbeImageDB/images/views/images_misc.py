@@ -206,7 +206,7 @@ class DeleteImageView(TemplateNames, genViews.DeleteView):
        
         if not img.is_editable:
                 error = "Image with id {} cannot be deleted because it has \
-                         been over a day since it was uploaded".format(
+                         been over a day since it was uploaded.".format(
                          self.kwargs['pk'])
                 raise PermissionDenied(error)
         else:
