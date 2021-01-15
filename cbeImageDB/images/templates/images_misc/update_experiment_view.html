@@ -3,70 +3,57 @@
 {% block content %}
 {% load crispy_forms_tags %} 
 
-{% if user.is_superuser or experiment.is_editable%}
-    <h1> Update Experiment </h1>
-    {% if user.is_superuser %}
-    <p> <b>You are editing this experiment as an admin.</b>
-    As an admin, you are able to edit any image regardless of the creation date.
-    This experiment was created on {{ experiment.date_created }}, which means 
-    regular users 
-        {% if experiment.is_editable %}
-            will be able to edit it.
-        {% else %}
-            won't be able to edit it.
-        {% endif %}
-    General users can only edit experiments within 24 hours of it being 
-    created. 
-    </p>
+<h1> Update Experiment </h1>
+{% if user.is_superuser %}
+<p> <b>You are editing this experiment as an admin.</b>
+As an admin, you are able to edit any image regardless of the creation date.
+This experiment was created on {{ experiment.date_created }}, which means 
+regular users 
+    {% if experiment.is_editable %}
+        will be able to edit it.
+    {% else %}
+        won't be able to edit it.
     {% endif %}
-    
-    {# All users will see this content if date uploaded correct #}
-    <p> You are updating information for the experiment with the id 
-    {{ experiment.id }} and the name {{ experiment.name }}.
-    <b style="color:red">All images under this experiment will be affected if 
-    the experimental
-    attributes are changed.</b></p>
-    
-    <form method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Update">
-    </form>
-
-    <h2> Affected Images </h2>
-    <p><b>NOTE: If you change attributes of this experiment, it will change
-    the values for the following images as well.</b></p>
-    
-    {% for image in get_image_details %}
-      <ul>
-        {% for info in image.details %}
-          <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
-        {% endfor %}
-
-      </br>
-      <a href="{% url 'images:image_details' pk=image.pk %}">
-      <img src="{{ image.thumb }}"
-           alt="An error occured while loading the image" />
-      </a>
-      </ul>
-      </br>
-      </br>
-      
-    {% endfor %}
-  
-
-{% else %}
-    <h1> Experiment Not Editable </h1>
-    <p>The allowed time to update or delete this image has passed.
-    The creation date for this experiment is {{ experiment.date_created }}.
-    If you need to edit this image, please contact an admin and have them
-    edit the experiment with id {{ experiment.pk }}.
-    Click <a href="{% url 'images:experiment_details' 
-    experiment=experiment.pk %}">here</a> to
-    view the experiment details.
-    </p>
-
+General users can only edit experiments within 24 hours of it being 
+created. 
+</p>
 {% endif %}
+
+{# All users will see this content if date uploaded correct #}
+<p> You are updating information for the experiment with the id 
+{{ experiment.id }} and the name {{ experiment.name }}.
+<b style="color:red">All images under this experiment will be affected if 
+the experimental
+attributes are changed.</b></p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Update">
+</form>
+
+<h2> Affected Images </h2>
+<p style="color:red"><b>NOTE: If you change attributes of this experiment, it 
+will change
+the values for the following images as well.</b></p>
+
+{% for image in get_image_details %}
+  <ul>
+    {% for info in image.details %}
+      <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
+    {% endfor %}
+
+  </br>
+  <a href="{% url 'images:image_details' pk=image.pk %}">
+  <img src="{{ image.thumb }}"
+       alt="An error occured while loading the image" />
+  </a>
+  </ul>
+  </br>
+  </br>
+  
+{% endfor %}
+
 
 {% endblock %}
 

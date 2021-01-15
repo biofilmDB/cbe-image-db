@@ -57,7 +57,7 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
         try:
             img = models.Image.objects.get(pk=self.kwargs['pk'])
         except models.Image.DoesNotExist:
-            error = "Image with id: {} does not exist.".format(
+            error = "Image with id {} does not exist.".format(
                 self.kwargs['pk'])
             raise Http404(error)
         rd = img.release_date
@@ -79,7 +79,35 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
 class UpdateExperimentView(TemplateNames, genViews.UpdateView):
     model = models.Experiment
     form_class = forms.CreateExperimentForm
-    
+   
+    def get_object(self):
+        try:
+            # get the current experiment
+            exp = models.Experiment.objects.get(pk=self.kwargs['pk'])
+        # raise 404 error if it is not found
+        except models.Experiment.DoesNotExist:
+            error = "Experiment with id {} does not exist.".format(
+                self.kwargs['pk'])
+            raise Http404(error)
+
+        # riase 403 error if experiment is not editable and user is not a 
+        # superuser
+        if not exp.is_editable and not self.request.user.is_superuser:
+            dc = exp.date_created
+            pk = exp.pk
+            url = reverse('images:experiment_details', args=(pk,))
+            html = "<h2> Experiment Not Editable </h2> \
+                <p>The allowed time to update this experiment has passed. \
+                The creation date for this experiment is {}. \
+                If you need to edit this image, please contact an admin and \
+                have them edit the experiment with id {}. \
+                Click <a href=\"{}\">here</a> to view the experiment details. \
+                </p>".format(dc, pk, url)
+
+            raise PermissionDenied(html)
+        else:
+            return exp
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # get the experiment and all images associated with it
