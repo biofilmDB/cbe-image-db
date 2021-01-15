@@ -5,46 +5,35 @@
 
 
 
-{% if user.is_superuser or image.is_editable%}
-    <h1> Update Image Content </h1>
-    {% if user.is_superuser %}
-    <p> <b>You are editing this image as an admin.</b>
-    As an admin, you are able to edit any image regardless of the upload date.
-    This image was uploaded on {{ image.date_uploaded }}, which means regular
-    users 
-        {% if image.is_editable %}
-            will be able to edit it.
-        {% else %}
-            won't be able to edit it.
-        {% endif %}
-    General users can only edit images within 24 hours of it being uploaded. 
-    </p>
-    {% endif %}
-    
-    {# All users will see this content if date uploaded correct #}
-    <p> You are updating info for the image with the id {{ image.id }} and in the experiment {{ image.experiment }} with the fields: </p>
-    <ul>
-    {% for data in experiment_data %}
-        <li> <b> {{ data.0 }} </b> {{ data.1 }} </li>
-    {% endfor %}
-    </ul>
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Update">
-    </form>
-{% else %}
-    <h1> Image Not Editable </h1>
-    <p>The allowed time to update or delete this image has passed.
-    The upload date for this image is {{ image.date_uploaded }}.
-    If you need to edit this image, please contanct an admin and have them
-    edit the image with id {{ image.pk }}.
-    Click <a href="{% url 'images:image_details' pk=image.pk %}">here</a> to
-    view the image details.
-    </p>
-
+<h1> Update Image Content </h1>
+{% if user.is_superuser %}
+  <p> <b>You are editing this image as an admin.</b>
+  As an admin, you are able to edit any image regardless of the upload date.
+  This image was uploaded on {{ image.date_uploaded }}, which means regular
+  users 
+  {% if image.is_editable %}
+      will be able to edit it.
+  {% else %}
+      won't be able to edit it.
+  {% endif %}
+  General users can only edit images within 24 hours of it being uploaded. 
+</p>
 {% endif %}
+    
+{# All users will see this content if date uploaded correct #}
+<p> You are updating info for the image with the id {{ image.id }} and in the 
+experiment {{ image.experiment }} with the fields: </p>
+<ul>
+{% for data in experiment_data %}
+    <li> <b> {{ data.0 }} </b> {{ data.1 }} </li>
+{% endfor %}
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Update">
+</form>
 
 {% endblock %}
 

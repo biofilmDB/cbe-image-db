@@ -43,6 +43,8 @@ Please save this url if you wish to edit your images in the future.</p>
                 <b>Edit: </b>
                 <a href="{% url 'images:update_image' pk=image.pk %}" 
                     class="button", target="_blank">Edit Image</a>
+                <a href="{% url 'images:delete_image' pk=image.pk %}" 
+                    class="button", target="_blank">Delete Image</a>
             {% else %}
                 <li> <b>Edit:</b> This image is unable to be edited. Please 
                 contact an admin to edit image with id {{ image.pk }}. </li>

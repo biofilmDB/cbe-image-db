@@ -108,6 +108,34 @@ class UpdateExperimentView(TemplateNames, genViews.UpdateView):
 class UpdateImageView(TemplateNames, genViews.UpdateView):
     model = models.Image
     form_class = forms.UpdateImageForm
+    
+    def get_object(self):
+        try:
+            # get the image
+            img = models.Image.objects.get(pk=self.kwargs['pk'])
+        # raise 404 if the image does not exist
+        except models.Image.DoesNotExist:
+            error = "Image with id {} does not exist.".format(
+                self.kwargs['pk'])
+            raise Http404(error)
+        
+        # raise permission denied if the image is not editable
+        if not img.is_editable and not self.request.user.is_superuser:
+            ud = img.date_uploaded
+            pk = img.pk
+            html = "<h2> Image Not Editable </h2> \
+                <p>The allowed time to update or delete this image has passed.\
+                The upload date for this image is {}. If you need to edit this \
+                image, please contanct an admin and have them edit the image \
+                with id {}.".format(ud, pk)
+            html += "</br></br>"
+            # include information on the image
+            html += su.image_details_to_html(img, img.large_thumb.url)
+            # TODO: include information on how the user can go about editing
+            # this image
+            raise PermissionDenied(html)
+        else:
+            return img
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
