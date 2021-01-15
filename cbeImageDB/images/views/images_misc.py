@@ -203,10 +203,11 @@ class DeleteImageView(TemplateNames, genViews.DeleteView):
             error = "Image with id: {} does not exist.".format(
                 self.kwargs['pk'])
             raise Http404(error)
-        rd = img.release_date
-        if rd > date.today() and not self.request.user.is_superuser:
-                error = "You do not have permission to view this image due to \
-                         its release date."
+       
+        if not img.is_editable:
+                error = "Image with id {} cannot be deleted because it has \
+                         been over a day since it was uploaded".format(
+                         self.kwargs['pk'])
                 raise PermissionDenied(error)
         else:
             return img
