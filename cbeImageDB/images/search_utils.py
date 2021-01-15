@@ -1,5 +1,6 @@
 from .models import MicroscopeSettings, Image, Experiment
 from datetime import datetime
+from django.template.loader import render_to_string
 
 
 def get_objectives():
@@ -171,3 +172,11 @@ def get_success_context(experiment, image):
             'date uploaded']
     success['get_image_details'] = [get_html_image_dict(image, feat)]
     return success
+
+
+def image_details_to_html(image, thumb, fields=[]):
+    context = {}
+    context['thumb'] = thumb
+    context['get_image_details'] = get_html_image_list(image, fields)
+    rendered = render_to_string('images/image_details_template.html', context)
+    return rendered

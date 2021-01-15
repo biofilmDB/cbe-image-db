@@ -208,6 +208,8 @@ class DeleteImageView(TemplateNames, genViews.DeleteView):
                 error = "Image with id {} cannot be deleted because it has \
                          been over a day since it was uploaded.".format(
                          self.kwargs['pk'])
+                error += "</br></br>"
+                error += su.image_details_to_html(img, img.large_thumb.url)
                 raise PermissionDenied(error)
         else:
             return img
