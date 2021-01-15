@@ -2,6 +2,8 @@
 
 {% block content %}
 <h1> Error 403: HTTP Forbidden </h1>
-<p> {{ exception }} </p>
+{# | safe makes it so the html code is not escaped. That means if the string
+contains <h1> blah </h1> it will appear as a heading, not just the string #}
+<p> {{ exception | safe }} </p>
 {% endblock %}
 
