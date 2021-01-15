@@ -198,18 +198,24 @@ class DeleteImageView(TemplateNames, genViews.DeleteView):
 
     def get_object(self):
         try:
+            # get the image
             img = models.Image.objects.get(pk=self.kwargs['pk'])
+        # raise 404 if the image does not exist
         except models.Image.DoesNotExist:
-            error = "Image with id: {} does not exist.".format(
+            error = "Image with id {} does not exist.".format(
                 self.kwargs['pk'])
             raise Http404(error)
-       
+        
+        # raise permission denied if the image is not editable
         if not img.is_editable:
                 error = "Image with id {} cannot be deleted because it has \
                          been over a day since it was uploaded.".format(
                          self.kwargs['pk'])
                 error += "</br></br>"
+                # include information on the image
                 error += su.image_details_to_html(img, img.large_thumb.url)
+                # TODO: include information on how the user can go about editing
+                # this image
                 raise PermissionDenied(error)
         else:
             return img
@@ -218,6 +224,7 @@ class DeleteImageView(TemplateNames, genViews.DeleteView):
         context = super().get_context_data(**kwargs)
         # get the image
         image = kwargs['object']
+        # get the html string for image details
         context['image_details'] = su.image_details_to_html(image,
             image.large_thumb.url)
         return context
