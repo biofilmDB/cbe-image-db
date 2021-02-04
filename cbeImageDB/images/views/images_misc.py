@@ -329,4 +329,20 @@ class DeleteExperimentView(TemplateNames, genViews.DeleteView):
         else:
             return exp
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # get the experiment
+        exp = kwargs['object']
+        # get the experiment data
+        context['get_experiment_details'] = su.get_html_experiment_list(exp)
 
+        # get data for each image
+        # not worrying about release date, because they are still within the
+        # delete period
+        imgs = exp.image_set.all()
+        context['images'] = []
+        for img in imgs:
+            context['images'].append(su.image_details_to_html(img,
+                img.medium_thumb.url, ['microscope setting', 'imager',
+                'date taken', 'date uploaded', 'release date']))
+        return context
