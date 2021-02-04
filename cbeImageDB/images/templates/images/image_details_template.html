@@ -1,11 +1,14 @@
 {% load thumbnail %}
-<img src="{{ thumb }}"
-     alt="An error occured while loading the image" />
+<a href={{ img_href }}>
+  <img src="{{ thumb }}"
+       alt="An error occured while loading the image" />
+</a>
+
 </br>
 <ul>
-    {% for info in get_image_details %}
-        <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
-    {% endfor %}
+  {% for info in get_image_details %}
+      <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
+  {% endfor %}
 
 </ul>
 

@@ -1,6 +1,7 @@
 from .models import MicroscopeSettings, Image, Experiment
 from datetime import datetime
 from django.template.loader import render_to_string
+from django.urls import reverse
 
 
 def get_objectives():
@@ -177,6 +178,7 @@ def get_success_context(experiment, image):
 def image_details_to_html(image, thumb, fields=[]):
     context = {}
     context['thumb'] = thumb
+    context['img_href'] = reverse('images:image_details', args=(image.pk, ))
     context['get_image_details'] = get_html_image_list(image, fields)
     rendered = render_to_string('images/image_details_template.html', context)
     return rendered
