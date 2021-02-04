@@ -25,6 +25,8 @@ urlpatterns = [
          name='update_uploaded_images'),
     path('delete-image/<int:pk>/', views.DeleteImageView.as_view(),
         name='delete_image'),
+    path('delete-experiment/<int:pk>/', views.DeleteExperimentView.as_view(),
+        name='delete_experiment'),
 
     # Searching and results urls
     path('general-search/', views.GeneralSearchView.as_view(),

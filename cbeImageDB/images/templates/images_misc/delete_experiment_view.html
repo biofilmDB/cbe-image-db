@@ -1,0 +1,18 @@
+{% extends 'images/base.html' %}
+{% load static %}
+{% block content %}
+<h1>Delete an Experiment </h1>
+<h2>Experiment Information </h2>
+
+
+
+<form method="post">
+  {% csrf_token %} 
+  <p><b>Are you sure you want to delete the given experiment and <u>all
+  associated images?</u> </b>
+  <b style="color:red">This action cannot be undone.</b></p> 
+  <input type="submit" value="Confirm"> 
+</form> 
+
+
+{% endblock %}

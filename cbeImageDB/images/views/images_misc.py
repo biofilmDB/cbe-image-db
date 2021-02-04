@@ -84,7 +84,7 @@ class ImageDetailsView(TemplateNames, genViews.DetailView):
 class UpdateExperimentView(TemplateNames, genViews.UpdateView):
     model = models.Experiment
     form_class = forms.CreateExperimentForm
-   
+
     def get_object(self):
         try:
             # get the current experiment
@@ -95,7 +95,7 @@ class UpdateExperimentView(TemplateNames, genViews.UpdateView):
                 self.kwargs['pk'])
             raise Http404(error)
 
-        # riase 403 error if experiment is not editable and user is not a 
+        # riase 403 error if experiment is not editable and user is not a
         # superuser
         if not exp.is_editable and not self.request.user.is_superuser:
             dc = exp.date_created
@@ -121,7 +121,7 @@ class UpdateExperimentView(TemplateNames, genViews.UpdateView):
         # general users
         e = get_object_or_404(models.Experiment, pk=self.kwargs['pk'])
         images = e.image_set.all()
-        
+
         # only get information for these features
         feats = ['microscope setting', 'imager', 'date taken', 'date uploaded',
                  'release date']
@@ -129,11 +129,11 @@ class UpdateExperimentView(TemplateNames, genViews.UpdateView):
         # Get an html string of descriptions for all images
         image_description_html = ''
         for img in images:
-            image_description_html += su.image_details_to_html(img, 
+            image_description_html += su.image_details_to_html(img,
                 img.medium_thumb.url, feats)
             image_description_html += "</br></br></br>"
         context['image_description_html'] = image_description_html
-        
+
         return context
 
     def form_valid(self, form):
@@ -145,7 +145,7 @@ class UpdateExperimentView(TemplateNames, genViews.UpdateView):
 class UpdateImageView(TemplateNames, genViews.UpdateView):
     model = models.Image
     form_class = forms.UpdateImageForm
-    
+
     def get_object(self):
         try:
             # get the image
@@ -155,7 +155,7 @@ class UpdateImageView(TemplateNames, genViews.UpdateView):
             error = "Image with id {} does not exist.".format(
                 self.kwargs['pk'])
             raise Http404(error)
-        
+
         # raise permission denied if the image is not editable
         if not img.is_editable and not self.request.user.is_superuser:
             ud = img.date_uploaded
@@ -207,7 +207,7 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
             except Exception as e:
                 print(e)
                 errors.append(ips)
-        
+
         by_experiment = {}
         for pk in image_pks:
             # get image or error
@@ -217,28 +217,28 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
                 errors.append(pk)
                 continue
             else:
-                # image exists, take first and only one in query 
+                # image exists, take first and only one in query
                 img = img[0]
 
             # get display information for image
             features = ['imager', 'description', 'microscope setting',
-                        'file name', 'date taken', 'date uploaded', 
+                        'file name', 'date taken', 'date uploaded',
                         'release date', 'raw data path']
-            idict = {'details': su.get_html_image_list(img, features), 'pk': pk, 
+            idict = {'details': su.get_html_image_list(img, features), 'pk': pk,
                      'thumb': img.medium_thumb.url, 'editable': img.is_editable}
-            
+
             # sort it by experiment in case more than one appear here
             epk = img.experiment.pk
             # if the experiment doesn't exist, create new information for it
             if epk not in by_experiment.keys():
                 by_experiment[epk] = {'pk': epk, 'image_info': [],
-                    'name': img.experiment.name, 'experiment_details': 
+                    'name': img.experiment.name, 'experiment_details':
                     su.get_html_experiment_list(img.experiment), 'editable':
                     img.experiment.is_editable}
-            
+
             # add image info to correct experiment
             by_experiment[epk]['image_info'].append(idict)
-        
+
         # make variable to store the error images
         context['errors'] = errors
 
@@ -248,18 +248,18 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
             list_exps.append(by_experiment[key])
 
         # make context variable
-        
+
         context['experiments'] = list_exps
 
         return context
-     
-   
+
+
 ###############################################################################
 # DELETE VIEWS # DELETE VIEWS # DELETE VIEWS # DELETE VIEWS # DELETE VIEWS# DELE
 ###############################################################################
 class DeleteImageView(TemplateNames, genViews.DeleteView):
     model = models.Image
-    
+
     # need to use the method because using success_url = blah causes errors
     def get_success_url(self):
         return reverse('images:pick_experiment')
@@ -273,7 +273,7 @@ class DeleteImageView(TemplateNames, genViews.DeleteView):
             error = "Image with id {} does not exist.".format(
                 self.kwargs['pk'])
             raise Http404(error)
-        
+
         # raise permission denied if the image is not editable
         if not img.is_editable:
                 error = "Image with id {} cannot be deleted because it has \
@@ -296,3 +296,37 @@ class DeleteImageView(TemplateNames, genViews.DeleteView):
         context['image_details'] = su.image_details_to_html(image,
             image.large_thumb.url)
         return context
+
+
+class DeleteExperimentView(TemplateNames, genViews.DeleteView):
+    model = models.Experiment
+
+    # need to use the method because using success_url = blah causes errors
+    def get_success_url(self):
+        return reverse('images:pick_experiment')
+
+    def get_object(self):
+        try:
+            # get the image
+            exp = models.Experiment.objects.get(pk=self.kwargs['pk'])
+        # raise 404 if the image does not exist
+        except models.Experiment.DoesNotExist:
+            error = "Experiment with id {} does not exist.".format(
+                self.kwargs['pk'])
+            raise Http404(error)
+
+        # raise permission denied if the image is not editable
+        if not exp.is_editable:
+                error = "Experiment with id {} cannot be deleted because it \
+                         has been over a day since it was uploaded.".format(
+                         self.kwargs['pk'])
+                error += "</br></br>"
+                # include information on the image
+                #error += su.image_details_to_html(img, img.large_thumb.url)
+                # TODO: include information on how the user can go about editing
+                # this image
+                raise PermissionDenied(error)
+        else:
+            return exp
+
+
