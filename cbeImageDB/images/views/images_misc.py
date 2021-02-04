@@ -7,6 +7,7 @@ from django.urls import reverse
 from datetime import datetime, date
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
+from django.db import transaction
 
 
 class AboutSite(TemplateNames, genViews.TemplateView):
@@ -346,3 +347,22 @@ class DeleteExperimentView(TemplateNames, genViews.DeleteView):
                 img.medium_thumb.url, ['microscope setting', 'imager',
                 'date taken', 'date uploaded', 'release date']))
         return context
+
+    @transaction.atomic  # only delete experiment and images if everything
+    # is deleted
+    def delete(self, request, *args, **kwargs):
+        # not worried about if it exists or not, because that was already
+        # checked when geting the object
+        exp = models.Experiment.objects.get(pk=self.kwargs['pk'])
+
+        # delete all the associated images
+        imgs = exp.image_set.all()
+        for img in imgs:
+            img.delete()
+        try:
+            # Call the delete method to delete the experiment and return an
+            # HttpResponseRedirect of the success_url
+            return super().delete(self, request, *args, **kwargs)
+        except:
+            # TODO: Make an error page that says the experiment was not deleted
+            return HttpResponseRedirect('TODO')
