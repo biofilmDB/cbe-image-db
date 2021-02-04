@@ -15,7 +15,7 @@ If you want to create a new experiment, click "Create New Experiment".
 	{% csrf_token %}
 	<select name="names" size="10" autofocus>
 	  {% for name in names %}
-		<option value="{{ forloop.counter }}"> {{ name }} </option>
+		<option value="{{ name.pk }}"> {{ name }} </option>
 	  {% endfor %}
 	</select>
 	<p><input type="submit" value="Upload to Experiment" /></p>
@@ -47,7 +47,7 @@ document.forms['selectForm'].elements['names'].onchange = function() {
 	// get the specific experiment selected, loopcounter starts at 1, so -1
 	var exp = json_data[String(sel.value-1)];
 	load_exp_info(exp);
-}; 
+};
 
 // do this as soon as the window loads
 window.onload = function() {
@@ -56,8 +56,8 @@ window.onload = function() {
     var sel = form.elements['names'];
     // select the first one in the list and show metadata
 	sel.selectedIndex = 0;
-   	load_exp_info(json_data[0]); 
-}; 
+   	load_exp_info(json_data[0]);
+};
 
 // put the metadata in a ul tag
 function load_exp_info(exp) {
@@ -66,7 +66,7 @@ function load_exp_info(exp) {
 	// for each key, add it to the document
 	var keys = Object.keys(exp);
 	//document.getElementById("print").innerHTML = exp;
-	
+
 	var ul = document.getElementById("metadata")
 	ul.innerHTML = "";  // clear what is already there
 	var b;
