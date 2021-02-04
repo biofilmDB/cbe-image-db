@@ -368,3 +368,7 @@ class DeleteExperimentView(TemplateNames, genViews.DeleteView):
         except IntegrityError:
             # return with an error page if transaction doesn't fully complete
             return HttpResponseRedirect('TODO')
+
+
+class FailedExperimentDeleteView(TemplateNames, genViews.TemplateView):
+    pass

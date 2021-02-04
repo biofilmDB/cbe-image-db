@@ -27,6 +27,10 @@ urlpatterns = [
         name='delete_image'),
     path('delete-experiment/<int:pk>/', views.DeleteExperimentView.as_view(),
         name='delete_experiment'),
+    path('failed-experiment-delete/', 
+        views.FailedExperimentDeleteView.as_view(), 
+        name='failed_experiment_delete'),
+
 
     # Searching and results urls
     path('general-search/', views.GeneralSearchView.as_view(),
