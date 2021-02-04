@@ -7,7 +7,7 @@ from django.urls import reverse
 from datetime import datetime, date
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
-from django.db import transaction
+from django.db import transaction, IntegrityError
 
 
 class AboutSite(TemplateNames, genViews.TemplateView):
@@ -348,21 +348,23 @@ class DeleteExperimentView(TemplateNames, genViews.DeleteView):
                 'date taken', 'date uploaded', 'release date']))
         return context
 
-    @transaction.atomic  # only delete experiment and images if everything
-    # is deleted
+    # TODO: Make this automic
     def delete(self, request, *args, **kwargs):
+        # code needed from super delete method
+        success_url = self.get_success_url()
+
         # not worried about if it exists or not, because that was already
         # checked when geting the object
         exp = models.Experiment.objects.get(pk=self.kwargs['pk'])
 
-        # delete all the associated images
-        imgs = exp.image_set.all()
-        for img in imgs:
-            img.delete()
         try:
-            # Call the delete method to delete the experiment and return an
-            # HttpResponseRedirect of the success_url
-            return super().delete(self, request, *args, **kwargs)
-        except:
-            # TODO: Make an error page that says the experiment was not deleted
+            with transaction.atomic():
+                # delete all the associated images
+                imgs = exp.image_set.all()
+                for img in imgs:
+                    img.delete()
+                exp.delete()
+                return HttpResponseRedirect(success_url)
+        except IntegrityError:
+            # return with an error page if transaction doesn't fully complete
             return HttpResponseRedirect('TODO')
