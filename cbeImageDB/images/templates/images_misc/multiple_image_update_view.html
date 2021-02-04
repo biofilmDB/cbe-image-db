@@ -26,9 +26,12 @@ Please save this url if you wish to edit your images in the future.</p>
     <a href="{% url 'images:experiment_details' experiment=exp.pk %}"
     class="button", target="_blank">
     View Experiment Details Page</a>
+    </br>
     {% if exp.editable %}
     <a href="{% url 'images:update_experiment' pk=exp.pk %}", class="button",
     target="_blank">Edit Experiment Details</a>
+    <a href="{% url 'images:delete_experiment' pk=exp.pk %}", class="button",
+    target="-blank">Delete Experiment</a>
     {% endif %}
     </ul>
     <h3> Images </h3>
