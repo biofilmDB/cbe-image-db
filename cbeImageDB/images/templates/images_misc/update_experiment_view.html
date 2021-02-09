@@ -1,0 +1,50 @@
+{% extends 'images/base.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %} 
+
+<h1> Update Experiment </h1>
+{% if user.is_superuser %}
+<p> <b>You are editing this experiment as an admin.</b>
+As an admin, you are able to edit any image regardless of the creation date.
+This experiment was created on {{ experiment.date_created }}, which means 
+regular users 
+    {% if experiment.is_editable %}
+        will be able to edit it.
+    {% else %}
+        won't be able to edit it.
+    {% endif %}
+General users can only edit experiments within 24 hours of it being 
+created. 
+</p>
+{% endif %}
+
+{# All users will see this content if date uploaded correct #}
+<p> You are updating information for the experiment with the id 
+{{ experiment.id }} and the name {{ experiment.name }}.
+<b style="color:red">All images under this experiment will be affected if 
+the experimental
+attributes are changed.</b></p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Update">
+</form>
+
+<h2> Affected Images </h2>
+<p style="color:red"><b>NOTE: If you change attributes of this experiment, it 
+will change
+the values for the following images as well.</b></p>
+
+<!-- Use html string to get description of images -->
+{{ image_description_html | safe }}
+
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+{% endblock %}
+

@@ -1,0 +1,62 @@
+{% extends 'images/base.html' %}
+{% load images_extra %}
+{% load static %}
+
+{% block content %}
+<h1> Edit Uploaded Images </h1>
+<p> You will be able to upload images that have been uploaded today for the next
+24 hours using this link.
+Please save this url if you wish to edit your images in the future.</p>
+
+{% if errors %}
+<h2> There were errors finding images with the following ids: <h2>
+<ul>
+    {% for error in errors %}
+    <li> {{ error }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% for exp in experiments %}
+    <h2> {{ exp.name }} </h2>
+    <ul>
+    {% for info in exp.experiment_details %}
+        <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>        
+    {% endfor %}
+    <a href="{% url 'images:experiment_details' experiment=exp.pk %}"
+    class="button", target="_blank">
+    View Experiment Details Page</a>
+    </br>
+    {% if exp.editable %}
+    <a href="{% url 'images:update_experiment' pk=exp.pk %}", class="button",
+    target="_blank">Edit Experiment Details</a>
+    <a href="{% url 'images:delete_experiment' pk=exp.pk %}", class="button",
+    target="_blank">Delete Experiment</a>
+    {% endif %}
+    </ul>
+    <h3> Images </h3>
+    <ul>
+        {% for image in exp.image_info %}
+            <a href="{% url 'images:image_details' pk=image.pk %}">
+            <img src="{{ image.thumb }}" alt="Cannot show image, an error occured" ></a>
+            {% for info in image.details %} 
+                <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
+            {% endfor %}
+            {% if image.editable %}
+                <b>Edit: </b>
+                <a href="{% url 'images:update_image' pk=image.pk %}" 
+                    class="button", target="_blank">Edit Image</a>
+                <a href="{% url 'images:delete_image' pk=image.pk %}" 
+                    class="button", target="_blank">Delete Image</a>
+            {% else %}
+                <li> <b>Edit:</b> This image is unable to be edited. Please 
+                contact an admin to edit image with id {{ image.pk }}. </li>
+            {% endif %}
+            </br>
+            </br>
+            </br>
+            </br>
+        {% endfor %}
+    </ul>
+{% endfor %}
+{% endblock %}

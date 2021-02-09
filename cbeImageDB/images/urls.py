@@ -14,10 +14,20 @@ urlpatterns = [
     # Misc views
     path('experiment/<experiment>/', views.ExperimentDetailsView.as_view(),
          name='experiment_details'),
+    path('update-experiment/<int:pk>', views.UpdateExperimentView.as_view(),
+        name='update_experiment'),
     path('image/<int:pk>/', views.ImageDetailsView.as_view(),
          name='image_details'),
     path('update-image/<int:pk>/', views.UpdateImageView.as_view(),
          name='update_image'),
+    path('edit-uploaded-images/<list_image_pks>', 
+         views.MultipleImageUpdateView.as_view(), 
+         name='update_uploaded_images'),
+    path('delete-image/<int:pk>/', views.DeleteImageView.as_view(),
+        name='delete_image'),
+    path('delete-experiment/<int:pk>/', views.DeleteExperimentView.as_view(),
+        name='delete_experiment'),
+
 
     # Searching and results urls
     path('general-search/', views.GeneralSearchView.as_view(),

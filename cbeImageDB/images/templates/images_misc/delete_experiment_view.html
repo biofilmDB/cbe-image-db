@@ -1,0 +1,31 @@
+{% extends 'images/base.html' %}
+{% load static %}
+{% block content %}
+<h1>Delete an Experiment </h1>
+<h2>Experiment Information </h2>
+<ul>
+    {% for info in get_experiment_details %}
+        <li> <b>{{ info.0 }}</b> {{ info.1 }} </li>
+    {% endfor %}
+</ul>
+<h3> Associated Images </h3>
+<p><b>Note:</b> These images will be deleted along with the experiment.</p>
+{% for img in images %}
+  <!-- | safe does not escape html characters. The image details are inserted as
+  an html string -->
+  {{ img | safe }}
+  </br>
+{% endfor %}
+
+
+<form method="post">
+  {% csrf_token %} 
+  <p><b>Are you sure you want to delete the given experiment and <u>all
+  associated images?</u> </b>
+  <b style="color:red">This action cannot be undone.</b></p>
+  </p>Upon successful deletion, you will be redirected to the upload page.</p> 
+  <input type="submit" value="Confirm"> 
+</form> 
+
+
+{% endblock %}

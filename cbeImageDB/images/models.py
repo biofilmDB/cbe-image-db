@@ -1,6 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
-from datetime import date
+from datetime import date, timedelta
 from easy_thumbnails.fields import ThumbnailerImageField
 from django.urls import reverse
 
@@ -112,16 +112,26 @@ class Project(models.Model):
 
 class Experiment(models.Model):
     name = models.CharField(max_length=500, unique=True)
+    date_created = models.DateField(("Date created"), default=date.today)
     project = models.ForeignKey(Project, on_delete=models.PROTECT)
     lab = models.ManyToManyField(Lab, through='ProtectLab')
     organism = models.ManyToManyField(Organism, through='ProtectOrganism')
     vessel = models.ForeignKey(Vessel, on_delete=models.PROTECT)
     substratum = models.ForeignKey(GrowthSubstratum, on_delete=models.PROTECT)
-    # TODO: Does this belong here or in image?
-    # brief_description = models.CharField(max_length=1000)
 
     def __str__(self):
         return self.name
+    
+    @property
+    def is_editable(self):
+        # Get today's date
+        today = date.today()
+        # get the date for tomorrow
+        tomorrow = today + timedelta(days=1)
+        yesterday = today - timedelta(days=1)
+        # less than or equal to, so it'll be editable tomorrow as well
+        # include yesterday to put a lower limit on it
+        return yesterday < self.date_created <= tomorrow
 
 
 # TODO: Is cascade correct for experiments?
@@ -156,6 +166,25 @@ class Image(models.Model):
 
     def __str__(self):
         return str(self.document.name)
+    
+    @property
+    def is_editable(self):
+        # Get today's date
+        today = date.today()
+        # get the date for tomorrow
+        tomorrow = today + timedelta(days=1)
+        yesterday = today - timedelta(days=1)
+        # less than or equal to, so it'll be editable tomorrow as well
+        # include yesterday to put a lower limit on it
+        return yesterday < self.date_uploaded <= tomorrow
+
+    #def save(self, *args, **kwargs):
+    #    # TODO: Put thumb saving logic here so it's unform and easier
+    #    self.medium_thumb.save(name=self.document.name,
+    #                            content=self.document)
+    #    self.large_thumb.save(name=self.document.name,
+    #                           content=self.document)
+    #    super(Image, self).save(*args, **kwargs)  # Call the "real" save() method.
 
 
 @receiver(models.signals.post_delete, sender=Image)

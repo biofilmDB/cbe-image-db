@@ -1,6 +1,7 @@
 from images import forms, models
 from django.http import HttpResponse  # , Redirect
 import django.views.generic as genViews
+from django.views.generic.edit import FormView
 from template_names import TemplateNames
 from images import search_utils as su
 from multi_form_view import MultiFormView
@@ -49,7 +50,7 @@ class PickExperimentView(TemplateNames, genViews.TemplateView):
         # turn to string and replace ' with " for proper json formatting
         context['experiments'] = str(exps_dict).replace("'", '"')
         return context
-    
+
     def post(self, request, *args, **kwargs):
         pk = request.POST['names']
         return HttpResponseRedirect(reverse('images:upload_image_to_experiment',
@@ -65,59 +66,65 @@ class UploadImageView(TemplateNames, MultiFormView):
     }
 
     def forms_valid(self, forms):
-        with transaction.atomic():
-            experiment = forms['experiment_form'].save()
-            experiment.save()
-            image = forms['image_form'].save(commit=False)
-            image.experiment = experiment
-            image.medium_thumb.save(name=image.document.name,
-                                    content=image.document)
-            image.large_thumb.save(name=image.document.name,
-                                   content=image.document)
-            image.save()
-            # Render the results page
-            rendered = render_upload_success(self, image, experiment)
-        return HttpResponse(rendered)
+        files = self.request.FILES.getlist('image')
+        images = []
+        try:
+            with transaction.atomic():
+                experiment = forms['experiment_form'].save()
+                experiment.save()
+                image = forms['image_form']
+                images = image.make_image_models(experiment.pk, files)
+        except Exception as e:
+            print(e)
+            # TODO: Redirect to an error page of some kind
+            # pop up error box and redirect to upload page?
+            return HttpResponse('ERROR {}'.format(e))
+        pks = []
+        for image in images:
+            pks.append(image.pk)
+        return HttpResponseRedirect(reverse('images:update_uploaded_images',
+                                            args=(pks,)))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # make a dictionary of experiment names so they can be read into
+        # javascript
+        exp = list(models.Experiment.objects.all().order_by('name'))
+        context['experiment_names'] = str({'names': [e.name for e in exp]}).replace("'", '"')
+
         context['support_name'] = config('SUPPORT_NAME')
         context['support_email'] = config('SUPPORT_EMAIL')
-        
-        # NOTE: This is entered because the experiment name is a pain
-        exp = list(models.Experiment.objects.all().order_by('name'))
-        # make a dictionary of experiment names so they can be read into 
-        # javascript
-        context['experiment_names'] = str({'names': [e.name for e in exp]}).replace("'", '"')
 
         return context
 
 
 class UploadImageToExperimentView(TemplateNames, genViews.DetailView,
-                                  genViews.CreateView):
+                                  FormView):
     model = models.Experiment
     form_class = forms.UploadFileForm
     # success_url = reverse_lazy('images:upload')
 
     def form_valid(self, form):
-        image = form.save(commit=False)
-        image.experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
-        image.medium_thumb.save(name=image.document.name,
-                                content=image.document)
-        image.large_thumb.save(name=image.document.name,
-                               content=image.document)
-        image.save()
+        files = self.request.FILES.getlist('image')
+        images = []
+        try:
+            images = form.make_image_models(self.kwargs['pk'], files)
+        except Exception as e:
+            print(e)
+            # TODO: Redirect to an error page of some kind
+            # pop up error box and redirect to upload page?
+            return HttpResponse('<h1>NOTHING uploaded error: {}</h1>'.format(e))
 
-        # Render the results page
         experiment = models.Experiment.objects.get(id=self.kwargs['pk'])
-        rendered = render_upload_success(self, image, experiment)
-        return HttpResponse(rendered)
+        pks = []
+        for image in images:
+            pks.append(image.pk)
+        return HttpResponseRedirect(reverse('images:update_uploaded_images',
+                                            args=(pks,)))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # get the image
         e = kwargs['object']
-        # TODO: Not sure what this is doing. Is it needed?
-        # images = e.image_set.all()
         context['get_experiment_details'] = su.get_html_experiment_list(e)
         return context
