@@ -2,12 +2,13 @@ from images import forms, models, help_texts as ht
 import django.views.generic as genViews
 from template_names import TemplateNames
 from images import search_utils as su
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.urls import reverse
 from datetime import datetime, date
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.db import transaction, IntegrityError
+from django.template.loader import render_to_string
 
 
 class AboutSite(TemplateNames, genViews.TemplateView):
@@ -361,14 +362,13 @@ class DeleteExperimentView(TemplateNames, genViews.DeleteView):
             with transaction.atomic():
                 # delete all the associated images
                 imgs = exp.image_set.all()
-                for img in imgs:
-                    img.delete()
+                #for img in imgs:
+                #    img.delete()
                 exp.delete()
                 return HttpResponseRedirect(success_url)
-        except IntegrityError:
+        except Exception as e:
             # return with an error page if transaction doesn't fully complete
-            return HttpResponseRedirect(reverse('images:failed_experiment_delete'))
-
-
-class FailedExperimentDeleteView(TemplateNames, genViews.TemplateView):
-    pass
+            context = {'error':  e}
+            rendered = render_to_string('images_misc/failed_experiment_delete_view.html',
+                                        context)
+            return HttpResponse(rendered)

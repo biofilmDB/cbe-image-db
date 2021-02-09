@@ -1,7 +1,12 @@
 {% extends 'images/base.html' %}
 {% block content %}
 {% load static %}
+{% load images_extra %}
 <h1>Failed Delete </h1>
-Your experiment was unsuccessfully deleted due to some error.
-
+<p>Your experiment was unsuccessfully deleted due to an error. Please contact
+{% get_developer_name %} at <a href='mailto:{% get_developer_email %}
+  ?Subject=CBE Image DB Failed Delete'>{% get_developer_email %}</a> with the
+  given error if this problem persists.</p>
+<h2>Error </h2>
+{{ error }}
 {% endblock %}
