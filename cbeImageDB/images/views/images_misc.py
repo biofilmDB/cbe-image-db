@@ -362,8 +362,8 @@ class DeleteExperimentView(TemplateNames, genViews.DeleteView):
             with transaction.atomic():
                 # delete all the associated images
                 imgs = exp.image_set.all()
-                #for img in imgs:
-                #    img.delete()
+                for img in imgs:
+                    img.delete()
                 exp.delete()
                 return HttpResponseRedirect(success_url)
         except Exception as e:
