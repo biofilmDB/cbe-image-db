@@ -55,7 +55,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir /home/app/webapp/
 
 # download wait-for-it.sh
-RUN wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh >> /home/app/webapp/wait-for-it.sh 
+RUN wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh 
+RUN cp wait-for-it.sh /home/app/webapp/wait-for-it.sh 
 RUN chmod +x /home/app/webapp/wait-for-it.sh
 
 # Copy over the environment.yml file and extend base environment with cbe-image
@@ -74,3 +75,4 @@ WORKDIR /home/app/webapp/
 
 # Give init.sh permission to run
 RUN chmod +x init.sh
+RUN chmod +x startup.sh
