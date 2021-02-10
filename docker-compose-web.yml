@@ -1,4 +1,4 @@
-version: '3.4' 
+version: '3.4'
 # There are differences for mac computers, because docker cannot use the host
 # network on a mac, the differences are documented below
 services:
@@ -10,7 +10,7 @@ services:
       dockerfile: ./Dockerfile
       network: host
     network_mode: ${NETWORK_MODE}
-    command: bash -c "./wait-for-it.sh ${DB_HOST}:5432 -- python manage.py migrate && passenger start"
+    command: bash -c "./wait-for-it.sh ${DB_HOST}:5432 -- ./startup.sh"
     # Inlcude environment file so don't have to
     # enter the container to modify variables
     env_file:
