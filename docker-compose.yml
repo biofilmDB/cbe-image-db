@@ -5,15 +5,11 @@ services:
   postgres-db:
     image: postgres:11.6-alpine
     # restart: always (?)
-    #network_mode: host
+    network_mode: ${NETWORK_MODE}
     environment:
     - POSTGRES_PASSWORD=${DB_PASS}
     - POSTGRES_USER=${DB_USER}
     - POSTGRES_DB=${DB_NAME}
-    networks:
-      default:
-        aliases:
-        - "postgres-db"
     ports:
     - 5432:5432
     volumes:
@@ -21,8 +17,8 @@ services:
 
   elasticsearch-db:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
-    #network_mode: host
-    environment: 
+    network_mode: ${NETWORK_MODE}
+    environment:
     - discovery.type=single-node
     ports:
     - 9200:9200
