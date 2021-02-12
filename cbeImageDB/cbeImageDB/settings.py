@@ -24,7 +24,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7ssu$(qg8oo=1_ul68^e&#wucef*&z9-!+^&uvc@um_)3&h&^l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DJANGO_DEBUG')
+debug_val = config('DJANGO_DEBUG')
+if debug_val.lower() == 'ture':
+    DEBUG = True
+elif debug_val.lower() == 'false':
+    DEBUG = False
 
 # Use an environment variable to create the list
 # of hosts. It should be separated by commas
