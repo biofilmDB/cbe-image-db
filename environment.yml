@@ -2,22 +2,22 @@ name: cbe-image
 channels:
   - defaults
 dependencies:
-  - ca-certificates=2019.5.15=1
-  - certifi=2019.6.16=py37_1
-  - libcxx=4.0.1=hcfea43d_1
-  - libcxxabi=4.0.1=hcfea43d_1
-  - libedit=3.1.20181209=hb402a30_0
-  - libffi=3.2.1=h475c297_4
-  - ncurses=6.1=h0a44026_1
-  - openssl=1.1.1c=h1de35cc_1
-  - pip=19.1.1=py37_0
-  - python=3.7.3=h359304d_0
-  - readline=7.0=h1de35cc_5
-  - sqlite=3.31.1=ha441bb4_0
-  - tk=8.6.8=ha441bb4_0
-  - wheel=0.33.4=py37_0
-  - xz=5.2.4=h1de35cc_4
-  - zlib=1.2.11=h1de35cc_3
+  - ca-certificates=2019.5.15
+  - certifi=2019.6.16
+  - libcxx=4.0.1
+  - libcxxabi=4.0.1
+  - libedit=3.1.20181209
+  - libffi=3.2.1
+  - ncurses=6.1
+  - openssl=1.1.1c
+  - pip=19.1.1
+  - python=3.7.3
+  - readline=7.0
+  - sqlite=3.31.1
+  - tk=8.6.8
+  - wheel=0.33.4
+  - xz=5.2.4
+  - zlib=1.2.11
   - pip:
     - appnope==0.1.0
     - backcall==0.1.0
@@ -34,7 +34,7 @@ dependencies:
     - easy-thumbnails==2.6
     - elasticsearch==6.4.0
     - elasticsearch-dsl==6.4.0
-    #- ipdb==0.12
+    - ipdb==0.12
     - ipython==7.6.1
     - ipython-genutils==0.2.0
     - jedi==0.14.0
