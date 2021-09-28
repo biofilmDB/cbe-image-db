@@ -1,4 +1,4 @@
-name: cbe-image
+name: cbe-image-test
 channels:
   - defaults
 dependencies:
