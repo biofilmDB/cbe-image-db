@@ -67,6 +67,10 @@ RUN conda env update --name base --file $CONDA_ENV_FILE
 # Copy over necessary files for app to run
 COPY --chown=app:app cbeImageDB /home/app/webapp/
 
+# check if .env file exists
+RUN [! -f /home/app/webapp/.env] && printenv > .env
+RUN cat .env
+
 # Make files directory
 RUN mkdir /home/app/webapp/files
 # Make static file dir and create static files
