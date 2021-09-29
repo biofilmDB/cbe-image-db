@@ -68,7 +68,7 @@ RUN conda env update --name base --file $CONDA_ENV_FILE
 COPY --chown=app:app cbeImageDB /home/app/webapp/
 
 # check if .env file exists
-RUN [! -f /home/app/webapp/.env] && printenv > .env
+RUN [[ ! -f /home/app/webapp/.env]] && printenv > .env
 RUN cat .env
 
 # Make files directory
