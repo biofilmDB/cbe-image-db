@@ -13,8 +13,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from decouple import config
 from boto.s3.connection import S3Connection
+from dotenv import load_dotenv
 
-s3 = S3Connection(os.environ['DJANGO_SECRET_KEY'])
+load_dotenv()
+
+#s3 = S3Connection(os.environ['DJANGO_SECRET_KEY'])
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY'] #config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 debug_val = config('DJANGO_DEBUG')
