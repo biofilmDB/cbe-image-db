@@ -1,5 +1,5 @@
 # TODO: Put a version number
-FROM phusion/passenger-customizable:1.0.9
+FROM phusion/passenger-customizable:2.0.0
 
 
 # Set correct environment variables.
