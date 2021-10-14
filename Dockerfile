@@ -67,16 +67,15 @@ RUN conda env update --name base --file $CONDA_ENV_FILE
 # Copy over necessary files for app to run
 COPY --chown=app:app cbeImageDB /home/app/webapp/
 
-# get access to Heroku vars (hopeuflly)
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi
 
 
 # Make files directory
 RUN mkdir /home/app/webapp/files
 # Make static file dir and create static files
-RUN export STATIC_ROOT=/home/app/webapp/static && mkdir /home/app/webapp/static && python /home/app/webapp/manage.py collectstatic
+RUN export STATIC_ROOT=/home/app/webapp/static && mkdir /home/app/webapp/static && python /home/app/webapp/manage.py collectstatic --noinput
 WORKDIR /home/app/webapp/
 
 # Give init.sh permission to run
 RUN chmod +x init.sh
 RUN chmod +x startup.sh
+CMD gunicorn cbeImageDB.wsgi:application --bind 0.0.0.0:$PORT
