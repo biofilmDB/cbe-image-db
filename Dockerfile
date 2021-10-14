@@ -67,6 +67,8 @@ RUN conda env update --name base --file $CONDA_ENV_FILE
 # Copy over necessary files for app to run
 COPY --chown=app:app cbeImageDB /home/app/webapp/
 
+ARG DJANGO_SECRET_KEY
+ENV DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY
 
 
 # Make files directory
