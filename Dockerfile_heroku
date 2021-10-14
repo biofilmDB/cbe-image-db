@@ -2,5 +2,5 @@ FROM scratch
 ARG DJANGO_SECRET_KEY
 ENV DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY
 
-FROM ./Dockerfile
+FROM './Dockerfile'
 
