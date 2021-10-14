@@ -1,5 +1,4 @@
-# syntax = edrevo/dockerfile-plus
-FROM scratch
+FROM phusion/passenger-customizable:2.0.0
 ARG DJANGO_SECRET_KEY
 ENV DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY
 ARG DJANGO_DEBUG
@@ -10,8 +9,7 @@ ENV MEDIA_ROOT=$MEDIA_ROOT
 
 
 # TODO: Put a version number
-FROM phusion/passenger-customizable:2.0.0
-
+# FROM pusion... goes here in Dockerfile
 
 # Set correct environment variables.
 ENV HOME /root
