@@ -1,6 +1,6 @@
 build:
   docker:
-    web: Dockerfile
+    web: Dockerfile_heroku
 
 run:
   web: python manage.py runserver
