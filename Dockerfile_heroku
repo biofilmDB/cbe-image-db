@@ -1,6 +1,7 @@
+# syntax = edrevo/dockerfile-plus
 FROM scratch
 ARG DJANGO_SECRET_KEY
 ENV DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY
 
-FROM './Dockerfile'
+INCLUDE+ Dockerfile
 
