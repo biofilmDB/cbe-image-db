@@ -1,6 +1,8 @@
 python manage.py collectstatic
 python manage.py makemigrations
 python manage.py migrate
+echo $PORT
+echo $PASSENGER_PORT
 # commenting out until elatci search works
 #python manage.py search_index --create
 passenger start
