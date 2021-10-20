@@ -82,3 +82,4 @@ WORKDIR /home/app/webapp/
 RUN chmod +x init.sh
 RUN chmod +x startup.sh
 CMD gunicorn cbeImageDB.wsgi:application --bind 0.0.0.0:$PORT
+RUN echo "port $PORT"
