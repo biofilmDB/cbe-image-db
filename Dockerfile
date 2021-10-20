@@ -74,7 +74,8 @@ COPY --chown=app:app cbeImageDB /home/app/webapp/
 # Make files directory
 RUN mkdir /home/app/webapp/files
 # Make static file dir and create static files
-RUN export STATIC_ROOT=/home/app/webapp/static && mkdir /home/app/webapp/static
+ENV STATIC_ROOT=/home/app/webapp/static
+RUN mkdir /home/app/webapp/static
 WORKDIR /home/app/webapp/
 
 # Give init.sh permission to run
