@@ -1,4 +1,5 @@
 FROM phusion/passenger-customizable:2.0.0
+RUN printenv
 ARG DJANGO_SECRET_KEY
 ENV DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY
 RUN echo $DJANGO_SECRET_KEY
