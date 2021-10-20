@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 ]
 
+ELASTICSEARCH_DSL={}
 '''
 ELASTICSEARCH_DSL={
     'default': {
