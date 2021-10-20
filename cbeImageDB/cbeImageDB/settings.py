@@ -63,11 +63,13 @@ INSTALLED_APPS = [
     'crispy_forms',
 ]
 
+'''
 ELASTICSEARCH_DSL={
     'default': {
         'hosts': '{}:9200'.format(config('ELASTIC_HOST'))
     },
 }
+'''
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -110,6 +112,14 @@ WSGI_APPLICATION = 'cbeImageDB.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
+
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -120,7 +130,7 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
