@@ -1,5 +1,4 @@
 export PASSANGER_PORT=$PORT
-python manage.py collectstatic
 python manage.py migrate
 python manage.py populatetesting
 echo "port: $PORT"
