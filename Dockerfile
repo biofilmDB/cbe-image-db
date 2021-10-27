@@ -76,6 +76,7 @@ RUN mkdir /home/app/webapp/files
 # Make static file dir and create static files
 ENV STATIC_ROOT=/home/app/webapp/static
 RUN mkdir /home/app/webapp/static
+RUN python /home/app/webapp/manage.py collectstatic
 WORKDIR /home/app/webapp/
 
 # Give init.sh permission to run
