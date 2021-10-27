@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from decouple import config
-from boto.s3.connection import S3Connection
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -27,10 +26,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DJANGO_SECRET_KEY'] #config('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-debug_val = config('DJANGO_DEBUG')
+debug_val = os.environ.get('DJANGO_DEBUG', 'False')
 if debug_val.lower() == 'ture':
     DEBUG = True
 elif debug_val.lower() == 'false':
@@ -40,7 +39,8 @@ elif debug_val.lower() == 'false':
 # Use an environment variable to create the list
 # of hosts. It should be separated by commas
 ALLOWED_HOSTS = []
-for host in config('WEB_ALLOWED_HOSTS').split(','):
+web_allowed_hosts = os.environ.get('WEB_ALLOWED_HOSTS', '')
+for host in web_allowed_hosts.split(','):
     ALLOWED_HOSTS.append(host)
 
 
@@ -114,7 +114,7 @@ WSGI_APPLICATION = 'cbeImageDB.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 
-
+# TODO: Change this for heroku vs. getting db properties from envrionment vars
 # Heroku: Update database configuration from $DATABASE_URL.
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
@@ -180,10 +180,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = config('STATIC_ROOT')
+#STATIC_ROOT = config('STATIC_ROOT')
+STATIC_ROOT = os.environ.get('STATIC_ROOT', '')
 
 # Path for storing files
-MEDIA_ROOT = config('MEDIA_ROOT')
+#MEDIA_ROOT = config('MEDIA_ROOT')
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '')
 MEDIA_URL = '/files/'
 
 #SYNONYM_FILE = config('SYNONYM_FILE')
