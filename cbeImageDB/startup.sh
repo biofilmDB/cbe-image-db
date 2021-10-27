@@ -6,4 +6,4 @@ echo "port: $PORT"
 echo "passanger port: $PASSENGER_PORT"
 # commenting out until elatci search works
 #python manage.py search_index --create
-passenger start
+passenger start --port $PORT
