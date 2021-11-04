@@ -113,34 +113,38 @@ WSGI_APPLICATION = 'cbeImageDB.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# If it is running on heroku get db credentals how heroku requires, otherwise
+# get from environment .env file
+RUN_LOCATION = os.environ.get('RUN_LOCATION', "").lower()
 
-# TODO: Change this for heroku vs. getting db properties from envrionment vars
-# Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "",
-        'USER': "",
-        'PASSWORD': "",
-        'HOST': "",
-        'PORT': "",
+if RUN_LOCATION == 'heroku':
+    # Heroku: Update database configuration from $DATABASE_URL.
+    import dj_database_url
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': "",
+            'USER': "",
+            'PASSWORD': "",
+            'HOST': "",
+            'PORT': "",
+        }
     }
-}
-DATABASES['default'].update(db_from_env)
+    DATABASES['default'].update(db_from_env)
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASS'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT'),
+        }
+    }
 
 '''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASS'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
-    }
-}
 '''
 
 # Password validation
@@ -181,7 +185,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 #STATIC_ROOT = config('STATIC_ROOT')
-STATIC_ROOT = os.environ.get('STATIC_ROOT', '')
+STATIC_ROOT = os.environ.get('STATIC_ROOT')
 
 # Path for storing files
 #MEDIA_ROOT = config('MEDIA_ROOT')

@@ -74,7 +74,8 @@ COPY --chown=app:app cbeImageDB /home/app/webapp/
 # Make files directory
 RUN mkdir /home/app/webapp/files
 # Make static file dir and create static files
-ENV STATIC_ROOT=/home/app/webapp/static
+ARG STATIC_ROOT=/home/app/webapp/static
+ENV STATIC_ROOT=$STATIC_ROOT
 RUN mkdir /home/app/webapp/static
 RUN python /home/app/webapp/manage.py collectstatic
 WORKDIR /home/app/webapp/
