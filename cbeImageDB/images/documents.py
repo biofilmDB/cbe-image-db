@@ -26,7 +26,7 @@ text_analyzer = analyzer(
         'standard',
         'lowercase',
         'stop',
-        synonym_tokenfilter,
+        #synonym_tokenfilter,
         # Note! 'snowball' comes after 'synonym_tokenfilter'
         'snowball',
     ],
@@ -44,7 +44,7 @@ html_strip = analyzer(
 
 @registry.register_document
 class ExperimentDocument(Document):
-   
+
     class Index:
         # Name of the Elasticsearch index
         name = 'experiment_names'
@@ -59,7 +59,7 @@ class ExperimentDocument(Document):
         fields = [
             'name',
         ]
-        
+
     @classmethod
     def to_field(cls, field_name, model_field):
         """
@@ -71,16 +71,16 @@ class ExperimentDocument(Document):
             #import ipdb; ipdb.set_trace()
             field = model_field_class_to_field_class[
                 model_field.__class__](attr=field_name, analyzer=text_analyzer)
-            
+
             return field
-        
+
         except KeyError:
             raise Document.ModelFieldNotMappedError(
                "Cannot convert model field {} "
                "to an Elasticsearch field!".format(field_name)
             )
-    
-    # def update(self, thing, refresh=None,action='index', **kwargs): 
+
+    # def update(self, thing, refresh=None,action='index', **kwargs):
     # context = super().get_context_data(**kwargs)
 
 
@@ -109,7 +109,7 @@ class ImageDocument(Document):
         # Paginate the django queryset used to populate the index with the specified size
         # (by default there is no pagination)
         # queryset_pagination = 5000
-    
+
     @classmethod
     def to_field(cls, field_name, model_field):
         """
@@ -121,9 +121,9 @@ class ImageDocument(Document):
             #import ipdb; ipdb.set_trace()
             field = model_field_class_to_field_class[
                 model_field.__class__](attr=field_name, analyzer=text_analyzer)
-            
+
             return field
-        
+
         except KeyError:
             raise Document.ModelFieldNotMappedError(
                "Cannot convert model field {} "
