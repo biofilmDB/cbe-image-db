@@ -1,8 +1,7 @@
-export PASSANGER_PORT=$PORT
 python manage.py migrate
 python manage.py populatetesting
-echo "port: $PORT"
-echo "passanger port: $PASSENGER_PORT"
-# commenting out until elatci search works
+# build the elasticsearch index
 python manage.py search_index --create
+# run passenger on the specified port
+# $PORT is a changing port number on heroku
 passenger start --port $PORT
