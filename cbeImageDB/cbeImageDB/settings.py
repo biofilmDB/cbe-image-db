@@ -65,6 +65,14 @@ INSTALLED_APPS = [
 ]
 
 ELASTICSEARCH_DSL={}
+from urllib.parse import urlparse
+url = urlparse(os.environ.get("BONSAI_URL", ""))
+if url != "":
+    ELASTICSEARCH_DSL={
+        'default': {
+            'hosts': '{}://{}:{}'.format(url.shceme, url.hostname, url.port)
+        },
+    }
 '''
 ELASTICSEARCH_DSL={
     'default': {
