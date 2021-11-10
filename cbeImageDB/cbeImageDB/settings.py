@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 debug_val = os.environ.get('DJANGO_DEBUG', 'False')
-if debug_val.lower() == 'ture':
+if debug_val.lower() == 'true':
     DEBUG = True
 elif debug_val.lower() == 'false':
     DEBUG = False
@@ -47,6 +47,7 @@ for host in web_allowed_hosts.split(','):
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'images.apps.ImagesConfig',
     'dal',
      # Enable plugins
@@ -74,6 +75,10 @@ ELASTICSEARCH_DSL={
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # whitenoise is supposed to do static while DEBUG=False
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # add it exactlyhere
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

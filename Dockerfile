@@ -1,4 +1,5 @@
 # TODO: Put a version number
+# switched from 1.0.9 to 2.0.0 to solve some new issue with previous
 FROM phusion/passenger-customizable:2.0.0
 
 
@@ -44,7 +45,7 @@ ENTRYPOINT [ "/usr/bin/tini", "--" ]
 
 # Add repository for packages for postgres to function
 RUN echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/apt/sources.list.d/pgdg.list && \
-	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O post-key.asc && \ 
+	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O post-key.asc && \
 	apt-key add post-key.asc && \
 	apt-get install -y libpq-dev
 
@@ -55,8 +56,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir /home/app/webapp/
 
 # download wait-for-it.sh
-RUN wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh 
-RUN cp wait-for-it.sh /home/app/webapp/wait-for-it.sh 
+RUN wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+RUN cp wait-for-it.sh /home/app/webapp/wait-for-it.sh
 RUN chmod +x /home/app/webapp/wait-for-it.sh
 
 # Copy over the environment.yml file and extend base environment with cbe-image
