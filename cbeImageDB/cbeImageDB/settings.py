@@ -70,7 +70,8 @@ url = urlparse(os.environ.get("BONSAI_URL", ""))
 if url != "":
     ELASTICSEARCH_DSL={
         'default': {
-            'hosts': '{}://{}:{}'.format(url.scheme, url.hostname, url.port)
+            'hosts': url
+            #'hosts': '{}://{}:{}'.format(url.scheme, url.hostname, url.port)
         },
     }
 '''
