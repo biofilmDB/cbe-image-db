@@ -122,20 +122,22 @@ WSGI_APPLICATION = 'cbeImageDB.wsgi.application'
 # get from environment .env file
 RUN_LOCATION = os.environ.get('RUN_LOCATION', "").lower()
 
+# put here so will initilize for collectstatic in Dockerfile
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "",
+        'USER': "",
+        'PASSWORD': "",
+        'HOST': "",
+        'PORT': "",
+    }
+}
+
 if RUN_LOCATION == 'heroku':
     # Heroku: Update database configuration from $DATABASE_URL.
     import dj_database_url
     db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': "",
-            'USER': "",
-            'PASSWORD': "",
-            'HOST': "",
-            'PORT': "",
-        }
-    }
     DATABASES['default'].update(db_from_env)
 else:
     DATABASES = {
