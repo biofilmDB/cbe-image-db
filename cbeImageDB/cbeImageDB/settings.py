@@ -120,7 +120,7 @@ WSGI_APPLICATION = 'cbeImageDB.wsgi.application'
 
 # If it is running on heroku get db credentals how heroku requires, otherwise
 # get from environment .env file
-RUN_LOCATION = os.environ.get('RUN_LOCATION', "").lower()
+RUN_LOCATION = os.environ.get('RUN_LOCATION', "heroku").lower()
 
 # put here so will initilize for collectstatic in Dockerfile
 DATABASES = {
