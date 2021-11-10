@@ -25,7 +25,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 debug_val = config('DJANGO_DEBUG')
-if debug_val.lower() == 'ture':
+if debug_val.lower() == 'true':
     DEBUG = True
 elif debug_val.lower() == 'false':
     DEBUG = False
