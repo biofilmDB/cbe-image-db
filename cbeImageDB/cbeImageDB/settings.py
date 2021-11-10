@@ -41,6 +41,7 @@ for host in config('WEB_ALLOWED_HOSTS').split(','):
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'images.apps.ImagesConfig',
     'dal',
      # Enable plugins
@@ -65,6 +66,10 @@ ELASTICSEARCH_DSL={
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # whitenoise is supposed to do static while DEBUG=False
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # add it exactlyhere
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
