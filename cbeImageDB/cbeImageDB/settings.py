@@ -16,6 +16,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# If it is running on heroku get db credentals how heroku requires, otherwise
+# get from environment .env file
+RUN_LOCATION = os.environ.get('RUN_LOCATION', "heroku").lower()
+
 #s3 = S3Connection(os.environ['DJANGO_SECRET_KEY'])
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -64,24 +68,27 @@ INSTALLED_APPS = [
     'crispy_forms',
 ]
 
-ELASTICSEARCH_DSL={}
-from urllib.parse import urlparse
-bonsai_url = os.environ.get("BONSAI_URL", "")
-url = urlparse(bonsai_url)
-if bonsai_url != "":
+
+if RUN_LOCATION == 'heroku':
+    # get the url for elasticsearch from Heroku's variable
+    bonsai_url = os.environ.get("BONSAI_URL", "")
+    # if bonsai_url is empty on Heroku, it is building the container
+    if bonsai_url != "":
+        ELASTICSEARCH_DSL={
+            'default': {
+                'hosts': bonsai_url
+            },
+        }
+    else:
+        # initilize a blank one, this is only for building in Dockerfile
+        ELASTICSEARCH_DSL = {}
+else:
+    # using .env file
     ELASTICSEARCH_DSL={
         'default': {
-            'hosts': bonsai_url
-            #'hosts': '{}://{}:{}'.format(url.scheme, url.hostname, url.port)
+            'hosts': '{}:9200'.format(config('ELASTIC_HOST'))
         },
     }
-'''
-ELASTICSEARCH_DSL={
-    'default': {
-        'hosts': '{}:9200'.format(config('ELASTIC_HOST'))
-    },
-}
-'''
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,9 +135,6 @@ WSGI_APPLICATION = 'cbeImageDB.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# If it is running on heroku get db credentals how heroku requires, otherwise
-# get from environment .env file
-RUN_LOCATION = os.environ.get('RUN_LOCATION', "heroku").lower()
 
 # put here so will initilize for collectstatic in Dockerfile
 DATABASES = {
