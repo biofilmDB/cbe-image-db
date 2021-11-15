@@ -26,7 +26,7 @@ text_analyzer = analyzer(
         'standard',
         'lowercase',
         'stop',
-        #synonym_tokenfilter,
+        synonym_tokenfilter,
         # Note! 'snowball' comes after 'synonym_tokenfilter'
         'snowball',
     ],
