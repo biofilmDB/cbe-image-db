@@ -75,6 +75,8 @@ FROM earthsquirrel/cbe-image:1.0
 ENV CONDA_ENV_FILE /home/app/webapp/environment.yml
 COPY environment.yml $CONDA_ENV_FILE
 RUN conda env update --name base --file $CONDA_ENV_FILE
+# doing this here because conda won't put into a .yml file...
+RUN pip install django-elasticsearch-dsl==7.2.1
 
 # Copy over necessary files for app to run
 COPY --chown=app:app cbeImageDB /home/app/webapp/
