@@ -71,7 +71,7 @@ INSTALLED_APPS = [
 
 if RUN_LOCATION == 'heroku':
     # get the url for elasticsearch from Heroku's variable
-    bonsai_url = os.environ.get("BONSAI_URL", "")
+    bonsai_url = os.environ.get("SEARCHBOX_URL", "")
     # if bonsai_url is empty on Heroku, it is building the container
     if bonsai_url != "":
         ELASTICSEARCH_DSL={
