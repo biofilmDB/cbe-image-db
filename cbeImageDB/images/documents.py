@@ -2,7 +2,7 @@
 from django_elasticsearch_dsl import Document
 from django_elasticsearch_dsl.documents import model_field_class_to_field_class
 from django_elasticsearch_dsl.exceptions import ModelFieldNotMappedError
-from elasticsearch_dsl import analyzer, token_filter, Text
+from elasticsearch_dsl import analyzer, token_filter, Text, DocType
 from django.conf import settings
 from django_elasticsearch_dsl.registries import registry
 from .models import Image, Experiment
