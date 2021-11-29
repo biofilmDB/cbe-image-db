@@ -219,7 +219,7 @@ MEDIA_URL = '/files/'
 
 # cloudinary stuff for heroku file storage
 CLOUD_NAME = os.environ.get('CLOUD_NAME', '')
-if cloud_name != '':
+if CLOUD_NAME != '':
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': CLOUD_NAME,
         'API_KEY': os.environ.get('CLOUD_API_KEY'),
