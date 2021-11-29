@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from decouple import config
 from dotenv import load_dotenv
+import cloudinary, cloudinary.uploader, cloudinary.api
 
 load_dotenv()
 
@@ -67,7 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'easy_thumbnails',
     'cloudinary',
-    'crispy_forms', # must stay at end!!!
+    'crispy_forms',
 ]
 
 
