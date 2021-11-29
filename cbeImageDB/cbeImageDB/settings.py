@@ -66,8 +66,8 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'easy_thumbnails',
-    'crispy_forms',
     'cloudinary',
+    'crispy_forms', # must stay at end!!!
 ]
 
 
