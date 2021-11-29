@@ -1,7 +1,24 @@
 # CBE Image Database
 ## About
 
-## Setup
+
+## Docker (Databases only)
+
+
+## Docker (Web + databases)
+
+
+## Heroku Setup
+### Creating the Heroku app
+**TODO**
+
+
+### Making Updates
+
+
+
+
+## Setup Old Stuff
 _all commands are run from cbe-image-db/cbeImageDB_
 ### Setting Up the CBE Machine
 1. Clone the repository
