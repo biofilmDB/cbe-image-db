@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-import os
+import os, re
 from decouple import config
 
 
@@ -216,16 +216,22 @@ MEDIA_URL = '/files/'
 
 # cloudinary stuff for heroku file storage
 CLOUD_NAME = os.environ.get('CLOUD_NAME', '')
-if CLOUD_NAME != '':
+#cloudinary://271569232542553:oa-O-S-nIww8dEyIym4HyHQO3CY@hcvvcmoo7
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL', '')
+if CLOUDINARY_URL != '':
     # only add these if needed becuase during collect static in Dockerfile,
     # having them seems to mess things up
     INSTALLED_APPS.append('cloudinary_storage')
     INSTALLED_APPS.append('cloudinary')
 
+    # split up url in form of
+    # cloudinary://api_key:api_secret@cloud_name
+    blah, api_key, api_secret, cloud_name = re.split('://|:|@', CLOUDINARY_URL)
+
     CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': CLOUD_NAME,
-        'API_KEY': os.environ.get('CLOUD_API_KEY'),
-        'API_SECRET': os.environ.get('CLOUD_API_SECRET'),
+        'CLOUD_NAME': cloud_name,
+        'API_KEY': api_key,
+        'API_SECRET': api_secret,
     }
 
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
