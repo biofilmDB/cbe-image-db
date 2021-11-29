@@ -1,5 +1,4 @@
 python manage.py migrate
-python manage.py populatetesting
 # build the elasticsearch index
 python manage.py search_index --create
 python manage.py search_index --populate
