@@ -13,13 +13,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from decouple import config
 from dotenv import load_dotenv
-import cloudinary, cloudinary.uploader, cloudinary.api
+#import cloudinary, cloudinary.uploader, cloudinary.api
 
 load_dotenv()
 
 # If it is running on heroku get db credentals how heroku requires, otherwise
 # get from environment .env file
 RUN_LOCATION = os.environ.get('RUN_LOCATION', "heroku").lower()
+CLOUD_NAME = os.environ.get('CLOUD_NAME', '')
 
 #s3 = S3Connection(os.environ['DJANGO_SECRET_KEY'])
 
@@ -64,12 +65,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
+    #'cloudinary_storage',
     'django.contrib.staticfiles',
     'easy_thumbnails',
-    'cloudinary',
+    #'cloudinary',
     'crispy_forms',
 ]
+if CLOUD_NAME != '':
+    INSTALLED_APPS.append('cloudinary_storage')
+    INSTALLED_APPS.append('cloudinary')
 
 
 if RUN_LOCATION == 'heroku':
@@ -219,7 +223,7 @@ MEDIA_URL = '/files/'
 #SYNONYM_FILE = config('SYNONYM_FILE')
 
 # cloudinary stuff for heroku file storage
-CLOUD_NAME = os.environ.get('CLOUD_NAME', '')
+# CLOUD_NAME declared earlier because need for installed apps
 if CLOUD_NAME != '':
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': CLOUD_NAME,
