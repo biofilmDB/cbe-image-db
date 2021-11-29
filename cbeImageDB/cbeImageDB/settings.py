@@ -17,16 +17,6 @@ from decouple import config
 # If it is running on heroku get db credentals how heroku requires, otherwise
 # get from environment .env file
 DOCKER_BUILDING = os.environ.get('DOCKER_BUILDING', '')
-print('************************************************************')
-print('************************************************************')
-print('************************************************************')
-print('************************************************************')
-print('DOCKER_VBUILDING: ', DOCKER_BUILDING)
-print('************************************************************')
-print('************************************************************')
-print('************************************************************')
-print('************************************************************')
-
 RUN_LOCATION = os.environ.get('RUN_LOCATION', "").lower()
 
 
@@ -155,7 +145,9 @@ DATABASES = {
     }
 }
 
-if RUN_LOCATION == 'heroku':
+if DOCKER_BUILDING != "":
+    pass
+elif RUN_LOCATION == 'heroku':
     # Heroku: Update database configuration from $DATABASE_URL.
     import dj_database_url
     db_from_env = dj_database_url.config(conn_max_age=500)
