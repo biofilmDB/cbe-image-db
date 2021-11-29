@@ -12,17 +12,13 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from decouple import config
-from dotenv import load_dotenv
-#import cloudinary, cloudinary.uploader, cloudinary.api
 
-load_dotenv()
 
 # If it is running on heroku get db credentals how heroku requires, otherwise
 # get from environment .env file
-RUN_LOCATION = os.environ.get('RUN_LOCATION', "heroku").lower()
-CLOUD_NAME = os.environ.get('CLOUD_NAME', '')
+DOCKER_BUILDING = os.environ.get('DOCKER_BUILDING', '')
+RUN_LOCATION = os.environ.get('RUN_LOCATION', "").lower()
 
-#s3 = S3Connection(os.environ['DJANGO_SECRET_KEY'])
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -65,35 +61,29 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    #'cloudinary_storage',
     'django.contrib.staticfiles',
     'easy_thumbnails',
-    #'cloudinary',
     'crispy_forms',
 ]
-if CLOUD_NAME != '':
-    INSTALLED_APPS.append('cloudinary_storage')
-    INSTALLED_APPS.append('cloudinary')
 
 
-if RUN_LOCATION == 'heroku':
+if DOCKER_BUILDING != '':
+    # make blank becuase do not need while building docker container
+    ELASTICSEARCH_DSL = {}
+elif RUN_LOCATION == 'heroku':
     # get the url for elasticsearch from Heroku's variable
     bonsai_url = os.environ.get("SEARCHBOX_URL", "")
     # if bonsai_url is empty on Heroku, it is building the container
-    if bonsai_url != "":
-        ELASTICSEARCH_DSL={
-            'default': {
-                'hosts': bonsai_url
-            },
-        }
-    else:
-        # initilize a blank one, this is only for building in Dockerfile
-        ELASTICSEARCH_DSL = {}
+    ELASTICSEARCH_DSL={
+        'default': {
+            'hosts': bonsai_url
+        },
+    }
 else:
     # using .env file
     ELASTICSEARCH_DSL={
         'default': {
-            'hosts': '{}:9200'.format(config('ELASTIC_HOST'))
+            'hosts': '{}:9200'.format(os.environ['ELASTIC_HOST'])
         },
     }
 
@@ -223,8 +213,13 @@ MEDIA_URL = '/files/'
 #SYNONYM_FILE = config('SYNONYM_FILE')
 
 # cloudinary stuff for heroku file storage
-# CLOUD_NAME declared earlier because need for installed apps
+CLOUD_NAME = os.environ.get('CLOUD_NAME', '')
 if CLOUD_NAME != '':
+    # only add these if needed becuase during collect static in Dockerfile,
+    # having them seems to mess things up
+    INSTALLED_APPS.append('cloudinary_storage')
+    INSTALLED_APPS.append('cloudinary')
+
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': CLOUD_NAME,
         'API_KEY': os.environ.get('CLOUD_API_KEY'),

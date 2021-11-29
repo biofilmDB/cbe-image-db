@@ -80,6 +80,11 @@ RUN conda env update --name base --file $CONDA_ENV_FILE
 COPY --chown=app:app cbeImageDB /home/app/webapp/
 
 
+# this tells the building that it may not have access to all environment vars
+# (running on heroku for example) and to only do necessary stuff for running
+# collectstatic
+ARG DOCKER_BUILDING="building"
+# want static files in the docker container
 RUN python /home/app/webapp/manage.py collectstatic
 WORKDIR /home/app/webapp/
 
