@@ -1,3 +1,4 @@
+python manage.py collectstatic
 python manage.py migrate
 # build the elasticsearch index
 python manage.py search_index --create
