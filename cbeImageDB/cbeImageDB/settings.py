@@ -63,9 +63,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
     'easy_thumbnails',
     'crispy_forms',
+    'cloudinary',
 ]
 
 
@@ -214,3 +216,14 @@ MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '')
 MEDIA_URL = '/files/'
 
 #SYNONYM_FILE = config('SYNONYM_FILE')
+
+# cloudinary stuff for heroku file storage
+CLOUD_NAME = os.environ.get('CLOUD_NAME', '')
+if cloud_name != '':
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': CLOUD_NAME,
+        'API_KEY': os.environ.get('CLOUD_API_KEY'),
+        'API_SECRET': os.environ.get('CLOUD_API_SECRET'),
+    }
+
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
