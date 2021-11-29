@@ -1,14 +1,22 @@
 # CBE Image Database
+<!---
+your comment goes here
+and here
+{% assign variableName = "text etc." %}
+{{ nameOfVariableToCapture }}  that prints the content of the variable
+
+-->
+
 ## About
 
 
-## Docker (Databases only)
+## Setup: Docker (Databases only)
 
 
-## Docker (Web + databases)
+## Setup: Docker (Web + databases)
 
 
-## Heroku Setup
+## Setup Heroku
 ### Creating the Heroku app
 **TODO**
 
