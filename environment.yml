@@ -34,8 +34,8 @@ dependencies:
     - django-multi-form-view==2.0.1
     - django-template-names==0.2.1
     - easy-thumbnails==2.6
-    - elasticsearch==7.15.2
-    - elasticsearch-dsl==7.4.0
+    - elasticsearch==6.4.0
+    - elasticsearch-dsl==6.4.0
     - idna==3.3
     - ipython==7.6.1
     - ipython-genutils==0.2.0
