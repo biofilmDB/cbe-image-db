@@ -6,3 +6,5 @@ cbeImageDB/organisms/organisms-bad.csv
 cbeImageDB/organisms/organisms.csv
 cbeImageDB/synonyms.txt
 cbeImageDB/labs.txt
+# Ignore folder where I keep files
+files
