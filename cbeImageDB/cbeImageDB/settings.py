@@ -17,6 +17,16 @@ from decouple import config
 # If it is running on heroku get db credentals how heroku requires, otherwise
 # get from environment .env file
 DOCKER_BUILDING = os.environ.get('DOCKER_BUILDING', '')
+print('************************************************************')
+print('************************************************************')
+print('************************************************************')
+print('************************************************************')
+print('DOCKER_VBUILDING: ', DOCKER_BUILDING)
+print('************************************************************')
+print('************************************************************')
+print('************************************************************')
+print('************************************************************')
+
 RUN_LOCATION = os.environ.get('RUN_LOCATION', "").lower()
 
 
