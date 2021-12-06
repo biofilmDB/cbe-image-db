@@ -3,6 +3,7 @@
   "description": "",
   "repository": "https://github.com/biofilmDB/cbe-image-db/tree/heroku-deployment",
   "success_url": "/",
+  "stack": "container",
   "env": {
     "RUN_LOCATION": {
       "description": "Tells where the application is running",
