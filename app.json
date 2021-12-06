@@ -33,6 +33,14 @@
       "value": "$(heroku apps:info -s  | grep web_url | cut -d= -f2)"
     }
   },
-  "addons":{
-  }
+  "addons": [
+    {
+      "plan": "searchbox:starter",
+      "options": {
+        "version": "6"
+      }
+    },
+    "heroku-postgresql:hobby-dev",
+    "cloudinary:starter"
+  ]
 }
