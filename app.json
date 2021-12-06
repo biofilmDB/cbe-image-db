@@ -1,0 +1,38 @@
+{
+  "name": "Biofilm Image Database",
+  "description": "",
+  "repository": "",
+  "success_url": "/",
+  "env": {
+    "RUN_LOCATION": {
+      "description": "Tells where the application is running",
+      "value": "heroku"
+    },
+    "DJANGO_DEBUG": {
+      "description": "True or false for the debug mode in Django. The default is false.",
+      "value": "False"
+    },
+    "DJANGO_SECRET_KEY": {
+      "description": "The secret key for Django to run",
+      "generator": "secret"
+    },
+    "SUPPORT_NAME": {
+      "description": ""
+    },
+    "SUPPORT_EMAIL": {
+      "description": ""
+    },
+    "DEVELOPER_NAME": {
+      "description": ""
+    },
+    "DEVELOPER_EMAIL": {
+      "description": ""
+    },
+    "WEB_ALLOWED_HOSTS": {
+      "description": "TODO: will this value work?",
+      "value": "$(heroku apps:info -s  | grep web_url | cut -d= -f2)"
+    }
+  },
+  "addons":{
+  }
+}
