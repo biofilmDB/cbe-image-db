@@ -20,9 +20,23 @@ and here
 
 ## Setup Heroku
 ### Creating the Heroku app
-**TODO**
-
+1. Click the following button to begin Heroku deployment process. This will 
+deploy the app as it exists currently. If not currently logged in, you will
+first be prompted to log into Heroku.
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/biofilmDB/cbe-image-db/tree/heroku-deployment)
+2. Enter a name for your app. Heroku will tell you if the name is taken or not.
+3. Fill in or modify the configure variables.
+4. For WEB\_ALLOWED\_HOSTS enter your app name followed by ".herokuapp.com".
+All you should have to do is replace the "\_\_\_" in the existing variable name.
+5. Click "Deploy App" and Heroku will deploy your app for you. Once finished
+you can launch it or manage the settings.
+![Successful Deployment](/readme-img/completed-setup.png)
+6. 
+
+
+
+
+
 ### Making Updates
 
 
