@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os, re
 from decouple import config
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # If it is running on heroku get db credentals how heroku requires, otherwise
 # get from environment .env file
@@ -28,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 debug_val = os.environ.get('DJANGO_DEBUG', 'False')
@@ -41,14 +43,7 @@ elif debug_val.lower() == 'false':
 # Use an environment variable to create the list
 # of hosts. It should be separated by commas
 ALLOWED_HOSTS = []
-web_allowed_hosts = os.environ.get('WEB_ALLOWED_HOSTS', '')
-print('*********************************************************************')
-print('*********************************************************************')
-print('******{}**********************************'.format(web_allowed_hosts))
-print('*********************************************************************')
-print('*********************************************************************')
-print('*********************************************************************')
-print('*********************************************************************')
+web_allowed_hosts = os.environ.get('WEB_ALLOWED_HOSTS')
 for host in web_allowed_hosts.split(','):
     ALLOWED_HOSTS.append(host)
 
