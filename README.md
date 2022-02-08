@@ -23,7 +23,11 @@ and here
 1. Click the following button to begin Heroku deployment process. This will 
 deploy the app as it exists currently. If not currently logged in, you will
 first be prompted to log into Heroku.
+
+
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/biofilmDB/cbe-image-db/tree/heroku-deployment)
+
+
 2. Enter a name for your app. Heroku will tell you if the name is taken or not.
 3. Fill in or modify the configure variables.
 4. For WEB\_ALLOWED\_HOSTS enter your app name followed by ".herokuapp.com".
@@ -31,10 +35,28 @@ All you should have to do is replace the "\_\_\_" in the existing variable name.
 5. Click "Deploy App" and Heroku will deploy your app for you. Once finished
 you can launch it or manage the settings.
 ![Successful Deployment](/readme-img/completed-setup.png)
-6. 
 
 
+### Create an Admin
+6. Click on "Manage App". You will be taken to your app's dashboard.
+7. Under "More" on the top right, select "Run Console".
+![Run Console](/readme-img/select-command.png)
+8. You will be prompted to run a command. You want to type in "bash".
+![Bash Command](/readme-img/run-bash.png)
 
+
+A console window will appear. You are now able to run commands inside a
+Heroku Dyno.
+![Console loaded](/readme-img/console.png)
+10. Run the command:
+```
+python manage.py createsuperuser
+```
+11. Follow the prompts on screen to create a superuser. You will be informed
+of any errors that occur.
+![Superuser Created](/readme-img/created-superuser.png)
+12. Log into the websites admin page by adding "/admin" to the end of your
+website URL.
 
 
 ### Making Updates
