@@ -8,6 +8,17 @@ and here
 -->
 
 ## About
+This website was created as a location users could store their biofilm images.
+It was petitioned for use by the [Center For Biofilm Engineering](https://biofilm.montana.edu/)
+at Montana State University.
+The goal was to take images primarily stored on user's personal computers and
+move them to a centralized location with certain associated metadata. This will
+hopefully make existing biofilm images useful to researchers who did not take 
+them. It will also mean there are more images available for a given experiment
+than just those which are published in a paper. The images stored can be hidden 
+until a given date. 
+
+
 
 ### Docker
 **TODO:** Pulls from dockerhub with code in directory blah
