@@ -57,9 +57,15 @@ of any errors that occur.
 ![Superuser Created](/readme-img/created-superuser.png)
 12. Log into the websites admin page by adding "/admin" to the end of your
 website URL.
+13. Only admin are allowed to create growth substratums, labs, microscope 
+settings, objective mediums, organisms, microscopes, and vessels. These must be 
+created using the admin login of the site. To add a microscope settings, one
+must first create an objective medium and microscope.
+It is recommended to add only the organisms and instances that will be used. The
+free tier of Heroku Postgres only offers 10,000 lines.
 
+![Admin Page](/readme-img/admin-controls.png)
 
-### Making Updates
 
 
 
