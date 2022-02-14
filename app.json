@@ -30,8 +30,8 @@
       "description": ""
     },
     "WEB_ALLOWED_HOSTS": {
-      "description": "TODO: will this value work?",
-      "value": "$(heroku apps:info -s  | grep web_url | cut -d= -f2)"
+      "description": "",
+      "value": "____.herokuapp.com"
     }
   },
   "addons": [
