@@ -21,7 +21,10 @@ until a given date.
 
 
 ### Docker
-**TODO:** Pulls from dockerhub with code in directory blah
+To save time building on Heroku part of the Docker container is built and 
+pulled from DockerHub [here](https://hub.docker.com/r/earthsquirrel/cbe-image).
+This Dockerfile to build this image is in the [docker-hub](docker-hub) folder
+in this repository.
 
 ## Setup: Docker (Databases only)
 
