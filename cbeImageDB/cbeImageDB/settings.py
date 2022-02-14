@@ -43,7 +43,7 @@ elif debug_val.lower() == 'false':
 # Use an environment variable to create the list
 # of hosts. It should be separated by commas
 ALLOWED_HOSTS = []
-web_allowed_hosts = os.environ.get('WEB_ALLOWED_HOSTS')
+web_allowed_hosts = os.environ.get('WEB_ALLOWED_HOSTS', '')
 for host in web_allowed_hosts.split(','):
     ALLOWED_HOSTS.append(host)
 
