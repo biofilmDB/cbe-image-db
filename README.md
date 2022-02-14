@@ -43,6 +43,7 @@ first be prompted to log into Heroku.
 
 
 2. Enter a name for your app. Heroku will tell you if the name is taken or not.
+![Initial Deployment Screen](/readme-img/init-click-deploy.png)
 3. Fill in or modify the configure variables.
 4. For WEB\_ALLOWED\_HOSTS enter your app name followed by ".herokuapp.com".
 All you should have to do is replace the "\_\_\_" in the existing variable name.
