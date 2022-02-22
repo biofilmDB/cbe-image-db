@@ -38,7 +38,7 @@
     {
       "plan": "searchbox:starter",
       "options": {
-        "version": "6.0"
+        "es_version": "6"
       }
     },
     "heroku-postgresql:hobby-dev",
