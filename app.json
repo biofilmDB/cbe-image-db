@@ -1,7 +1,7 @@
 {
   "name": "Biofilm Image Database",
   "description": "",
-  "repository": "https://github.com/biofilmDB/cbe-image-db/tree/heroku-deployment",
+  "repository": "https://github.com/biofilmDB/cbe-image-db",
   "success_url": "/",
   "stack": "container",
   "env": {

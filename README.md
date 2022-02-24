@@ -26,7 +26,7 @@ deploy the app as it exists currently. If not currently logged in, you will
 first be prompted to log into Heroku.
 
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/biofilmDB/cbe-image-db/tree/heroku-deployment)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/biofilmDB/cbe-image-db)
 
 
 2. Enter a name for your app. Heroku will tell you if the name is taken or not.
