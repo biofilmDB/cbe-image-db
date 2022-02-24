@@ -65,8 +65,8 @@ settings, objective mediums, organisms, microscopes, and vessels. These must be
 created using the admin login of the site. To add a microscope settings, one
 must first create an objective medium and microscope, however, those can be
 created/edited/deleted from within the microscope settings addition.
-It is recommended to add only the organisms and instances that will be used. The
-free tier of Heroku Postgres only offers 10,000 lines.
+It is recommended to add only the organisms and instances that will be used. 
+**The free tier of Heroku Postgres only offers 10,000 lines.**
 
 
 
