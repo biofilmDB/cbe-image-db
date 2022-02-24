@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.db import transaction, IntegrityError
 from django.template.loader import render_to_string
-
+from urllib.parse import unquote
 
 class AboutSite(TemplateNames, genViews.TemplateView):
     def get_context_data(self, **kwargs):
@@ -200,6 +200,9 @@ class MultipleImageUpdateView(TemplateNames, genViews.TemplateView):
         context = super().get_context_data(**kwargs)
         errors = []
         image_pks_str = self.kwargs['list_image_pks']
+        # check if URL encoded or not (by absence of [)
+        if '[' not in image_pks_str:
+            image_pks_str = unquote(image_pks_str)
         # convert string into list of numbers
         image_pks_str = image_pks_str.replace('[', '').replace(']', '')
         image_pks = []
