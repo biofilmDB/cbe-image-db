@@ -6,31 +6,31 @@
   "stack": "container",
   "env": {
     "RUN_LOCATION": {
-      "description": "Tells where the application is running",
+      "description": "This tells where the application is running. If deploying on Heroku, you want it to be set to 'heroku'.",
       "value": "heroku"
     },
     "DJANGO_DEBUG": {
-      "description": "True or false for the debug mode in Django. The default is false.",
+      "description": "This must either be true or false for the debug mode in Django. The default is false, which is the recomended value for deployment.",
       "value": "False"
     },
     "DJANGO_SECRET_KEY": {
-      "description": "The secret key for Django to run",
+      "description": "The secret key for Django to run.",
       "generator": "secret"
     },
     "SUPPORT_NAME": {
-      "description": ""
+      "description": "The support person appears on the page to create a new experiment. The user is told to contact them if they do not see a microscope setting, lab, or organism they need. This should be a person with administrative privlidges."
     },
     "SUPPORT_EMAIL": {
-      "description": ""
+      "description": "This is the email of the support person."
     },
     "DEVELOPER_NAME": {
-      "description": ""
+      "description": "This is the name of the developer who can answer technical questions about the site, although it does not have to be that specifically. It will appear in the top beta version banner."
     },
     "DEVELOPER_EMAIL": {
-      "description": ""
+      "description": "This is the email that will appear in the top beta version banner. It is meant for users to send emails to about technical issues."
     },
     "WEB_ALLOWED_HOSTS": {
-      "description": "",
+      "description": "This adds your Heroku site to ALLOWED_HOSTS in Django settings so that the web app can run. Replace the '___' with the name of your app.",
       "value": "____.herokuapp.com"
     }
   },
