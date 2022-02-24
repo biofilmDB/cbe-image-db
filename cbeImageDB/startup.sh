@@ -1,4 +1,7 @@
-python manage.py makemigrations
 python manage.py migrate
+# build the elasticsearch index
 python manage.py search_index --create
-passenger start
+python manage.py search_index --populate
+# run passenger on the specified port
+# $PORT is a changing port number on heroku
+passenger start --port $PORT

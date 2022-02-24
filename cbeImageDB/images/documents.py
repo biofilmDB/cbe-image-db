@@ -2,7 +2,7 @@
 from django_elasticsearch_dsl import Document
 from django_elasticsearch_dsl.documents import model_field_class_to_field_class
 from django_elasticsearch_dsl.exceptions import ModelFieldNotMappedError
-from elasticsearch_dsl import analyzer, token_filter, DocType, Text
+from elasticsearch_dsl import analyzer, token_filter, Text, DocType
 from django.conf import settings
 from django_elasticsearch_dsl.registries import registry
 from .models import Image, Experiment
@@ -44,7 +44,7 @@ html_strip = analyzer(
 
 @registry.register_document
 class ExperimentDocument(Document):
-   
+
     class Index:
         # Name of the Elasticsearch index
         name = 'experiment_names'
@@ -59,28 +59,28 @@ class ExperimentDocument(Document):
         fields = [
             'name',
         ]
-        
-    @classmethod
-    def to_field(cls, field_name, model_field):
-        """
-        Returns the elasticsearch field instance appropriate for the model
-        field class. This is a good place to hook into if you have more complex
-        model field to ES field logic
-        """
-        try:
-            #import ipdb; ipdb.set_trace()
-            field = model_field_class_to_field_class[
-                model_field.__class__](attr=field_name, analyzer=text_analyzer)
-            
-            return field
-        
-        except KeyError:
-            raise Document.ModelFieldNotMappedError(
-               "Cannot convert model field {} "
-               "to an Elasticsearch field!".format(field_name)
-            )
-    
-    # def update(self, thing, refresh=None,action='index', **kwargs): 
+
+    #@classmethod
+    #def to_field(cls, field_name, model_field):
+    #    """
+    #    Returns the elasticsearch field instance appropriate for the model
+    #    field class. This is a good place to hook into if you have more complex
+    #    model field to ES field logic
+    #    """
+    #    try:
+    #        #import ipdb; ipdb.set_trace()
+    #        field = model_field_class_to_field_class[
+    #            model_field.__class__](attr=field_name, analyzer=text_analyzer)
+
+    #        return field
+
+    #    except KeyError:
+    #        raise Document.ModelFieldNotMappedError(
+    #           "Cannot convert model field {} "
+    #           "to an Elasticsearch field!".format(field_name)
+    #        )
+
+    # def update(self, thing, refresh=None,action='index', **kwargs):
     # context = super().get_context_data(**kwargs)
 
 
@@ -109,23 +109,23 @@ class ImageDocument(Document):
         # Paginate the django queryset used to populate the index with the specified size
         # (by default there is no pagination)
         # queryset_pagination = 5000
-    
-    @classmethod
-    def to_field(cls, field_name, model_field):
-        """
-        Returns the elasticsearch field instance appropriate for the model
-        field class. This is a good place to hook into if you have more complex
-        model field to ES field logic
-        """
-        try:
-            #import ipdb; ipdb.set_trace()
-            field = model_field_class_to_field_class[
-                model_field.__class__](attr=field_name, analyzer=text_analyzer)
-            
-            return field
-        
-        except KeyError:
-            raise Document.ModelFieldNotMappedError(
-               "Cannot convert model field {} "
-               "to an Elasticsearch field!".format(field_name)
-            )
+
+    #@classmethod
+    #def to_field(cls, field_name, model_field):
+    #    """
+    #    Returns the elasticsearch field instance appropriate for the model
+    #    field class. This is a good place to hook into if you have more complex
+    #    model field to ES field logic
+    #    """
+    #    try:
+    #        #import ipdb; ipdb.set_trace()
+    #        field = model_field_class_to_field_class[
+    #            model_field.__class__](attr=field_name, analyzer=text_analyzer)
+
+    #        return field
+
+    #    except KeyError:
+    #        raise Document.ModelFieldNotMappedError(
+    #           "Cannot convert model field {} "
+    #           "to an Elasticsearch field!".format(field_name)
+    #        )

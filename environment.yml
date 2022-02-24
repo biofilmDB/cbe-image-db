@@ -11,6 +11,7 @@ dependencies:
   - pip=19.1.1
   - python=3.7.3
   - readline=7.0
+  - sqlite=3.31.1
   - tk=8.6.8
   - wheel=0.33.4
   - xz=5.2.4
@@ -18,10 +19,16 @@ dependencies:
   - pip:
     - appnope==0.1.0
     - backcall==0.1.0
+    - boto==2.49.0
+    - charset-normalizer==2.0.8
+    - cloudinary==1.28.0
     - decorator==4.4.0
+    - dj-database-url==0.5.0
     - django==2.2.2
     - django-admin-views==0.8.0
     - django-autocomplete-light==3.3.5
+    - django-batch-uploader==0.14
+    - django-cloudinary-storage==0.3.0
     - django-crispy-forms==1.8.1
     - django-elasticsearch-dsl==6.4.2
     - django-multi-form-view==2.0.1
@@ -29,6 +36,7 @@ dependencies:
     - easy-thumbnails==2.6
     - elasticsearch==6.4.0
     - elasticsearch-dsl==6.4.0
+    - idna==3.3
     - ipython==7.6.1
     - ipython-genutils==0.2.0
     - jedi==0.14.0
@@ -45,7 +53,9 @@ dependencies:
     - pygments==2.4.2
     - python-dateutil==2.8.0
     - python-decouple==3.1
+    - python-dotenv==0.19.0
     - pytz==2019.1
+    - requests==2.26.0
     - setuptools==41.2.0
     - six==1.12.0
     - sqlparse==0.3.0

@@ -22,11 +22,12 @@ class AdminSearch(AdminViews):
     def redirect_to_attribute(self, *args, **kwargs):
         return HttpResponseRedirect(reverse('images:attribute_search'))
 
-
+# Things to appear on admin page
+admin.site.register(models.MicroscopeSettings)
+admin.site.register(models.Microscope)
 admin.site.register(models.ObjectiveMedium)
 admin.site.register(models.Lab, AdminSearch)
 admin.site.register(models.Experiment)
-admin.site.register(models.MicroscopeSettings)
 admin.site.register(models.Vessel)
 admin.site.register(models.GrowthSubstratum)
 admin.site.register(models.Project)

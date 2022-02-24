@@ -2,5 +2,5 @@
   "app_type": "wsgi",
   "startup_file": "cbeImageDB/wsgi.py",
   "environment": "development",
-  "port": "80"
+  "port": "$PORT"
 }
